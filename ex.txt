@@ -1,0 +1,62 @@
+charles.recabert@inria.fr
+
+Table
+
+
+Individus
+
+. (X,Y)
+. G=(Ga,Gb)
+. (Ca,Cb,Cc)
+. w
+. bool Vivant
+
+ex: Ga
+
+
+
+Environment
+
+grille (W par H)
+(A,B,C) diffuse ! 
+
+(bactérie utilise environment en dessous)
+
+Ga=> dAout/dt (3 EDO à résoudre)
+à chaque on résout une EDO (Euler explicite d'ordre 1)
+A(t+1) =A(t) + (dA/dt)*dt => comme dt =0.1 => calculer 10 fois sur un pas de temps
+
+
+trois cellule à plus grande fitness => se divise  2 cellule filles
+chacune concentration parent de moitié et les 2 mutent séparément
+ATTENTION => si parcours gaps => favorise biais de la reproduction du haut => dab chercher les gap et après les fait reproduire
+
+
+
+TOUT LES T PAS DE TEMMPS ON ENLEVE ABC ET ON RAJOUT A INIT 
+
+UN PAS DE TEMPS BIG = 10 PAS DE TEMPS EQUATIONS DIF
+
+INDIVIDU
+ENVIRONMENT
+Population (gere population) => liste toute cell vivante
+SIMULATION
+
+CELLULE PEUT SE DIVISER UNE SEULE FOIS PAR PAS DE TEMPS
+
+
+1zone Extinction 
+1z Communication
+1z Exclusion
+=> calcul transition phase (calculs ++ car tres aleatoire : 1 point 30 % exctinction,
+50% ....)
+Regarder, tt le monde est crevé, juste A , juste B, les deux?
+Phase!!!!
+
+
+Metastable
+1pt devrait etre dans un certain etat mais non , regarde si on pousse un truc si le fait ou pas
+
+
+
+Dabord amener systm à l'éq puis faire varier parametre
