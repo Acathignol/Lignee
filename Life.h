@@ -1,37 +1,34 @@
 
-#ifndef ENVIRONMENT_H__
-#define ENVIRONMENT_H__
+#ifndef LIFE_H__
+#define LIFE_H__
 
 #include <iostream>
+#include <cstdlib>
 #include <cmath>
+#include <ctime>
 
 // ===========================================================================
 //                                  Includes
 // ===========================================================================
 
-class Environment {
+class Life {
  public :
  
   // =========================================================================
   //                               Constructors
   // =========================================================================
-  Environment();
-  Environment(int l, int w, int xinit, int yinit);
-  Environment(const Environment& Copy);
+  Life();
   
   // =========================================================================
   //                                Destructor
   // =========================================================================
-  ~Environment();
+  ~Life();
   // =========================================================================
   //                                  Getters
   // =========================================================================
-  inline double** PetriA(void) const; //unused
-  inline double** PetriB(void) const; //unused
-  inline double** PetriC(void) const; //unused
-  
-  inline int Length(void) const; //unused
-  inline int Width(void) const; //unused
+  inline int T(void) const; //unused
+  inline int Simul(void) const; //unused
+
   // =========================================================================
   //                                  Setters
   // =========================================================================
@@ -43,49 +40,27 @@ class Environment {
   // =========================================================================
   //                              Public Methods
   // =========================================================================
-  void diffusion(double D);
+  //IF NOT USES IN MAIN => PROTECTED!!
+
 
 protected :
   // =========================================================================
   //                             Protected Methods
   // =========================================================================
+  
+
 
   // =========================================================================
   //                                Attributes
   // =========================================================================
-  
-  //size envir.
-  int Length_;
-  int Width_;
-  
-  //concentration A B C
-  double** PetriA_;
-  double** PetriB_;
-  double** PetriC_;
-  
+  int T_;
+  int Simul_;
 };
 
 
 // ===========================================================================
 //                            Getters' definitions
 // ===========================================================================
-inline double** Environment::PetriA(void) const{
-  return PetriA_;
-}
-inline double** Environment::PetriB(void) const{
-  return PetriB_;
-}
-inline double** Environment::PetriC(void) const{
-  return PetriC_;
-}
-
-inline int Environment::Length(void) const{
-  return Length_;
-}
-inline int Environment::Width(void) const{
-  return Width_;
-}
-  
 
 // ===========================================================================
 //                            Setters' definitions
@@ -99,6 +74,12 @@ inline int Environment::Width(void) const{
 //                        Inline functions' definition
 // ===========================================================================
 
+inline int Life::T(void) const{
+  return T_;
+}
+inline int Life::Simul(void) const{
+  return Simul_;
+}
 
+#endif // LIFE_H__
 
-#endif // ENVIRONMENT_H__

@@ -115,7 +115,6 @@ inline double Individual::A(void) const{
 inline double Individual::B(void) const{
   return B_;
 }
-
 inline double Individual::C(void) const{
   return C_;
 }
