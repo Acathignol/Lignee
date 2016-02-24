@@ -12,8 +12,42 @@
 // ===========================================================================
 //Constructeur par défaut
 Life::Life() {
-  T_ = 0;
-  Simul_ = 0;
+  Tmin_=0;
+  Tmax_=0;
+  Simul_=0;
+  Ainitx_=0;
+  Ainity_=0;
+  wid_=0;
+  len_=0;
+  D_=0;
+  Pmut_=0;
+  Pdeath_=0;
+  Wmin_=0;
+  Raa_=0;
+  Rbb_=0;
+  Rab_=0;
+  Rbc_=0; 
+}
+
+Life::Life(int tmin, int tmax, int simul, int ainitx, int ainity, 
+int width, int length, double d, double pmut, double pdeath, double wmin,
+double raa, double rbb, double rab, double rbc) {
+
+  Tmin_=tmin;
+  Tmax_=tmax;
+  Simul_=simul;
+  Ainitx_=ainitx;
+  Ainity_=ainity;
+  wid_=width;
+  len_=length;
+  D_=d;
+  Pmut_=pmut;
+  Pdeath_=pdeath;
+  Wmin_=wmin;
+  Raa_=raa;
+  Rbb_=rbb;
+  Rab_=rab;
+  Rbc_=rbc; 
 }
 
 // ===========================================================================
@@ -26,7 +60,7 @@ Life::~Life(){
 // ===========================================================================
 //                               Public Methods
 // ===========================================================================
-  
+
 // ===========================================================================
 //                              Protected Methods
 // ===========================================================================

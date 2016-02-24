@@ -12,7 +12,7 @@
 // ===========================================================================
 //Constructeur par défaut
 Individual::Individual() {
-  srand(time(NULL));
+  srand(time(NULL)); // PUT HERE  !!!!!!!!!!!!!?????
     
   G_ = rand()%(2-0) +0 ;
     

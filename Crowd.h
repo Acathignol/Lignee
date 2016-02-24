@@ -1,51 +1,39 @@
 
-#ifndef LIFE_H__
-#define LIFE_H__
+#ifndef CROWD_H__
+#define CROWD_H__
 
 #include <iostream>
 #include <cstdlib>
 #include <cmath>
 #include <ctime>
-#include "Environment.h"
+
 #include "Individual.h"
-#include "Crowd.h"
 
 // ===========================================================================
 //                                  Includes
 // ===========================================================================
 
-class Life {
+class Crowd {
  public :
  
   // =========================================================================
   //                               Constructors
   // =========================================================================
-  Life();
-  Life(int tmin, int tmax, int simul, int ainitx, int ainity, int width,
-   int length, double d, double pmut, double pdeath, double wmin, 
-   double raa, double rbb, double rab, double rbc);
+  Crowd();
+  Crowd(int l, int w);
+  Crowd(const Crowd& Copy);
+  
   // =========================================================================
   //                                Destructor
   // =========================================================================
-  ~Life();
+  ~Crowd();
+  
   // =========================================================================
   //                                  Getters
   // =========================================================================
-  inline int Tmin(void) const; //unused
-  inline int Tmax(void) const; //unused
-  inline int Simul(void) const; //unused
-  inline int Ainitx(void) const; //unused
-  inline int Ainity(void) const; //unused
-  inline int len(void) const; //unused
-  inline int wid(void) const; //unused
-  inline double D(void) const; //unused
-  inline double Pmut(void) const; //unused
-  inline double Pdeath(void) const; //unused
-  inline double Wmin(void) const; //unused
-  inline double Raa(void) const; //unused
-  inline double Rbb(void) const; //unused
-  inline double Rab(void) const; //unused
-  inline double Rbc(void) const; //unused
+  inline Individual** Crowdy(void) const; //unused
+  inline int Length(void) const; //unused
+  inline int Width(void) const; //unused
 
   // =========================================================================
   //                                  Setters
@@ -71,27 +59,13 @@ protected :
   // =========================================================================
   //                                Attributes
   // =========================================================================
-  int Tmin_;
-  int Tmax_;
+  //size envir.
+  int Length_;
+  int Width_;
   
-  int Simul_;
-  
-  int Ainitx_;
-  int Ainity_;
-  
-  int wid_;
-  int len_;
-  
-  double D_;
-  
-  double Pmut_;
-  double Pdeath_;
-  double Wmin_;
-  
-  double Raa_;
-  double Rbb_;
-  double Rab_;
-  double Rbc_; 	
+  //concentration A B C
+  Individual** Crowdy_;
+
 
 };
 
@@ -99,7 +73,16 @@ protected :
 // ===========================================================================
 //                            Getters' definitions
 // ===========================================================================
+inline Individual** Crowd::Crowdy(void) const{
+  return Crowdy_;
+}
 
+inline int Crowd::Length(void) const{
+  return Length_;
+}
+inline int Crowd::Width(void) const{
+  return Width_;
+}
 // ===========================================================================
 //                            Setters' definitions
 // ===========================================================================
@@ -112,58 +95,4 @@ protected :
 //                        Inline functions' definition
 // ===========================================================================
 
-inline int Life::Tmin(void) const{
-  return Tmin_;
-}
-inline int Life::Tmax(void) const{
-  return Tmax_;
-}
-inline int Life::Simul(void) const{
-  return Simul_;
-}
-
-inline int Life::Ainitx(void) const{
-  return Ainitx_;
-}
-
-inline int Life::Ainity(void) const{
-  return Ainity_;
-}
-
-inline int Life::len(void) const{
-  return len_;
-}
-inline int Life::wid(void) const{
-  return wid_;
-}
-
-inline double Life::D(void) const{
-  return D_;
-}
-
-inline double Life::Pmut(void) const{
-  return Pmut_;
-}
-inline double Life::Pdeath(void) const{
-  return Pdeath_;
-}
-  
-inline double Life::Wmin(void) const{
-  return Wmin_;
-}
- 
-inline double Life::Raa(void) const{
-  return Raa_;
-}
-inline double Life::Rbb(void) const{
-  return Rbb_;
-}
-inline double Life::Rab(void) const{
-  return Rab_;
-}
-inline double Life::Rbc(void) const{
-  return Rbc_;
-}
-
-#endif // LIFE_H__
-
+#endif // CROWD_H__
