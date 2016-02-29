@@ -12,7 +12,7 @@
 // ===========================================================================
 //Constructeur par défaut
 Individual::Individual() {
-  srand(time(NULL)); // PUT HERE  !!!!!!!!!!!!!?????
+  //srand(time(NULL)); // PUT HERE  !!!!!!!!!!!!!?????
     
   G_ = rand()%(2-0) +0 ;
     
@@ -48,7 +48,7 @@ Individual::Individual(const Individual& ind, int a, int b) {
 
 //Constructor with x and y
 Individual::Individual(int a, int b) {
-  srand(time(NULL));
+  //srand(time(NULL));
     
   G_ = rand()%(2-0) +0 ;
     
@@ -90,7 +90,7 @@ Individual Individual::baby(int a, int b){
 
 //IF NOT USES IN MAIN => PROTECTED!!
 void Individual::mutation(double Pmut){
-  srand(time(NULL));
+  //srand(time(NULL));
   
   double mut = (double)rand() / (double)RAND_MAX;
   
@@ -105,7 +105,7 @@ void Individual::mutation(double Pmut){
 }  
 
 void Individual::massacre(double Pdeath){
-  srand(time(NULL));
+  //srand(time(NULL));
   
   double death = (double)rand() / (double)RAND_MAX;
   

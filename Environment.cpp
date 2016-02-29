@@ -94,6 +94,10 @@ Environment::~Environment(){
   delete[] PetriA_;
   delete[] PetriB_;
   delete[] PetriC_;
+  
+  PetriA_ = nullptr;
+  PetriB_ = nullptr;
+  PetriC_ = nullptr;
   }
   
 // ===========================================================================

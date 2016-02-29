@@ -6,6 +6,7 @@
 #include <cstdlib>
 #include <cmath>
 #include <ctime>
+#include <vector>
 
 #include "Individual.h"
 
@@ -47,6 +48,15 @@ class Crowd {
   //                              Public Methods
   // =========================================================================
   //IF NOT USES IN MAIN => PROTECTED!!
+  void muted (double Pmut);
+  void epickill(double Pdeath);
+  void fited(double Wmin);
+  std::vector<Individual> checkSides(Individual hole);
+  bool aliveTest(Individual ind);
+  Individual sides(int x, int y);
+  Individual findWmaxi(Individual hole);
+  std::vector<Individual> ListHoles();
+  void Duplication(std::vector<Individual> v)
 
 
 protected :
