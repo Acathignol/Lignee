@@ -50,12 +50,12 @@ class Individual {
   inline void set_B(double i) ; //unused
   inline void set_C(double i) ; //unused
 //~ 
-  //~ inline void set_w(double i) const; //unused
+  //~ inline void set_w(double i) ; //unused
  //~ 
   //~ inline void set_x(int i) const; //unused
   //~ inline void set_y(int i) const; //unused
   //~ 
-  //~ inline void set_alive(bool i) const; //unused
+  inline void set_alive(bool i) ; //unused
   
   // =========================================================================
   //                                 Operators
@@ -68,7 +68,8 @@ class Individual {
   void mutation(double Pmut);
   void fitness(double Wmin);
   void massacre(double Pdeath);
-  Individual baby(int a, int b);
+  void baby(Individual Parent);
+  void parent(double Wmin);
 
 
 protected :
@@ -151,7 +152,7 @@ inline void Individual::set_C(double i) {
   C_ = i;
 }
 
-//~ inline void Individual::set_w(double i) const{
+//~ inline void Individual::set_w(double i) {
   //~ w_ = i;
 //~ }
  
@@ -162,9 +163,9 @@ inline void Individual::set_C(double i) {
   //~ y_ = i;
 //~ }
   
-//~ inline void Individual::set_alive(bool i) const{
-  //~ alive_ = i;
-//~ }
+inline void Individual::set_alive(bool i) {
+  alive_ = i;
+}
 // ===========================================================================
 //                           Operators' definitions
 // ===========================================================================

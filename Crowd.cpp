@@ -100,126 +100,101 @@ void Crowd::fited(double Wmin){
 }  
 
 bool Crowd::aliveTest(Individual ind){
-  if (ind.alive()!=0){
+  if (ind.alive()==1){
     return true;
   }
   else {return false;}
 }
 
 Individual Crowd::sides(int x, int y){
-  if (x >= 0){
-    if (x < Length_){
-      if (y >= 0){
-        if (y < Width_ and this->aliveTest(Crowdy_[x][Width_-1])){
-          return Crowdy_[x][y];
-        }
-        
-        else if (this->aliveTest(Crowdy_[x][Width_-1])){
-          return Crowdy_[x][0];
-        }
-      }
-      
-      else if (this->aliveTest(Crowdy_[x][Width_-1])){
-        return Crowdy_[x][Width_-1];
-      }
-    }
+
+  if (x < 0){x = (Length_-1);}
+  else if (x >= Length_){x = 0;}
+  
+  if (y < 0){y = (Width_-1);}
+  else if (y >= Width_){y = 0;}
     
-    else if (this->aliveTest(Crowdy_[0][y])){
-      return Crowdy_[0][y];
-    }
+  if (this->aliveTest(Crowdy_[x][y])){
+    return Crowdy_[x][y];
   }
   
-  else if (this->aliveTest(Crowdy_[Length_-1][y])){
-    return Crowdy_[Length_-1][y];
-  }
-  
-  else{Individual dead = Individual();
+  else{
+    Individual dead = Individual();
     dead.massacre(1.);
     return dead;}// FIND ANOTHER WAY !!!!!!!!!!!!!
 }
-
 
 std::vector<Individual> Crowd::checkSides(Individual hole){
   // DO WE TAKE THE DIAGONALS TOO ???????????????????????????????????????????????????
   std::vector<Individual> vSides;
   
-  // [0] = North , [1] = South , [2] = West , [3] = Est 
-  
   //NORTH
   vSides.push_back(this->sides(hole.x()-1,hole.y()));
-  
+  //N-W
+  vSides.push_back(this->sides(hole.x()-1,hole.y()-1));
+  //N-E
+  vSides.push_back(this->sides(hole.x()-1,hole.y()+1));
   //SOUTH
   vSides.push_back(this->sides(hole.x()+1,hole.y()));
-  
+  //S-W
+  vSides.push_back(this->sides(hole.x()+1,hole.y()-1));
+  //S-E
+  vSides.push_back(this->sides(hole.x()+1,hole.y()+1));
   //WEST
   vSides.push_back(this->sides(hole.x(),hole.y()-1));
-  
   //EST
   vSides.push_back(this->sides(hole.x(),hole.y()+1));
   
   return vSides;
 }
 
-
 Individual Crowd::findWmaxi(Individual hole){ // put a individual, hole
   // take sides !!! add a if for the ones that are on boards
   // return random
   // add SOMTHING SPECIAL IF NO NEIGHBOUR
-  
-  //~ printf("%d",int(Sides.size()));
-  
-  if (not this->aliveTest(hole)){
-    
-    std::vector<Individual> Sides = this->checkSides(hole);
-  
-  //~ if (int(Sides.size())>0){
-  
-    double max = Sides[0].w();
-    Individual Indmax = Sides[0];
-  
-    std::vector<Individual> VIndmax;
-  
-    int count = 1;
-  
-    for (int i = 0; i < int(Sides.size()); i++){
+
+  std::vector<Individual> Sides = this->checkSides(hole);
+  double max = Sides[0].w();
+  Individual Indmax = Sides[0];
+  std::vector<Individual> VIndmax;
+  int count = 1;
+
+  for (int i = 0; i < int(Sides.size()); i++){
+    if (this->aliveTest(Sides[i])){
       if (Sides[i].w() > max){
         max = Sides[i].w();
         Indmax = Sides[i];
       }
     }
-  
-    for (int i = 0; i < int(Sides.size()); i++){
+  }
+ 
+  for (int i = 0; i < int(Sides.size()); i++){
+    if (this->aliveTest(Sides[i])){
       if (Sides[i].w() == max){
         Indmax = Sides[i];
         VIndmax.push_back(Indmax);
         count++;
       }
     }
-  
-    if (int(VIndmax.size())==1){
-      return VIndmax[0];
-    }
-    else {
-      //  srand(time(NULL));
-      // RETURN RANDOM!!!
-      int i = rand()%(int(VIndmax.size())-0) + 0 ;
-      return VIndmax[i];
-    }
   }
-  
-  else {return hole;}//FIND ANOTHER WAY !!!!!!!!!!!!!
+    
+  if (int(VIndmax.size())==1){
+    return VIndmax[0];
+  }
+  else if (int(VIndmax.size())>1) {
+    int i = rand()%(int(VIndmax.size())-0) + 0 ;
+    return VIndmax[i];
+  }
+  else {return hole;}
 }
 
-
-std::vector<Individual> Crowd::ListHoles(){
-
-  //srand(time(NULL)); HOWWWWWWWWWWWWWWWWWWWWWw ??? how to find min(Table)
+std::vector<Individual> Crowd::listHoles(){
+  //srand(time(NULL)); 
   //parcourir list
   //put a list of all the holes
+  
   int Count = 0;
- 
   std::vector<Individual> v;  
-
     
   for (int i=0;i<Length_;i++){
     for (int j=0;j<Width_;j++){
@@ -236,34 +211,24 @@ std::vector<Individual> Crowd::ListHoles(){
   return v;
 }
 
-void Crowd::Duplication(std::vector<Individual> v){ // mettre list en argument
-  //take random in list
-
-  //  srand(time(NULL));
-  // RETURN RANDOM!!!
+void Crowd::duplication(){ // mettre list en argument//take random in list
   
-  // for int !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  int i = rand()%(int(v.size())-0) + 0 ;
-  
-  if (not this->aliveTest(v[i])){
-    Invividual Parent = this->findWmaxi(v[i])
-    if (this->aliveTest(Parent)){
+  std::vector<Individual> v = this->listHoles();
+  while (v.size()!=0){
+    int i = rand()%(int(v.size())-0) + 0 ;  
     
-    }
-  }
-  
-  for (int i=0;i<Length_;i++){
-    Crowdy_[i]=new Individual[Width_];
-
-  for (int i=0;i<Length_;i++){
-    for (int j=0;j<Width_;j++){
-	  if (Crowdy_[i][j].w()==min(Crowdy_.w());
-        Crowdy_[i][j].w();
+    if (not this->aliveTest(v[i])){
+      Individual Parent = this->findWmaxi(v[i]);
+      if (Parent.w()!=0){
+        
+        Parent.parent(0.001);  //remove WMIN !!!
+      
+        Crowdy_[v[i].x()][v[i].y()].baby(Parent);
       }
     }
-  };
-}  
-
+    v.erase(v.begin()+i);
+  }
+}
 
 
 // ===========================================================================
