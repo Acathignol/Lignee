@@ -55,10 +55,12 @@ Image::Image( const Image& image )
  * \param    size(L) and tab
  * \return   \e void  
  */
+
 Image::Image(int L, int W, int** tab,int color)
 {
     _w    = L;
   _h      = W;
+  
   _maxVal = 255;
   _data   = new unsigned char[_w*_h*3];
   memcpy(_data, _data, sizeof(unsigned char)*_w*_h*3);

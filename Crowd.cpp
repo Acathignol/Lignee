@@ -96,8 +96,6 @@ void Crowd::printCrowd(std::string str){
 }
 
 
-
-
 void Crowd::muted (double Pmut){
   //srand(time(NULL));
   for (int i=0;i<Length_;i++){
@@ -237,7 +235,9 @@ std::vector<Individual> Crowd::listHoles(){
   return v;
 }
 
+
 void Crowd::duplication(double Wmin){ // mettre list en argument//take random in list
+
   
   std::vector<Individual> v = this->listHoles();
   while (v.size()!=0){
@@ -247,7 +247,9 @@ void Crowd::duplication(double Wmin){ // mettre list en argument//take random in
       Individual Parent = this->findWmaxi(v[i]);
       if (Parent.w()!=0){
         
+
         Parent.parent(Wmin);  //remove WMIN !!!
+
       
         Crowdy_[v[i].x()][v[i].y()].baby(Parent);
       }

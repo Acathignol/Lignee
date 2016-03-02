@@ -27,7 +27,7 @@ Life::Life() {
   Rbb_=0;
   Rab_=0;
   Rbc_=0; 
-
+  
   Environment box_ = Environment();
   Crowd ecoli_ = Crowd();
 }
@@ -60,11 +60,13 @@ double raa, double rbb, double rab, double rbc) {
 //                                 Destructor
 // ===========================================================================
 Life::~Life(){
+	
   }
   
 // ===========================================================================
 //                               Public Methods
 // ===========================================================================
+
 //change in concentration
 void Life::metaboWeb(){
   for (int i=0 ; i<10 ; i++){

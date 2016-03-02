@@ -68,6 +68,7 @@ class Crowd {
   void duplication(double Wmin);
 
 
+
 protected :
   // =========================================================================
   //                             Protected Methods

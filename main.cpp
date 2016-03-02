@@ -48,7 +48,7 @@ int main() {
   
   // ===================================================================
   //                               Crowd
-  // ===================================================================
+
   int W=200;
   int L=250;
   
@@ -76,6 +76,7 @@ int main() {
   //~ cout<<"c1 position 1,0: "<<c1.Crowdy()[1][0].alive()<<endl;
   //~ cout<<"c1 position 0,0: "<<c1.Crowdy()[0][0].alive()<<endl;
   //~ cout<<"c1 position 2,0: "<<c1.Crowdy()[2][0].alive()<<endl;
+
   
   for (int i=0; i<6; i++){
     cout<<c1.Crowdy()[0][i].alive()<<" "<<c1.Crowdy()[1][i].alive()<<" "<<c1.Crowdy()[2][i].alive()<<" "<<c1.Crowdy()[3][i].alive()<<endl;
