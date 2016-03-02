@@ -1,61 +1,48 @@
 
-#ifndef INDIVIDUAL_H__
-#define INDIVIDUAL_H__
+#ifndef CROWD_H__
+#define CROWD_H__
 
 #include <iostream>
 #include <cstdlib>
 #include <cmath>
 #include <ctime>
+#include <vector>
+
+using namespace std;
+
+
+#include "Individual.h"
+#include "Image.h" 
 
 // ===========================================================================
 //                                  Includes
 // ===========================================================================
 
-class Individual {
+class Crowd {
  public :
  
   // =========================================================================
   //                               Constructors
   // =========================================================================
-  Individual();
-  Individual(const Individual& ind,int a, int b);
-  Individual(int a, int b);
+  Crowd();
+  Crowd(int l, int w);
+  Crowd(const Crowd& Copy);
   
   // =========================================================================
   //                                Destructor
   // =========================================================================
-  ~Individual();
+  ~Crowd();
+  
   // =========================================================================
   //                                  Getters
   // =========================================================================
-  inline bool G(void) const; //unused
-  
-  inline double A(void) const; //unused
-  inline double B(void) const; //unused
-  inline double C(void) const; //unused
-
-  inline double w(void) const; //unused
-  
-  inline int x(void) const; //unused
-  inline int y(void) const; //unused
-  
-  inline bool alive(void) const; //unused
+  inline Individual** Crowdy(void) const; //unused
+  inline int Length(void) const; //unused
+  inline int Width(void) const; //unused
 
   // =========================================================================
   //                                  Setters
   // =========================================================================
-  //~ inline void set_G(bool i) const; //unused
-//~ 
-  inline void set_A(double i) ; //unused
-  inline void set_B(double i) ; //unused
-  inline void set_C(double i) ; //unused
-//~ 
-  //~ inline void set_w(double i) ; //unused
- //~ 
-  //~ inline void set_x(int i) const; //unused
-  //~ inline void set_y(int i) const; //unused
-  //~ 
-  inline void set_alive(bool i) ; //unused
   
   // =========================================================================
   //                                 Operators
@@ -64,12 +51,21 @@ class Individual {
   // =========================================================================
   //                              Public Methods
   // =========================================================================
+  //Image  
+  void printCrowd(std::string str);
+  
   //IF NOT USES IN MAIN => PROTECTED!!
-  void mutation(double Pmut);
-  void fitness(double Wmin);
-  void massacre(double Pdeath);
-  void baby(Individual Parent);
-  void parent(double Wmin);
+  void muted (double Pmut);
+  void epickill(double Pdeath);
+  void fited(double Wmin);
+  
+  //To duplicate !
+  std::vector<Individual> checkSides(Individual hole);
+  bool aliveTest(Individual ind);
+  Individual sides(int x, int y);
+  Individual findWmaxi(Individual hole);
+  std::vector<Individual> listHoles();
+  void duplication(double Wmin);
 
 
 protected :
@@ -82,90 +78,34 @@ protected :
   // =========================================================================
   //                                Attributes
   // =========================================================================
-  //genotype
-  bool G_; //1 = "you eat gluc"=GA  0 = "you eat acetate"=GB
+  //size envir.
+  int Length_;
+  int Width_;
   
   //concentration A B C
-  double A_;
-  double B_;
-  double C_;
-  
-  //fitness
-  double w_;
-  
-  //position in envir.
-  int x_;
-  int y_;
-  
-  //alive or not?
-  bool alive_; // 0 dead, 1 alive
-  
+  Individual** Crowdy_;
+
+
 };
 
 
 // ===========================================================================
 //                            Getters' definitions
 // ===========================================================================
-inline bool Individual::G(void) const{
-  return G_;
+inline Individual** Crowd::Crowdy(void) const{
+  return Crowdy_;
 }
 
-inline double Individual::A(void) const{
-  return A_;
+inline int Crowd::Length(void) const{
+  return Length_;
 }
-inline double Individual::B(void) const{
-  return B_;
+inline int Crowd::Width(void) const{
+  return Width_;
 }
-inline double Individual::C(void) const{
-  return C_;
-}
-
-inline double Individual::w(void) const{
-  return w_;
-}
- 
-inline int Individual::x(void) const{
-  return x_;
-}
-inline int Individual::y(void) const{
-  return y_;
-}
-  
-inline bool Individual::alive(void) const{
-  return alive_;
-}
-
 // ===========================================================================
 //                            Setters' definitions
 // ===========================================================================
-//~ inline void Individual::set_G(bool i) const{
-  //~ G_ = i;
-//~ }
-//~ 
-inline void Individual::set_A(double i) {
-  A_ = i;
-}
-inline void Individual::set_B(double i) {
-  B_ = i;
-}
-inline void Individual::set_C(double i) {
-  C_ = i;
-}
 
-//~ inline void Individual::set_w(double i) {
-  //~ w_ = i;
-//~ }
- 
-//~ inline void Individual::set_x(int i) const{
-  //~ x_ = i;
-//~ }
-//~ inline void Individual::set_y(int i) const{
-  //~ y_ = i;
-//~ }
-  
-inline void Individual::set_alive(bool i) {
-  alive_ = i;
-}
 // ===========================================================================
 //                           Operators' definitions
 // ===========================================================================
@@ -174,6 +114,4 @@ inline void Individual::set_alive(bool i) {
 //                        Inline functions' definition
 // ===========================================================================
 
-
-
-#endif // INDIVIDUAL_H__
+#endif // CROWD_H__
