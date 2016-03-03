@@ -12,35 +12,31 @@
 // ===========================================================================
 //Constructeur par défaut
 Life::Life() {
-  Tmin_=0;
-  Tmax_=0;
+  T_=0;
   Simul_=0;
-  Ainitx_=0;
-  Ainity_=0;
+  Ainit_=0.;
   wid_=0;
   len_=0;
-  D_=0;
-  Pmut_=0;
-  Pdeath_=0;
-  Wmin_=0;
-  Raa_=0;
-  Rbb_=0;
-  Rab_=0;
-  Rbc_=0; 
+  D_=0.;
+  Pmut_=0.;
+  Pdeath_=0.;
+  Wmin_=0.;
+  Raa_=0.;
+  Rbb_=0.;
+  Rab_=0.;
+  Rbc_=0.; 
   
   Environment box_ = Environment();
   Crowd ecoli_ = Crowd();
 }
 
-Life::Life(int tmin, int tmax, int simul, int ainitx, int ainity, 
-int width, int length, double d, double pmut, double pdeath, double wmin,
-double raa, double rbb, double rab, double rbc) {
+Life::Life(int T, int simul, double ainit, int width, int length, double d,
+double pmut, double pdeath, double wmin, double raa, double rbb,
+double rab, double rbc) {
 
-  Tmin_=tmin;
-  Tmax_=tmax;
+  T_=T;
   Simul_=simul;
-  Ainitx_=ainitx;
-  Ainity_=ainity;
+  Ainit_=ainit;
   wid_=width;
   len_=length;
   D_=d;
@@ -52,7 +48,7 @@ double raa, double rbb, double rab, double rbc) {
   Rab_=rab;
   Rbc_=rbc; 
   
-  Environment box_ = Environment(length,width,ainitx,ainity);
+  Environment box_ = Environment(length,width,ainit);
   Crowd ecoli_ = Crowd(length,width);
 }
 
@@ -69,16 +65,49 @@ Life::~Life(){
 
 //change in concentration
 void Life::metaboWeb(){
-  for (int i=0 ; i<10 ; i++){
-    int a = 1;
-  }
+  for (int i=0; i<len_;i++){
+    for (int j=0; j<wid_;j++){
   
-  //~ =>void Crowd::fited(double Wmin) 
-  //~ Raa_=raa;
-  //~ Rbb_=rbb;
-  //~ Rab_=rab;
-  //~ Rbc_=rbc; 
+      for (int i=0 ; i<10 ; i++){
+      
+        if (ecoli_.Crowdy()[i][j].alive() == 1){
+          if (ecoli_.Crowdy()[i][j].G() == 1){ //Ga=1 Gb=0
+            
+            double A = ecoli_.Crowdy()[i][j].A();
+            double B = ecoli_.Crowdy()[i][j].B();
+            double Aout = box_.PetriA()[i][j];
+            
+            double Aout1 = Aout-(Aout*Raa_)*0.1 ;
+            double A1 = A+(Aout*Raa_-A*Rab_)*0.1 ;
+            double B1 = B+(A*Rab_)*0.1 ;
+            //~ A(t+1) =A(t) + (dA/dt)*dt
+            
+            ecoli_.Crowdy()[i][j].set_A(A1);
+            ecoli_.Crowdy()[i][j].set_B(B1);
+            box_.PetriA()[i][j] = Aout1;
+          
+          }
+          else {
+            
+            double B = ecoli_.Crowdy()[i][j].B();
+            double C = ecoli_.Crowdy()[i][j].C();
+            double Bout = box_.PetriB()[i][j];
+            
+            double Bout1 = Bout-(Bout*Rbb_)*0.1 ;
+            double B1 = B+(Bout*Rbb_-B*Rbc_)*0.1 ;
+            double C1 = C+(B*Rbc_)*0.1 ;
+            
+            ecoli_.Crowdy()[i][j].set_B(B1);
+            ecoli_.Crowdy()[i][j].set_C(C1);
+            box_.PetriB()[i][j] = Bout1; //C never goes away, just when death????
+          }
+        }
+      }
+    }
+  }
+  ecoli_.fited(Wmin_);
 }
+
 
 void Life::combo(){
   ecoli_.epickill(Pdeath_);
@@ -92,29 +121,18 @@ void Life::combo(){
 
 //Method to know the value of k at n+1
 void Life::nextStep(){
-  box_.diffusion(D_);
+  box_.diffusion(D_); // where to put !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   this->combo();
   ecoli_.muted(Pmut_);
   ecoli_.duplication(Wmin_);
-  //~ ecoli_.metaboWeb(); OU this->metaboWeb(); =>void Crowd::fited(double Wmin) 
+  this->metaboWeb(); 
 }
 
-void Life::recycle(){
-  //delete old and renew  !
-  for (int i=0; i<len_;i++){
-    for (int j=0; j<wid_;j++){
-	  box_.PetriA()[i][j]=0.;
-	  box_.PetriB()[i][j]=0.;
-	  box_.PetriC()[i][j]=0.;
-	}
-  }
-  box_.PetriA()[Ainitx_][Ainity_]= 1.; // IS THE CONCENTRATION INIT = 1. ?
-}
 
 void Life::hugeCycle(){
-  //~ ecoli_.metaboWeb(); OU this->metaboWeb(); 
+  this->metaboWeb(); 
   for (int i = 1 ; i<=Simul_ ; i++){
-	//~ if (MODULO )500 => this->recycle()each Tmax change the environment (recycle method)
+	//~ if (MODULO )500 => box_.recycle(Ainit_) each Tmax change the environment (recycle method)
     int a = 1;
   }
   

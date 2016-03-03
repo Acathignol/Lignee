@@ -54,7 +54,7 @@ Environment::Environment(const Environment& Copy) {
 
 
 //constructor with a length and a width , also x and y init
-Environment::Environment(int l, int w, int xinit, int yinit) {
+Environment::Environment(int l, int w, double Ainit) {
   Length_ = l;
   Width_ = w;
   
@@ -68,15 +68,11 @@ Environment::Environment(int l, int w, int xinit, int yinit) {
     PetriC_[i]=new double[Width_];
     for (int j=0;j<Width_;j++){
 
-      PetriA_[i][j]=0.;
+      PetriA_[i][j]=Ainit;
       PetriB_[i][j]=0.;
       PetriC_[i][j]=0.;
     }
   };
-  
-  PetriA_[xinit][yinit]=1.;
-
-
 }
 
 
@@ -126,6 +122,16 @@ void Environment::diffusion(double D){
   }    
 }  
 
+void Environment::recycle(double Ainit){
+  //delete old and renew  !
+  for (int i=0; i<Length_;i++){
+    for (int j=0; j<Width_;j++){
+	  PetriA_[i][j]=Ainit;
+	  PetriB_[i][j]=0.;
+	  PetriC_[i][j]=0.;
+	}
+  }
+}
 // ===========================================================================
 //                              Protected Methods
 // ===========================================================================

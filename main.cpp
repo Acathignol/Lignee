@@ -41,7 +41,7 @@ int main() {
   //                               Environment
   // ===================================================================
   
-  Environment Pet = Environment(5,5,1,1);
+  Environment Pet = Environment(5,5,1);
   cout<<"Petri A position x,y: "<<Pet.PetriA()[1][1]<<endl;
   
   

@@ -21,9 +21,9 @@ class Life {
   //                               Constructors
   // =========================================================================
   Life();
-  Life(int tmin, int tmax, int simul, int ainitx, int ainity, int width,
-   int length, double d, double pmut, double pdeath, double wmin, 
-   double raa, double rbb, double rab, double rbc);
+  Life(int T, int simul, double ainit, int width,int length, double d, 
+   double pmut, double pdeath, double wmin, double raa, double rbb, 
+   double rab, double rbc);
   // =========================================================================
   //                                Destructor
   // =========================================================================
@@ -31,11 +31,9 @@ class Life {
   // =========================================================================
   //                                  Getters
   // =========================================================================
-  inline int Tmin(void) const; //unused
-  inline int Tmax(void) const; //unused
+  inline int T(void) const; //unused
   inline int Simul(void) const; //unused
-  inline int Ainitx(void) const; //unused
-  inline int Ainity(void) const; //unused
+  inline double Ainit(void) const; //unused
   inline int len(void) const; //unused
   inline int wid(void) const; //unused
   inline double D(void) const; //unused
@@ -64,10 +62,9 @@ class Life {
   //IF NOT USES IN MAIN => PROTECTED!!
 
   void metaboWeb();
-  void nextStep();
-  void recycle();
-  void hugeCycle();
   void combo();
+  void nextStep();
+  void hugeCycle();
 
 
 
@@ -83,13 +80,10 @@ protected :
   // =========================================================================
 
 
-  int Tmin_;
-  int Tmax_;
-  
+  int T_;
   int Simul_;
   
-  int Ainitx_;
-  int Ainity_;
+  double Ainit_;
   
   int wid_;
   int len_;
@@ -128,22 +122,15 @@ protected :
 //                        Inline functions' definition
 // ===========================================================================
 
-inline int Life::Tmin(void) const{
-  return Tmin_;
-}
-inline int Life::Tmax(void) const{
-  return Tmax_;
+inline int Life::T(void) const{
+  return T_;
 }
 inline int Life::Simul(void) const{
   return Simul_;
 }
 
-inline int Life::Ainitx(void) const{
-  return Ainitx_;
-}
-
-inline int Life::Ainity(void) const{
-  return Ainity_;
+inline double Life::Ainit(void) const{
+  return Ainit_;
 }
 
 inline int Life::len(void) const{

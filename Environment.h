@@ -16,7 +16,7 @@ class Environment {
   //                               Constructors
   // =========================================================================
   Environment();
-  Environment(int l, int w, int xinit, int yinit);
+  Environment(int l, int w, double Ainit);
   Environment(const Environment& Copy);
   
   // =========================================================================
@@ -48,6 +48,7 @@ class Environment {
   //                              Public Methods
   // =========================================================================
   void diffusion(double D);
+  void recycle(double Ainit);
 
 protected :
   // =========================================================================
