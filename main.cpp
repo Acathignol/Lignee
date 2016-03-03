@@ -7,8 +7,10 @@
 #include <cmath>
 #include <cstdlib>
 #include <vector>
-#include "Individual.h"
+//~ #include "Individual.h"
 #include "Environment.h"
+#include "Crowd.h"
+//~ #include "Image.h"
 #include "Life.h"
 
 using namespace std;
@@ -27,6 +29,7 @@ int main() {
   
   printf("Hello world !\n");
   
+  /**
   // ===================================================================
   //                               Individual
   // ===================================================================
@@ -41,7 +44,15 @@ int main() {
   //                               Environment
   // ===================================================================
   
-  Environment Pet = Environment(5,5,1);
+  Environment Pet = Environment(5,5,20.5);
+  cout<<"Petri A position x,y: "<<Pet.PetriA()[1][1]<<endl;
+  
+  Pet.diffusion(0.1);
+  Pet.diffusion(0.1);
+  Pet.diffusion(0.1);
+  cout<<"Petri A position x,y: "<<Pet.PetriA()[1][1]<<endl;
+  
+  Pet.recycle(25);
   cout<<"Petri A position x,y: "<<Pet.PetriA()[1][1]<<endl;
   
 // TEST IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIITTTTTTTTTTTTTTTTTTTTTTTTTT !!!!!!!!!!!!
@@ -55,6 +66,11 @@ int main() {
   
   
   Crowd c1 = Crowd(L,W);
+  for (int i=0; i<6; i++){
+    cout<<c1.Crowdy()[0][i].G()<<" "<<c1.Crowdy()[1][i].G()<<" "<<c1.Crowdy()[2][i].G()<<" "<<c1.Crowdy()[3][i].G()<<endl;
+  }
+  cout<<"\n"<<endl;
+  
   c1.printCrowd("PetriBox_1");
   c1.epickill(0.50);
   c1.printCrowd("PetriBox_2");
@@ -81,13 +97,14 @@ int main() {
   for (int i=0; i<6; i++){
     cout<<c1.Crowdy()[0][i].alive()<<" "<<c1.Crowdy()[1][i].alive()<<" "<<c1.Crowdy()[2][i].alive()<<" "<<c1.Crowdy()[3][i].alive()<<endl;
   }
+  */
   
   // ===================================================================
   //                              Life
   // ===================================================================
   
-  int T = 400;
-  int simul = 10000;
+  int T = 20;
+  int simul = 100;
   double ainit = 20.0;
   int width = 32;
   int length = 32;
@@ -100,9 +117,23 @@ int main() {
   double rab = 0.1;
   double rbc = 0.1;
   
+  Crowd eco = Crowd(length,width);
+  Environment envi = Environment(length,width,ainit);
   
-  Life lilou = Life(T, simul, ainit, width, length, d, pmut, pdeath, wmin, raa, rbb, rab, rbc);
+  Life lilou = Life(T, simul, ainit, width, length, d, pmut, pdeath, wmin, raa, rbb, rab, rbc, eco,envi);
+
+  cout<<"BOUH!"<<endl;
+  for (int i=0; i<6; i++){
+    cout<<lilou.ecoli().Crowdy()[0][i].alive()<<" "<<lilou.ecoli().Crowdy()[1][i].alive()<<" "<<lilou.ecoli().Crowdy()[2][i].alive()<<" "<<lilou.ecoli().Crowdy()[3][i].alive()<<endl;
+  }
+
+  //~ lilou.hugeCycle(); 
   
+  // PQ fuite memoire à la fin ?
+  // PQ print ne marche pas ?
+  
+  // pourquoi bacterie toutes GB ??????????????
+  // PQ BUG???
   
   return 0;
 }

@@ -7,6 +7,8 @@
 #include <cmath>
 #include <ctime>
 #include <vector>
+#include <cstring>
+#include <fstream>
 
 using namespace std;
 

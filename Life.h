@@ -6,9 +6,15 @@
 #include <cstdlib>
 #include <cmath>
 #include <ctime>
+#include <cstring>
+#include <fstream>
+
 #include "Environment.h"
 #include "Individual.h"
 #include "Crowd.h"
+
+using namespace std;
+
 
 // ===========================================================================
 //                                  Includes
@@ -23,7 +29,7 @@ class Life {
   Life();
   Life(int T, int simul, double ainit, int width,int length, double d, 
    double pmut, double pdeath, double wmin, double raa, double rbb, 
-   double rab, double rbc);
+   double rab, double rbc, Crowd crowd, Environment environment);
   // =========================================================================
   //                                Destructor
   // =========================================================================
@@ -99,8 +105,8 @@ protected :
   double Rab_;
   double Rbc_; 
   
-  Environment box_;
-  Crowd ecoli_;
+  Environment* box_; //Environment box_;
+  Crowd* ecoli_; //Crowd ecoli_;
 
 
 };
@@ -170,10 +176,10 @@ inline double Life::Rbc(void) const{
 
 
 inline Environment Life::box(void) const{
-  return box_;
+  return *box_;//box_;
 }
 inline Crowd Life::ecoli(void) const{
-  return ecoli_;
+  return *ecoli_;//ecoli_;
 }
 
 #endif // LIFE_H__

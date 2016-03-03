@@ -96,6 +96,7 @@ Environment::~Environment(){
   PetriA_ = nullptr;
   PetriB_ = nullptr;
   PetriC_ = nullptr;
+  std::cout<<"EEEEEEEEEEE"<<std::endl;
   }
   
 // ===========================================================================

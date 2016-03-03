@@ -26,7 +26,7 @@ Individual::Individual() {
   x_ = 0;
   y_ = 0;
   
-  alive_ = 1;
+  alive_ = true;
 }
 
 //Constructor copy + x and y
@@ -62,7 +62,7 @@ Individual::Individual(int a, int b) {
   x_ = a;
   y_ = b;
   
-  alive_ = 1;
+  alive_ = true;
 }
 
 
@@ -121,8 +121,8 @@ void Individual::massacre(double Pdeath){
   double death = (double)rand() / (double)RAND_MAX;
   
   if (death <= Pdeath){
-    if (alive_ == 1){
-      alive_ = 0;
+    if (alive_){
+      alive_ = false;
     }
   }    
 }  

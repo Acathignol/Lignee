@@ -26,13 +26,13 @@ Life::Life() {
   Rab_=0.;
   Rbc_=0.; 
   
-  Environment box_ = Environment();
-  Crowd ecoli_ = Crowd();
+  box_ = nullptr;//Environment();
+  ecoli_ = nullptr; //Crowd();
 }
 
 Life::Life(int T, int simul, double ainit, int width, int length, double d,
 double pmut, double pdeath, double wmin, double raa, double rbb,
-double rab, double rbc) {
+double rab, double rbc, Crowd crowd, Environment environment) {
 
   T_=T;
   Simul_=simul;
@@ -48,8 +48,12 @@ double rab, double rbc) {
   Rab_=rab;
   Rbc_=rbc; 
   
-  Environment box_ = Environment(length,width,ainit);
-  Crowd ecoli_ = Crowd(length,width);
+  //~ Environment envi = Environment(length,width,ainit);
+  
+  box_ = &environment;//environment;//&Environment(length,width,ainit);
+  
+  //~ Crowd eco = Crowd(length,width);
+  ecoli_ = &crowd;//crowd;//&Crowd(length,width);
 }
 
 // ===========================================================================
@@ -65,86 +69,96 @@ Life::~Life(){
 
 //change in concentration
 void Life::metaboWeb(){
-  for (int i=0; i<len_;i++){
-    for (int j=0; j<wid_;j++){
-  
-      for (int i=0 ; i<10 ; i++){
-      
-        if (ecoli_.Crowdy()[i][j].alive() == 1){
-          if (ecoli_.Crowdy()[i][j].G() == 1){ //Ga=1 Gb=0
+  for (int z=0 ; z<=9 ; z++){
+    
+    for (int i=0; i<len_;i++){
+      for (int j=0; j<wid_;j++){
+        
+        if (this->ecoli().Crowdy()[i][j].alive() == 1){ 
+          if (this->ecoli().Crowdy()[i][j].G() == 1){ //Ga=1 Gb=0
             
-            double A = ecoli_.Crowdy()[i][j].A();
-            double B = ecoli_.Crowdy()[i][j].B();
-            double Aout = box_.PetriA()[i][j];
+            double A = this->ecoli().Crowdy()[i][j].A();
+            double B = this->ecoli().Crowdy()[i][j].B();
+            double Aout = this->box().PetriA()[i][j];
             
             double Aout1 = Aout-(Aout*Raa_)*0.1 ;
             double A1 = A+(Aout*Raa_-A*Rab_)*0.1 ;
             double B1 = B+(A*Rab_)*0.1 ;
             //~ A(t+1) =A(t) + (dA/dt)*dt
             
-            ecoli_.Crowdy()[i][j].set_A(A1);
-            ecoli_.Crowdy()[i][j].set_B(B1);
-            box_.PetriA()[i][j] = Aout1;
-          
+            this->ecoli().Crowdy()[i][j].set_A(A1);
+            this->ecoli().Crowdy()[i][j].set_B(B1);
+            this->box().PetriA()[i][j]=Aout1;
+            //~ box_.set_PetriA(i,j,Aout1);
           }
-          else {
+          else if (this->ecoli().Crowdy()[i][j].G() == 0){
             
-            double B = ecoli_.Crowdy()[i][j].B();
-            double C = ecoli_.Crowdy()[i][j].C();
-            double Bout = box_.PetriB()[i][j];
-            
+            double B = this->ecoli().Crowdy()[i][j].B();
+            double C = this->ecoli().Crowdy()[i][j].C();
+            double Bout = this->box().PetriB()[i][j];
+
             double Bout1 = Bout-(Bout*Rbb_)*0.1 ;
             double B1 = B+(Bout*Rbb_-B*Rbc_)*0.1 ;
             double C1 = C+(B*Rbc_)*0.1 ;
             
-            ecoli_.Crowdy()[i][j].set_B(B1);
-            ecoli_.Crowdy()[i][j].set_C(C1);
-            box_.PetriB()[i][j] = Bout1; //C never goes away, just when death????
+            this->ecoli().Crowdy()[i][j].set_B(B1);
+            this->ecoli().Crowdy()[i][j].set_C(C1);
+            this->box().PetriB()[i][j]=Bout1; //C never goes away, just when death????
           }
         }
       }
     }
   }
-  ecoli_.fited(Wmin_);
+  this->ecoli().fited(Wmin_);
 }
 
 
 void Life::combo(){
-  ecoli_.epickill(Pdeath_);
-  std::vector<Individual> vec = ecoli_.listHoles();
+  this->ecoli().epickill(Pdeath_);
+  std::vector<Individual> vec = this->ecoli().listHoles();
   for (int i=0 ; i<int(vec.size()) ; i++){
-    box_.PetriA()[vec[i].x()][vec[i].y()] = box_.PetriA()[vec[i].x()][vec[i].y()]+vec[i].A();
-    box_.PetriA()[vec[i].x()][vec[i].y()] = box_.PetriB()[vec[i].x()][vec[i].y()]+vec[i].B();
-    box_.PetriA()[vec[i].x()][vec[i].y()] = box_.PetriC()[vec[i].x()][vec[i].y()]+vec[i].C();
+    this->box().PetriA()[vec[i].x()][vec[i].y()] = this->box().PetriA()[vec[i].x()][vec[i].y()]+vec[i].A();
+    this->box().PetriA()[vec[i].x()][vec[i].y()] = this->box().PetriB()[vec[i].x()][vec[i].y()]+vec[i].B();
+    this->box().PetriA()[vec[i].x()][vec[i].y()] = this->box().PetriC()[vec[i].x()][vec[i].y()]+vec[i].C();
   }
 }
 
 //Method to know the value of k at n+1
 void Life::nextStep(){
-  box_.diffusion(D_); // where to put !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  this->box().diffusion(D_); // where to put !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   this->combo();
-  ecoli_.muted(Pmut_);
-  ecoli_.duplication(Wmin_);
+  this->ecoli().muted(Pmut_);
+  this->ecoli().duplication(Wmin_);
   this->metaboWeb(); 
 }
 
 
 void Life::hugeCycle(){
-  ecoli_.printCrowd("PetriBox_Begin");
+  //~ std::string s = "PetriBoxBegin";
+  //~ this->ecoli().printCrowd("p");
+  //~ 
   this->metaboWeb(); 
+  //~ cout<<"AAAAAAAAAAAAAAAAA"<<endl;
   for (int i = 1 ; i<=Simul_ ; i++){
+    
     if ((i%T_)==0){
-      std::string str1 = std::string("PetriBox_");
-      std::string str2 = std::to_string(i);
-      std::string str = str1 + str2;
-      ecoli_.printCrowd(str);
-      
-      box_.recycle(Ainit_); //renewing the environment
+      //~ std::string str1 = std::string("PetriBox_");
+      //~ std::string str2 = std::to_string(i);
+      //~ std::string str = str1 + str2;
+      //~ this->ecoli().printCrowd(str);
+      this->box().recycle(Ainit_); //renewing the environment
     }
-	//~ if (MODULO )500 
-  }
+    this->nextStep();
+    cout<<"iteration "<<i<<endl;
+    
+    //~ for (int i=0; i<6; i++){
+      //~ cout<<this->ecoli().Crowdy()[0][i].G()<<" "<<this->ecoli().Crowdy()[1][i].G()<<" "<<this->ecoli().Crowdy()[2][i].G()<<" "<<this->ecoli().Crowdy()[3][i].G()<<endl;
+    //~ }
+	}
   //~ PRINT THE CONCENTRATIONS???? !!!!
-  ecoli_.printCrowd("PetriBox_End");
+  //~ this->ecoli().printCrowd("PetriBox_End");
+  
+  cout<<"Finit ! ;) "<<endl;
 }
 
 // ===========================================================================

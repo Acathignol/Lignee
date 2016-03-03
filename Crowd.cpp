@@ -67,6 +67,7 @@ Crowd::~Crowd(){
   }
   delete[] Crowdy_;
   Crowdy_ = nullptr;
+  cout<<"AAAAAAAA"<<endl;
   }
   
 // ===========================================================================
@@ -80,10 +81,12 @@ Crowd::~Crowd(){
 //Method to print the table
 void Crowd::printCrowd(std::string str){	
 	
+  cout<<"AAAAAAAA"<<endl;
   int** tab = new int*[Length_];
   for (int i=0;i<Length_;i++){
     tab[i]=new int[Width_];
     for (int j=0;j<Width_;j++){
+      cout<<"HHHEEEELLLOOOO"<<endl;
       tab[i][j]=Crowdy_[i][j].alive();
     }
   };
@@ -127,10 +130,7 @@ void Crowd::fited(double Wmin){
 }  
 
 bool Crowd::aliveTest(Individual ind){
-  if (ind.alive()==1){
-    return true;
-  }
-  else {return false;}
+  return ind.alive();
 }
 
 Individual Crowd::sides(int x, int y){
@@ -240,7 +240,6 @@ std::vector<Individual> Crowd::listHoles(){
 
 
 void Crowd::duplication(double Wmin){ // mettre list en argument//take random in list
-
   
   std::vector<Individual> v = this->listHoles();
   while (v.size()!=0){
