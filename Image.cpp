@@ -55,10 +55,10 @@ Image::Image( const Image& image )
  * \param    size(L) and tab
  * \return   \e void  
  */
-Image::Image(int L, int** tab,int color)
+Image::Image(int L, int W, int** tab,int color)
 {
     _w    = L;
-  _h      = L;
+  _h      = W;
   _maxVal = 255;
   _data   = new unsigned char[_w*_h*3];
   memcpy(_data, _data, sizeof(unsigned char)*_w*_h*3);
@@ -79,11 +79,11 @@ Image::Image(int L, int** tab,int color)
         }
         else
         {
-          _data[index]=(unsigned char)20;
+          _data[index]=(unsigned char)10;
           index++;
-          _data[index]=(unsigned char)200;
+          _data[index]=(unsigned char)150;
           index++;
-          _data[index]=(unsigned char)30;
+          _data[index]=(unsigned char)130;
           index++;
         }
       }

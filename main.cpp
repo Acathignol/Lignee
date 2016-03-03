@@ -51,6 +51,8 @@ int main() {
   // ===================================================================
   
   Crowd c1 = Crowd(4,6);
+  c1.printCrowd("PetriBox_");
+  
   c1.epickill(0.95);
   cout<<"c1 position 1,0: "<<c1.Crowdy()[1][0].alive()<<endl;
   cout<<"c1 position 0,0: "<<c1.Crowdy()[0][0].alive()<<endl;

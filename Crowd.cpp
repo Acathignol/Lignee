@@ -72,7 +72,33 @@ Crowd::~Crowd(){
 // ===========================================================================
 //                               Public Methods
 // ===========================================================================
-void Crowd::muted (double Pmut){
+
+//Methode pour add un int a string
+
+
+
+//Method to print the table
+void Crowd::printCrowd(std::string str){
+  
+  int** tab=new int*[Length_];
+  for (int i=0;i<Length_;i++){
+    tab[i]=new int[Width_];
+    for (int j=0;j<Width_;j++){
+      tab[i][j]=Crowdy_[i][j].alive();
+    }
+  };
+  
+  Image ima = Image(int(Length_),int(Width_),tab,0);
+  ima.save(str);
+  
+  for (int i=0; i<Length_;i++){
+    delete[] tab[i];
+  }
+  delete[] tab;
+  tab = nullptr;
+}
+
+void Crowd::muted(double Pmut){
   //srand(time(NULL));
   for (int i=0;i<Length_;i++){
     for (int j=0;j<Width_;j++){
@@ -234,5 +260,4 @@ void Crowd::duplication(){ // mettre list en argument//take random in list
 // ===========================================================================
 //                              Protected Methods
 // ===========================================================================
-
 

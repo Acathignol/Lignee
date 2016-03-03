@@ -15,7 +15,7 @@ public:
   Image( void );
   Image( std::string file );
   Image( const Image& image );
-  Image(int L, int** tab, int color);
+  Image(int L, int W,int** tab, int color);
   
   ~Image( void );
   
