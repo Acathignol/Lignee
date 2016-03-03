@@ -102,6 +102,14 @@ Environment::~Environment(){
 //                               Public Methods
 // ===========================================================================
 
+int Environment::sides(int xy, int LW){
+
+  if (xy < 0){xy = (LW-1);}
+  else if (xy >= LW){xy = 0;}
+
+  return xy;
+}
+
 //IF NOT USES IN MAIN => PROTECTED!!
 void Environment::diffusion(double D){
   Environment Copy = Environment(*this);
@@ -110,9 +118,19 @@ void Environment::diffusion(double D){
     for (int y=0;y<Width_;y++){
       for (int i=-1 ; i>=2 ; i++){
         for (int j=-1 ; j>=2 ; j++){
-		  PetriA_[x][y]=PetriA_[x][y]+D*Copy.PetriA()[x+i][y+j];
-          PetriB_[x][y]=PetriB_[x][y]+D*Copy.PetriB()[x+i][y+j];
-          PetriC_[x][y]=PetriC_[x][y]+D*Copy.PetriC()[x+i][y+j];
+          int x2 = x+i;
+          int y2 = y+j;
+          
+          x2 = this->sides(x2, Length_);
+          y2 = this->sides(y2, Length_);
+          
+          double Ca = Copy.PetriA()[x2][y2];
+          double Cb = Copy.PetriB()[x2][y2];
+          double Cc = Copy.PetriC()[x2][y2];
+          
+    		  PetriA_[x][y]=PetriA_[x][y]+D*Ca;
+          PetriB_[x][y]=PetriB_[x][y]+D*Cb;
+          PetriC_[x][y]=PetriC_[x][y]+D*Cc;
         }
       } 		
       PetriA_[x][y]=PetriA_[x][y]-9*D*Copy.PetriA()[x][y];

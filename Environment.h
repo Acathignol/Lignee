@@ -49,6 +49,7 @@ class Environment {
   // =========================================================================
   void diffusion(double D);
   void recycle(double Ainit);
+  int sides(int xy, int LW);
 
 protected :
   // =========================================================================

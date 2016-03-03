@@ -44,7 +44,7 @@ int main() {
   Environment Pet = Environment(5,5,1);
   cout<<"Petri A position x,y: "<<Pet.PetriA()[1][1]<<endl;
   
-  
+// TEST IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIITTTTTTTTTTTTTTTTTTTTTTTTTT !!!!!!!!!!!!
   
   // ===================================================================
   //                               Crowd
@@ -86,7 +86,22 @@ int main() {
   //                              Life
   // ===================================================================
   
+  int T = 400;
+  int simul = 10000;
+  double ainit = 20.0;
+  int width = 32;
+  int length = 32;
+  double d = 0.1;
+  double pmut = 0.1; //seee values PDF !!!
+  double pdeath = 0.02;
+  double wmin = 0.001;
+  double raa = 0.1;
+  double rbb = 0.1;
+  double rab = 0.1;
+  double rbc = 0.1;
   
+  
+  Life lilou = Life(T, simul, ainit, width, length, d, pmut, pdeath, wmin, raa, rbb, rab, rbc);
   
   
   return 0;
