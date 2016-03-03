@@ -139,9 +139,7 @@ void Life::nextStep(){
 void Life::hugeCycle(){
   std::string s = "PetriBox_Begin";
   this->ecoli().printCrowd(s);
-  //~ 
   this->metaboWeb(); 
-  //~ cout<<"AAAAAAAAAAAAAAAAA"<<endl;
   for (int i = 1 ; i<=Simul_ ; i++){
     
     if ((i%T_)==0){
