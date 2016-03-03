@@ -78,17 +78,17 @@ Crowd::~Crowd(){
 
 
 //Method to print the table
-void Crowd::printCrowd(std::string str){
-  
-  int** tab=new int*[Length_];
+void Crowd::printCrowd(std::string str){	
+	
+  int** tab = new int*[Length_];
   for (int i=0;i<Length_;i++){
     tab[i]=new int[Width_];
     for (int j=0;j<Width_;j++){
       tab[i][j]=Crowdy_[i][j].alive();
     }
   };
-  
-  Image ima = Image(int(Length_),int(Width_),tab,0);
+
+  Image ima(int(Length_),int(Width_) ,tab,0);
   ima.save(str);
   
   for (int i=0; i<Length_;i++){
@@ -98,7 +98,8 @@ void Crowd::printCrowd(std::string str){
   tab = nullptr;
 }
 
-void Crowd::muted(double Pmut){
+
+void Crowd::muted (double Pmut){
   //srand(time(NULL));
   for (int i=0;i<Length_;i++){
     for (int j=0;j<Width_;j++){
@@ -237,7 +238,9 @@ std::vector<Individual> Crowd::listHoles(){
   return v;
 }
 
-void Crowd::duplication(){ // mettre list en argument//take random in list
+
+void Crowd::duplication(double Wmin){ // mettre list en argument//take random in list
+
   
   std::vector<Individual> v = this->listHoles();
   while (v.size()!=0){
@@ -247,7 +250,9 @@ void Crowd::duplication(){ // mettre list en argument//take random in list
       Individual Parent = this->findWmaxi(v[i]);
       if (Parent.w()!=0){
         
-        Parent.parent(0.001);  //remove WMIN !!!
+
+        Parent.parent(Wmin);  //remove WMIN !!!
+
       
         Crowdy_[v[i].x()][v[i].y()].baby(Parent);
       }
@@ -260,4 +265,5 @@ void Crowd::duplication(){ // mettre list en argument//take random in list
 // ===========================================================================
 //                              Protected Methods
 // ===========================================================================
+
 

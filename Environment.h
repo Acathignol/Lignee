@@ -35,7 +35,11 @@ class Environment {
   // =========================================================================
   //                                  Setters
   // =========================================================================
-  
+
+  //~ inline void set_PetriA(double** tab); //unused
+  //~ inline void set_PetriB(double** tab) ;//unused
+  //~ inline void set_PetriC(double** tab); //unused
+
   // =========================================================================
   //                                 Operators
   // =========================================================================
@@ -90,6 +94,15 @@ inline int Environment::Width(void) const{
 // ===========================================================================
 //                            Setters' definitions
 // ===========================================================================
+//~ inline void Environment::set_PetriA(double** tab){
+  //~ PetriA_=tab;
+//~ }
+//~ inline void Environment::set_PetriA(double** tab){
+  //~ PetriB_=tab;
+//~ }
+//~ inline void Environment::set_PetriA(double** tab){
+  //~ PetriC_=tab;
+//~ }
 
 // ===========================================================================
 //                           Operators' definitions

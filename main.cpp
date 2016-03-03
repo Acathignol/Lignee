@@ -50,14 +50,18 @@ int main() {
   //                               Crowd
   // ===================================================================
   
-  Crowd c1 = Crowd(4,6);
-  c1.printCrowd("PetriBox_");
+  int W=200;
+  int L=250;
   
-  c1.epickill(0.95);
-  cout<<"c1 position 1,0: "<<c1.Crowdy()[1][0].alive()<<endl;
-  cout<<"c1 position 0,0: "<<c1.Crowdy()[0][0].alive()<<endl;
+  
+  Crowd c1 = Crowd(L,W);
+  c1.printCrowd("PetriBox_1");
+  c1.epickill(0.50);
+  c1.printCrowd("PetriBox_2");
+  //~ cout<<"c1 position 1,0: "<<c1.Crowdy()[1][0].alive()<<endl;
+  //~ cout<<"c1 position 0,0: "<<c1.Crowdy()[0][0].alive()<<endl;
   //~ cout<<"c1 position 0,0: "<<c1.Crowdy()[0][0].w()<<endl;
-  cout<<"c1 position 2,0: "<<c1.Crowdy()[2][0].alive()<<endl;
+  //~ cout<<"c1 position 2,0: "<<c1.Crowdy()[2][0].alive()<<endl;
   //~ cout<<"c1 position 2,0: "<<c1.Crowdy()[2][0].w()<<endl;
   
   //~ Individual Coli = Individual(c1.findWmaxi(c1.Crowdy()[1][0]));
@@ -68,12 +72,14 @@ int main() {
   for (int i=0; i<6; i++){
     cout<<c1.Crowdy()[0][i].alive()<<" "<<c1.Crowdy()[1][i].alive()<<" "<<c1.Crowdy()[2][i].alive()<<" "<<c1.Crowdy()[3][i].alive()<<endl;
   }
-    
+  
+  cout<<"\n"<<endl;
   //PB HERE !!!!!!!!!!!!!!!!!!!!!!!!!!
-  c1.duplication();
-  cout<<"c1 position 1,0: "<<c1.Crowdy()[1][0].alive()<<endl;
-  cout<<"c1 position 0,0: "<<c1.Crowdy()[0][0].alive()<<endl;
-  cout<<"c1 position 2,0: "<<c1.Crowdy()[2][0].alive()<<endl;
+  c1.duplication(0.0001);
+  //~ cout<<"c1 position 1,0: "<<c1.Crowdy()[1][0].alive()<<endl;
+  //~ cout<<"c1 position 0,0: "<<c1.Crowdy()[0][0].alive()<<endl;
+  //~ cout<<"c1 position 2,0: "<<c1.Crowdy()[2][0].alive()<<endl;
+
   
   for (int i=0; i<6; i++){
     cout<<c1.Crowdy()[0][i].alive()<<" "<<c1.Crowdy()[1][i].alive()<<" "<<c1.Crowdy()[2][i].alive()<<" "<<c1.Crowdy()[3][i].alive()<<endl;

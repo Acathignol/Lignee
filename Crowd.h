@@ -12,7 +12,7 @@ using namespace std;
 
 
 #include "Individual.h"
-#include "Image.h"
+#include "Image.h" 
 
 // ===========================================================================
 //                                  Includes
@@ -56,6 +56,7 @@ class Crowd {
   //To print the Petri box
   void printCrowd(std::string str);
   
+  //IF NOT USES IN MAIN => PROTECTED!!
   void muted (double Pmut);
   void epickill(double Pdeath);
   void fited(double Wmin);
@@ -66,16 +67,15 @@ class Crowd {
   Individual sides(int x, int y);
   Individual findWmaxi(Individual hole);
   std::vector<Individual> listHoles();
-  void duplication();
-  
-  
+  void duplication(double Wmin);
+
 
 
 protected :
   // =========================================================================
   //                             Protected Methods
   // =========================================================================
-  void addintstr(string &theString,int theNum);
+  
 
 
   // =========================================================================

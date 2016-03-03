@@ -47,6 +47,9 @@ class Life {
   inline double Rab(void) const; //unused
   inline double Rbc(void) const; //unused
 
+  inline Environment box(void) const;
+  inline Crowd ecoli(void) const;
+
   // =========================================================================
   //                                  Setters
   // =========================================================================
@@ -60,6 +63,13 @@ class Life {
   // =========================================================================
   //IF NOT USES IN MAIN => PROTECTED!!
 
+  void metaboWeb();
+  void nextStep();
+  void recycle();
+  void hugeCycle();
+  void combo();
+
+
 
 protected :
   // =========================================================================
@@ -71,6 +81,8 @@ protected :
   // =========================================================================
   //                                Attributes
   // =========================================================================
+
+
   int Tmin_;
   int Tmax_;
   
@@ -91,7 +103,11 @@ protected :
   double Raa_;
   double Rbb_;
   double Rab_;
-  double Rbc_; 	
+  double Rbc_; 
+  
+  Environment box_;
+  Crowd ecoli_;
+
 
 };
 
@@ -163,6 +179,14 @@ inline double Life::Rab(void) const{
 }
 inline double Life::Rbc(void) const{
   return Rbc_;
+}
+
+
+inline Environment Life::box(void) const{
+  return box_;
+}
+inline Crowd Life::ecoli(void) const{
+  return ecoli_;
 }
 
 #endif // LIFE_H__

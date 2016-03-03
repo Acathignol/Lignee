@@ -67,13 +67,15 @@ Environment::Environment(int l, int w, int xinit, int yinit) {
     PetriB_[i]=new double[Width_];
     PetriC_[i]=new double[Width_];
     for (int j=0;j<Width_;j++){
-      PetriA_[i][j]=0;
-      PetriB_[i][j]=0;
-      PetriC_[i][j]=0;
+
+      PetriA_[i][j]=0.;
+      PetriB_[i][j]=0.;
+      PetriC_[i][j]=0.;
     }
   };
   
-  PetriA_[xinit][yinit]=1;
+  PetriA_[xinit][yinit]=1.;
+
 
 }
 
