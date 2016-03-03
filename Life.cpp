@@ -130,13 +130,21 @@ void Life::nextStep(){
 
 
 void Life::hugeCycle(){
+  ecoli_.printCrowd("PetriBox_Begin");
   this->metaboWeb(); 
   for (int i = 1 ; i<=Simul_ ; i++){
-	//~ if (MODULO )500 => box_.recycle(Ainit_) each Tmax change the environment (recycle method)
-    int a = 1;
+    if ((i%T_)==0){
+      std::string str1 = std::string("PetriBox_");
+      std::string str2 = std::to_string(i);
+      std::string str = str1 + str2;
+      ecoli_.printCrowd(str);
+      
+      box_.recycle(Ainit_); //renewing the environment
+    }
+	//~ if (MODULO )500 
   }
-  
- //~ PRINT THE CELLS
+  //~ PRINT THE CONCENTRATIONS???? !!!!
+  ecoli_.printCrowd("PetriBox_End");
 }
 
 // ===========================================================================
