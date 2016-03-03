@@ -8,8 +8,8 @@
 #include <cstdlib>
 #include <vector>
 //~ #include "Individual.h"
-#include "Environment.h"
-#include "Crowd.h"
+//~ #include "Environment.h"
+//~ #include "Crowd.h"
 //~ #include "Image.h"
 #include "Life.h"
 
@@ -117,17 +117,17 @@ int main() {
   double rab = 0.1;
   double rbc = 0.1;
   
-  Crowd eco = Crowd(length,width);
-  Environment envi = Environment(length,width,ainit);
   
-  Life lilou = Life(T, simul, ainit, width, length, d, pmut, pdeath, wmin, raa, rbb, rab, rbc, eco,envi);
-
+  Life lilou = Life(T, simul, ainit, width, length, d, pmut, pdeath, wmin, raa, rbb, rab, rbc);
+  
   cout<<"BOUH!"<<endl;
-  for (int i=0; i<6; i++){
-    cout<<lilou.ecoli().Crowdy()[0][i].alive()<<" "<<lilou.ecoli().Crowdy()[1][i].alive()<<" "<<lilou.ecoli().Crowdy()[2][i].alive()<<" "<<lilou.ecoli().Crowdy()[3][i].alive()<<endl;
-  }
+  
+  cout<<lilou.box().PetriA()[0][2];//.alive();
+  //~ for (int i=0; i<6; i++){
+    //~ cout<<lilou.ecoli().Crowdy()[0][i].alive();//<<" "<<lilou.ecoli().Crowdy()[1][i].alive()<<" "<<lilou.ecoli().Crowdy()[2][i].alive()<<" "<<lilou.ecoli().Crowdy()[3][i].alive()<<endl;
+  //~ }
 
-  //~ lilou.hugeCycle(); 
+  lilou.hugeCycle(); 
   
   // PQ fuite memoire à la fin ?
   // PQ print ne marche pas ?

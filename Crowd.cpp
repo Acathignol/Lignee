@@ -67,7 +67,6 @@ Crowd::~Crowd(){
   }
   delete[] Crowdy_;
   Crowdy_ = nullptr;
-  cout<<"AAAAAAAA"<<endl;
   }
   
 // ===========================================================================
@@ -81,12 +80,10 @@ Crowd::~Crowd(){
 //Method to print the table
 void Crowd::printCrowd(std::string str){	
 	
-  cout<<"AAAAAAAA"<<endl;
   int** tab = new int*[Length_];
   for (int i=0;i<Length_;i++){
     tab[i]=new int[Width_];
     for (int j=0;j<Width_;j++){
-      cout<<"HHHEEEELLLOOOO"<<endl;
       tab[i][j]=Crowdy_[i][j].alive();
     }
   };

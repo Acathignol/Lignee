@@ -26,13 +26,13 @@ Life::Life() {
   Rab_=0.;
   Rbc_=0.; 
   
-  box_ = nullptr;//Environment();
-  ecoli_ = nullptr; //Crowd();
+  box_ = new Environment(); //nullptr
+  ecoli_ = new Crowd();
 }
 
 Life::Life(int T, int simul, double ainit, int width, int length, double d,
 double pmut, double pdeath, double wmin, double raa, double rbb,
-double rab, double rbc, Crowd crowd, Environment environment) {
+double rab, double rbc) {
 
   T_=T;
   Simul_=simul;
@@ -50,18 +50,21 @@ double rab, double rbc, Crowd crowd, Environment environment) {
   
   //~ Environment envi = Environment(length,width,ainit);
   
-  box_ = &environment;//environment;//&Environment(length,width,ainit);
+  box_ = new Environment(length,width,ainit);//environment;//&Environment(length,width,ainit);
+  //~ *box_ = Environment(length,width,ainit);
   
   //~ Crowd eco = Crowd(length,width);
-  ecoli_ = &crowd;//crowd;//&Crowd(length,width);
+  ecoli_ = new Crowd(length,width);//crowd;//&Crowd(length,width);
+  //~ *ecoli_ = Crowd(length,width);
 }
 
 // ===========================================================================
 //                                 Destructor
 // ===========================================================================
 Life::~Life(){
-	
-  }
+  delete box_;
+  delete ecoli_;
+ }
   
 // ===========================================================================
 //                               Public Methods
@@ -74,7 +77,7 @@ void Life::metaboWeb(){
     for (int i=0; i<len_;i++){
       for (int j=0; j<wid_;j++){
         
-        if (this->ecoli().Crowdy()[i][j].alive() == 1){ 
+        if (this->ecoli().Crowdy()[i][j].alive() == 1){ //this->ecoli()
           if (this->ecoli().Crowdy()[i][j].G() == 1){ //Ga=1 Gb=0
             
             double A = this->ecoli().Crowdy()[i][j].A();
@@ -134,29 +137,26 @@ void Life::nextStep(){
 
 
 void Life::hugeCycle(){
-  //~ std::string s = "PetriBoxBegin";
-  //~ this->ecoli().printCrowd("p");
+  std::string s = "PetriBox_Begin";
+  this->ecoli().printCrowd(s);
   //~ 
   this->metaboWeb(); 
   //~ cout<<"AAAAAAAAAAAAAAAAA"<<endl;
   for (int i = 1 ; i<=Simul_ ; i++){
     
     if ((i%T_)==0){
-      //~ std::string str1 = std::string("PetriBox_");
-      //~ std::string str2 = std::to_string(i);
-      //~ std::string str = str1 + str2;
-      //~ this->ecoli().printCrowd(str);
+      std::string str1 = std::string("PetriBox_");
+      std::string str2 = std::to_string(i);
+      std::string str = str1 + str2;
+      this->ecoli().printCrowd(str);
       this->box().recycle(Ainit_); //renewing the environment
     }
     this->nextStep();
     cout<<"iteration "<<i<<endl;
     
-    //~ for (int i=0; i<6; i++){
-      //~ cout<<this->ecoli().Crowdy()[0][i].G()<<" "<<this->ecoli().Crowdy()[1][i].G()<<" "<<this->ecoli().Crowdy()[2][i].G()<<" "<<this->ecoli().Crowdy()[3][i].G()<<endl;
-    //~ }
 	}
   //~ PRINT THE CONCENTRATIONS???? !!!!
-  //~ this->ecoli().printCrowd("PetriBox_End");
+  this->ecoli().printCrowd("PetriBox_End");
   
   cout<<"Finit ! ;) "<<endl;
 }
