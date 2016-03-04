@@ -79,13 +79,22 @@ Image::Image(int L, int W, int** tab,int color)
           _data[index]=(unsigned char)0;
           index++;
         }
-        else
+        else if (tab[x][y]==1)
         {
           _data[index]=(unsigned char)10;
           index++;
           _data[index]=(unsigned char)150;
           index++;
           _data[index]=(unsigned char)130;
+          index++;
+        }
+        else 
+        {
+          _data[index]=(unsigned char)150;
+          index++;
+          _data[index]=(unsigned char)20;
+          index++;
+          _data[index]=(unsigned char)50;
           index++;
         }
       }
@@ -96,24 +105,12 @@ Image::Image(int L, int W, int** tab,int color)
     {
       for (int y = 0; y < _h; y++)
       {
-        if (tab[x][y]==0)
-        {
-          _data[index]=(unsigned char)_maxVal;
-          index++;
-          _data[index]=(unsigned char)_maxVal;
-          index++;
-          _data[index]=(unsigned char)_maxVal;
-          index++;
-        }
-        else
-        {
-          _data[index]=(unsigned char)0;
-          index++;
-          _data[index]=(unsigned char)0;
-          index++;
-          _data[index]=(unsigned char)0;
-          index++;
-        }
+        _data[index]=(unsigned char)tab[x][y]*10;
+        index++;
+        _data[index]=(unsigned char)tab[x][y]*150;
+        index++;
+        _data[index]=(unsigned char)tab[x][y]*130;
+        index++;
       }
     }
   }
@@ -145,80 +142,4 @@ void Image::save( std::string file )
   f.close();
 }
 
-/**
- * \brief    Desaturate the image
- * \details  --
- * \param    void
- * \return   \e void
- */
-void Image::desaturate( void )
-{
-  for (int x = 0; x < _w; x++)
-  {
-    for (int y = 0; y < _h; y++)
-    {
-      double r = (double)_data[(x*_h+y)*3];
-      double g = (double)_data[(x*_h+y)*3+1];
-      double b = (double)_data[(x*_h+y)*3+2];
-      double m = 0.21*r+0.71*g+0.07*b;  
-      if (m < 0.0)
-      {
-        m = 0.0;
-      }
-      if (m > _maxVal)
-      {
-        m = (double)_maxVal;
-      }
-      _data[(x*_h+y)*3]   = (unsigned char)m;
-      _data[(x*_h+y)*3+1] = (unsigned char)m;
-      _data[(x*_h+y)*3+2] = (unsigned char)m;
-    }
-  }
-}
-
-/**
- * \brief    Apply a gaussian blur to the image
- * \details  --
- * \param    double* matrix
- * \return   \e void
- */
-void Image::gaussian_blur( double* matrix )
-{
-  unsigned char* new_data = new unsigned char[_w*_h*3];
-  for (int x = 0; x < _w; x++)
-  {
-    for (int y = 0; y < _h; y++)
-    {
-      for(int c = 0; c < 3; c++)
-      {
-        double s   = 0.0;
-        double sum = 0.0;
-        for (int i = -1; i < 2; i++)
-        {
-          for(int j = -1; j < 2; j++)
-          {
-            if (x+i < _w && x+i >= 0 && y+j < _h && y+j >= 0)
-            {
-              s   += (double)_data[((x+i)*_h+(y+j))*3+c]*matrix[(i+1)+3*(j+1)];
-              sum += matrix[(i+1)+3*(j+1)];
-            }
-          }
-        }
-        s /= sum;
-        if (s > 255.0)
-        {
-          s = 255.0;
-        }
-        if (s < 0.0)
-        {
-          s = 0.0;
-        }
-        new_data[((x)*_h+(y))*3+c] = (unsigned char)s;
-      }
-    }
-  }
-  memcpy(_data, new_data, sizeof(unsigned char)*_w*_h*3);
-  delete[] new_data;
-  new_data = nullptr;
-}
 

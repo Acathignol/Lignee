@@ -37,22 +37,7 @@ class Life {
   // =========================================================================
   //                                  Getters
   // =========================================================================
-  inline int T(void) const; //unused
-  inline int Simul(void) const; //unused
-  inline double Ainit(void) const; //unused
-  inline int len(void) const; //unused
-  inline int wid(void) const; //unused
-  inline double D(void) const; //unused
-  inline double Pmut(void) const; //unused
-  inline double Pdeath(void) const; //unused
-  inline double Wmin(void) const; //unused
-  inline double Raa(void) const; //unused
-  inline double Rbb(void) const; //unused
-  inline double Rab(void) const; //unused
-  inline double Rbc(void) const; //unused
 
-  inline Environment box(void) const;
-  inline Crowd ecoli(void) const;
 
   // =========================================================================
   //                                  Setters
@@ -72,8 +57,6 @@ class Life {
   void nextStep();
   void hugeCycle();
 
-
-
 protected :
   // =========================================================================
   //                             Protected Methods
@@ -84,7 +67,6 @@ protected :
   // =========================================================================
   //                                Attributes
   // =========================================================================
-
 
   int T_;
   int Simul_;
@@ -108,9 +90,7 @@ protected :
   Environment* box_; //Environment box_;
   Crowd* ecoli_; //Crowd ecoli_;
 
-
 };
-
 
 // ===========================================================================
 //                            Getters' definitions
@@ -127,60 +107,6 @@ protected :
 // ===========================================================================
 //                        Inline functions' definition
 // ===========================================================================
-
-inline int Life::T(void) const{
-  return T_;
-}
-inline int Life::Simul(void) const{
-  return Simul_;
-}
-
-inline double Life::Ainit(void) const{
-  return Ainit_;
-}
-
-inline int Life::len(void) const{
-  return len_;
-}
-inline int Life::wid(void) const{
-  return wid_;
-}
-
-inline double Life::D(void) const{
-  return D_;
-}
-
-inline double Life::Pmut(void) const{
-  return Pmut_;
-}
-inline double Life::Pdeath(void) const{
-  return Pdeath_;
-}
-  
-inline double Life::Wmin(void) const{
-  return Wmin_;
-}
- 
-inline double Life::Raa(void) const{
-  return Raa_;
-}
-inline double Life::Rbb(void) const{
-  return Rbb_;
-}
-inline double Life::Rab(void) const{
-  return Rab_;
-}
-inline double Life::Rbc(void) const{
-  return Rbc_;
-}
-
-
-inline Environment Life::box(void) const{
-  return (*box_);//box_;
-}
-inline Crowd Life::ecoli(void) const{
-  return (*ecoli_);//ecoli_;
-}
 
 #endif // LIFE_H__
 

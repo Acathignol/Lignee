@@ -101,6 +101,27 @@ Environment::~Environment(){
 // ===========================================================================
 //                               Public Methods
 // ===========================================================================
+//Method to print the table
+void Environment::printEnvABC(std::string str, double Ainit , double** X){	
+	
+  int** tab = new int*[Length_];
+  for (int i=0;i<Length_;i++){
+    tab[i]=new int[Width_];
+    for (int j=0;j<Width_;j++){
+      tab[i][j]=(X[i][j]/Ainit);
+    }
+  };
+
+  Image ima(int(Length_),int(Width_) ,tab,1);
+  ima.save(str);
+  
+  for (int i=0; i<Length_;i++){
+    delete[] tab[i];
+  }
+  delete[] tab;
+  tab = nullptr;
+}
+
 
 int Environment::sides(int xy, int LW){
 
@@ -124,13 +145,9 @@ void Environment::diffusion(double D){
           x2 = this->sides(x2, Length_);
           y2 = this->sides(y2, Length_);
           
-          double Ca = Copy.PetriA()[x2][y2];
-          double Cb = Copy.PetriB()[x2][y2];
-          double Cc = Copy.PetriC()[x2][y2];
-          
-    		  PetriA_[x][y]=PetriA_[x][y]+D*Ca;
-          PetriB_[x][y]=PetriB_[x][y]+D*Cb;
-          PetriC_[x][y]=PetriC_[x][y]+D*Cc;
+    		  PetriA_[x][y]=PetriA_[x][y]+D*Copy.PetriA()[x2][y2];
+          PetriB_[x][y]=PetriB_[x][y]+D*Copy.PetriB()[x2][y2];
+          PetriC_[x][y]=PetriC_[x][y]+D*Copy.PetriC()[x2][y2];
         }
       } 		
       PetriA_[x][y]=PetriA_[x][y]-9*D*Copy.PetriA()[x][y];

@@ -84,7 +84,10 @@ void Crowd::printCrowd(std::string str){
   for (int i=0;i<Length_;i++){
     tab[i]=new int[Width_];
     for (int j=0;j<Width_;j++){
-      tab[i][j]=Crowdy_[i][j].alive();
+      if (Crowdy_[i][j].alive()){
+        tab[i][j]=Crowdy_[i][j].G()+1;
+      }
+      else {tab[i][j]=0;}
     }
   };
 

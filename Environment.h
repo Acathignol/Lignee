@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include <cmath>
+#include "Image.h"
 
 // ===========================================================================
 //                                  Includes
@@ -47,6 +48,7 @@ class Environment {
   // =========================================================================
   //                              Public Methods
   // =========================================================================
+  void printEnvABC(std::string str, double Ainit , double** X);
   void diffusion(double D);
   void recycle(double Ainit);
   int sides(int xy, int LW);
