@@ -72,26 +72,27 @@ Life::~Life(){
 
 //change in concentration
 void Life::metaboWeb(){
-  for (int z=0 ; z<=9 ; z++){
+  
     
-    for (int i=0; i<len_;i++){
-      for (int j=0; j<wid_;j++){
+  for (int i=0; i<len_;i++){
+    for (int j=0; j<wid_;j++){
         
-        if (ecoli_->Crowdy()[i][j].alive() == 1){ //this->ecoli()
+      if (ecoli_->Crowdy()[i][j].alive() == 1){ //this->ecoli()
+        for (int z=0 ; z<=9 ; z++){
           if (ecoli_->Crowdy()[i][j].G() == 1){ //Ga=1 Gb=0
-            
+          
             double A = ecoli_->Crowdy()[i][j].A();
             double B = ecoli_->Crowdy()[i][j].B();
             double Aout = box_->PetriA()[i][j];
             
-            double Aout1 = Aout-(Aout*Raa_)*0.1 ;
-            double A1 = A+(Aout*Raa_-A*Rab_)*0.1 ;
-            double B1 = B+(A*Rab_)*0.1 ;
+            Aout -= ((Aout*Raa_)*0.1) ;
+            A += ((Aout*Raa_-A*Rab_)*0.1) ;
+            B += ((A*Rab_)*0.1) ;
             //~ A(t+1) =A(t) + (dA/dt)*dt
             
-            ecoli_->Crowdy()[i][j].set_A(A1);
-            ecoli_->Crowdy()[i][j].set_B(B1);
-            box_->PetriA()[i][j]=Aout1;
+            ecoli_->Crowdy()[i][j].set_A(A);
+            ecoli_->Crowdy()[i][j].set_B(B);
+            box_->PetriA()[i][j]=Aout;
           }
           else if (ecoli_->Crowdy()[i][j].G() == 0){
             
@@ -99,13 +100,13 @@ void Life::metaboWeb(){
             double C = ecoli_->Crowdy()[i][j].C();
             double Bout = box_->PetriB()[i][j];
 
-            double Bout1 = Bout-(Bout*Rbb_)*0.1 ;
-            double B1 = B+(Bout*Rbb_-B*Rbc_)*0.1 ;
-            double C1 = C+(B*Rbc_)*0.1 ;
+            Bout -= ((Bout*Rbb_)*0.1) ;
+            B += ((Bout*Rbb_-B*Rbc_)*0.1) ;
+            C += ((B*Rbc_)*0.1) ;
             
-            ecoli_->Crowdy()[i][j].set_B(B1);
-            ecoli_->Crowdy()[i][j].set_C(C1);
-            box_->PetriB()[i][j]=Bout1; //C never goes away, just when death????
+            ecoli_->Crowdy()[i][j].set_B(B);
+            ecoli_->Crowdy()[i][j].set_C(C);
+            box_->PetriB()[i][j]=Bout; //C never goes away, just when death????
           }
         }
       }
@@ -119,9 +120,12 @@ void Life::combo(){
   ecoli_->epickill(Pdeath_);
   std::vector<Individual> vec = ecoli_->listHoles();
   for (int i=0 ; i<int(vec.size()) ; i++){
-    box_->PetriA()[vec[i].x()][vec[i].y()] = box_->PetriA()[vec[i].x()][vec[i].y()]+vec[i].A();
-    box_->PetriA()[vec[i].x()][vec[i].y()] = box_->PetriB()[vec[i].x()][vec[i].y()]+vec[i].B();
-    box_->PetriA()[vec[i].x()][vec[i].y()] = box_->PetriC()[vec[i].x()][vec[i].y()]+vec[i].C();
+    if (not vec[i].alive()){
+      cout<<box_->PetriA()[vec[i].x()][vec[i].y()]<<endl;
+      box_->PetriA()[vec[i].x()][vec[i].y()] += vec[i].A();
+      box_->PetriA()[vec[i].x()][vec[i].y()] += vec[i].B();
+      box_->PetriA()[vec[i].x()][vec[i].y()] += vec[i].C();
+    }
   }
 }
 
@@ -136,37 +140,64 @@ void Life::nextStep(){
 
 
 void Life::hugeCycle(){
+  
+  remove("Aout.txt");
+  remove("Bout.txt");
+  remove("Cout.txt");
+  remove("Ain.txt");
+  remove("Bin.txt");
+  remove("Cin.txt");
+  box_->writeEnvABC();
+  ecoli_->writeCrowdABC();
+  
   //~ std::string s = "PetriBox_Begin";
   //~ ecoli_->printCrowd(s);
   
-  box_->printEnvABC("Aout_0", Ainit_ , box_->PetriA());
-  box_->printEnvABC("Bout_0", Ainit_ , box_->PetriB());
-  box_->printEnvABC("Cout_0", Ainit_ , box_->PetriC());
-  
+  //~ box_->printEnvABC("Aout_0", Ainit_ , box_->PetriA());
+  //~ box_->printEnvABC("Bout_0", Ainit_ , box_->PetriB());
+  //~ box_->printEnvABC("Cout_0", Ainit_ , box_->PetriC());
+  //~ 
   this->metaboWeb(); 
+  //~ box_->printEnvABC("Aout_0", Ainit_ , box_->PetriA());
+  //~ box_->printEnvABC("Bout_0", Ainit_ , box_->PetriB());
+  //~ box_->printEnvABC("Cout_0", Ainit_ , box_->PetriC());
   for (int i = 1 ; i<=Simul_ ; i++){
     //~ cout<<"Bip "<<i<<endl;
-    
     if ((i%T_)==0){
       //~ std::string str1 = std::string("PetriBox_");
-      std::string str11a = std::string("Aout_");
-      std::string str11b = std::string("Bout_");
-      std::string str11c = std::string("Cout_");
-      std::string str2 = std::to_string(i);
+      //~ std::string str11a = std::string("Aout_");
+      //~ std::string str11b = std::string("Bout_");
+      //~ std::string str11c = std::string("Cout_");
+      //~ std::string str2 = std::to_string(i);
       //~ std::string str = str1 + str2;
-      std::string strstra = str11a + str2;
-      std::string strstrb = str11b + str2;
-      std::string strstrc = str11c + str2;
-      
+      //~ std::string strstra = str11a + str2;
+      //~ std::string strstrb = str11b + str2;
+      //~ std::string strstrc = str11c + str2;
+      //~ 
       //~ ecoli_->printCrowd(str);
-      box_->printEnvABC(strstra, Ainit_ , box_->PetriA());
-      box_->printEnvABC(strstrb, Ainit_ , box_->PetriB());
-      box_->printEnvABC(strstrc, Ainit_ , box_->PetriC());
+      //~ box_->printEnvABC(strstra, Ainit_ , box_->PetriA());
+      //~ box_->printEnvABC(strstrb, Ainit_ , box_->PetriB());
+      //~ box_->printEnvABC(strstrc, Ainit_ , box_->PetriC());
       
       box_->recycle(Ainit_); //renewing the environment
       
     }
     this->nextStep();
+    box_->writeEnvABC();
+    ecoli_->writeCrowdABC();
+    //~ std::string str11a = std::string("Aout_");
+    //~ std::string str11b = std::string("Bout_");
+    //~ std::string str11c = std::string("Cout_");
+    //~ std::string str2 = std::to_string(i);
+    //~ std::string str = str1 + str2;
+    //~ std::string strstra = str11a + str2;
+    //~ std::string strstrb = str11b + str2;
+    //~ std::string strstrc = str11c + str2;
+      
+    //~ ecoli_->printCrowd(str);
+    //~ box_->printEnvABC(strstra, Ainit_ , box_->PetriA());
+    //~ box_->printEnvABC(strstrb, Ainit_ , box_->PetriB());
+    //~ box_->printEnvABC(strstrc, Ainit_ , box_->PetriC());
     
     //~ std::string str1 = std::string("PetriBox_");
     //~ std::string str2 = std::to_string(i);

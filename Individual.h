@@ -33,7 +33,7 @@ class Individual {
   inline double A(void) const; //unused
   inline double B(void) const; //unused
   inline double C(void) const; //unused
-
+  
   inline double w(void) const; //unused
   
   inline int x(void) const; //unused
@@ -45,17 +45,17 @@ class Individual {
   //                                  Setters
   // =========================================================================
   //~ inline void set_G(bool i) const; //unused
-//~ 
+
   inline void set_A(double i) ; //unused
   inline void set_B(double i) ; //unused
   inline void set_C(double i) ; //unused
-//~ 
+
   //~ inline void set_w(double i) ; //unused
  //~ 
   //~ inline void set_x(int i) const; //unused
   //~ inline void set_y(int i) const; //unused
   //~ 
-  inline void set_alive(bool i) ; //unused
+  //~ inline void set_alive(bool i) ; //unused
   
   // =========================================================================
   //                                 Operators
@@ -162,10 +162,10 @@ inline void Individual::set_C(double i) {
 //~ inline void Individual::set_y(int i) const{
   //~ y_ = i;
 //~ }
-  
-inline void Individual::set_alive(bool i) {
-  alive_ = i;
-}
+  //~ 
+//~ inline void Individual::set_alive(bool i) {
+  //~ alive_ = i;
+//~ }
 // ===========================================================================
 //                           Operators' definitions
 // ===========================================================================

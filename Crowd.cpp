@@ -16,27 +16,20 @@ Crowd::Crowd() {
   Length_ = 0;
   Width_ = 0;
   
-  Crowdy_=new Individual*[Length_];
-  
-  for (int i=0;i<Length_;i++){
-    Crowdy_[i]=new Individual[Width_];
-    for (int j=0;j<Width_;j++){
-      Crowdy_[i][j]=Individual();
-    }
-  };
+  Crowdy_=nullptr;
 }
 
 //Constructeur par copie 
 Crowd::Crowd(const Crowd& Copy) {
-  Length_ = Copy.Length();
-  Width_ = Copy.Width();
+  Length_ = Copy.Length_;
+  Width_ = Copy.Width_;
   
   Crowdy_=new Individual*[Length_];
   
   for (int i=0;i<Length_;i++){
     Crowdy_[i]=new Individual[Width_];
     for (int j=0;j<Width_;j++){
-      Crowdy_[i][j]= Copy.Crowdy()[i][j];
+      Crowdy_[i][j]= Copy.Crowdy_[i][j];
     }
   };
 }
@@ -73,10 +66,6 @@ Crowd::~Crowd(){
 //                               Public Methods
 // ===========================================================================
 
-//Methode pour add un int a string
-
-
-
 //Method to print the table
 void Crowd::printCrowd(std::string str){	
 	
@@ -100,6 +89,59 @@ void Crowd::printCrowd(std::string str){
   delete[] tab;
   tab = nullptr;
 }
+
+void Crowd::writeCrowdABC(){	
+	
+  double taba = 0;
+  double tabb = 0;
+  double tabc = 0;
+  for (int i=0;i<Length_;i++){
+    for (int j=0;j<Width_;j++){
+      taba+=Crowdy_[i][j].A();
+      tabb+=Crowdy_[i][j].B();
+      tabc+=Crowdy_[i][j].C();
+    }
+  };
+
+  ofstream fa;
+  ofstream fb;
+  ofstream fc;
+  
+  fa.open("Ain.txt",ios::out|ios::app);
+  fa<<taba/double(Length_*Width_)<<endl;
+  fa.close();
+  
+  fb.open("Bin.txt",ios::out|ios::app);
+  fb<<tabb/double(Length_*Width_)<<endl;
+  fb.close();
+
+  fc.open("Cin.txt",ios::out|ios::app);
+  fc<<tabc/double(Length_*Width_)<<endl;
+  fc.close();
+}
+//Method to print the table
+//~ void Crowd::printCrowdA(std::string str, double Ainit){	
+	//~ 
+  //~ int** tab = new int*[Length_];
+  //~ for (int i=0;i<Length_;i++){
+    //~ tab[i]=new int[Width_];
+    //~ for (int j=0;j<Width_;j++){
+      //~ if (Crowdy_[i][j].alive()){
+        //~ tab[i][j]=Crowdy_[i][j].A()+1;
+      //~ }
+      //~ else {tab[i][j]=0;}
+    //~ }
+  //~ };
+//~ 
+  //~ Image ima(int(Length_),int(Width_) ,tab,1);
+  //~ ima.save(str);
+  //~ 
+  //~ for (int i=0; i<Length_;i++){
+    //~ delete[] tab[i];
+  //~ }
+  //~ delete[] tab;
+  //~ tab = nullptr;
+//~ }
 
 
 void Crowd::muted (double Pmut){

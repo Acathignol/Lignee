@@ -103,14 +103,14 @@ int main(int argc, char* argv[]) {
   //                              Life
   // ===================================================================
   
-  int T = 500;
-  int simul = 10000;
-  double ainit = 20.0;
+  int T = 1000;
+  int simul = 500;
+  double ainit = 2.5;
   int width = 32;
   int length = 32;
   double d = 0.1;
-  double pmut = 0.1; //seee values PDF !!!
-  double pdeath = 0.01;
+  double pmut = 0; //seee values PDF !!!
+  double pdeath = 0.05;
   double wmin = 0.001;
   double raa = 0.1;
   double rbb = 0.1;

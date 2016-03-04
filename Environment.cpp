@@ -33,8 +33,8 @@ Environment::Environment() {
 
 //Constructeur par copie 
 Environment::Environment(const Environment& Copy) {
-  Length_ = Copy.Length();
-  Width_ = Copy.Width();
+  Length_ = Copy.Length_;
+  Width_ = Copy.Width_; //posssible???????????????????????????????????????????? ou getter?
   
   PetriA_=new double*[Length_];
   PetriB_=new double*[Length_];
@@ -108,6 +108,7 @@ void Environment::printEnvABC(std::string str, double Ainit , double** X){
   for (int i=0;i<Length_;i++){
     tab[i]=new int[Width_];
     for (int j=0;j<Width_;j++){
+      //~ cout<<X[i][j]<<endl;
       tab[i][j]=(X[i][j]/Ainit);
     }
   };
@@ -122,6 +123,35 @@ void Environment::printEnvABC(std::string str, double Ainit , double** X){
   tab = nullptr;
 }
 
+void Environment::writeEnvABC(){	
+
+  double taba = 0;
+  double tabb = 0;
+  double tabc = 0;
+  for (int i=0;i<Length_;i++){
+    for (int j=0;j<Width_;j++){
+      taba+=PetriA_[i][j];
+      tabb+=PetriB_[i][j];
+      tabc+=PetriC_[i][j];
+    }
+  };
+
+  ofstream fa;
+  ofstream fb;
+  ofstream fc;
+  
+  fa.open("Aout.txt",ios::out|ios::app);
+  fa<<taba/double(Length_*Width_)<<endl;
+  fa.close();
+  
+  fb.open("Bout.txt",ios::out|ios::app);
+  fb<<tabb/double(Length_*Width_)<<endl;
+  fb.close();
+
+  fc.open("Cout.txt",ios::out|ios::app);
+  fc<<tabc/double(Length_*Width_)<<endl;
+  fc.close();
+}
 
 int Environment::sides(int xy, int LW){
 
@@ -133,8 +163,20 @@ int Environment::sides(int xy, int LW){
 
 //IF NOT USES IN MAIN => PROTECTED!!
 void Environment::diffusion(double D){
-  Environment Copy = Environment(*this);
-  
+  double** CA_=new double*[Length_];
+  double** CB_=new double*[Length_];
+  double** CC_=new double*[Length_];
+  for (int i=0;i<Length_;i++){
+    CA_[i]=new double[Width_];
+    CB_[i]=new double[Width_];
+    CC_[i]=new double[Width_];
+    for (int j=0;j<Width_;j++){
+
+      CA_[i][j]=PetriA_[i][j];
+      CB_[i][j]=PetriB_[i][j];
+      CC_[i][j]=PetriC_[i][j];
+    }
+  };
   for (int x=0;x<Length_;x++){
     for (int y=0;y<Width_;y++){
       for (int i=-1 ; i>=2 ; i++){
@@ -143,18 +185,30 @@ void Environment::diffusion(double D){
           int y2 = y+j;
           
           x2 = this->sides(x2, Length_);
-          y2 = this->sides(y2, Length_);
+          y2 = this->sides(y2, Width_);
           
-    		  PetriA_[x][y]=PetriA_[x][y]+D*Copy.PetriA()[x2][y2];
-          PetriB_[x][y]=PetriB_[x][y]+D*Copy.PetriB()[x2][y2];
-          PetriC_[x][y]=PetriC_[x][y]+D*Copy.PetriC()[x2][y2];
+    		  CA_[i][j] += D*PetriA_[x2][y2];
+          CB_[x][y] += D*PetriB_[x2][y2];
+          CC_[x][y] += D*PetriC_[x2][y2];
         }
       } 		
-      PetriA_[x][y]=PetriA_[x][y]-9*D*Copy.PetriA()[x][y];
-      PetriB_[x][y]=PetriB_[x][y]-9*D*Copy.PetriB()[x][y];
-      PetriC_[x][y]=PetriC_[x][y]-9*D*Copy.PetriC()[x][y];
+      CA_[x][y] -= 9*D*PetriA_[x][y];
+      CB_[x][y] -= 9*D*PetriB_[x][y];
+      CC_[x][y] -= 9*D*PetriC_[x][y];
     }
   }    
+  for (int i=0; i<Length_;i++){
+    delete[] PetriA_[i];
+    delete[] PetriB_[i];
+    delete[] PetriC_[i];
+  }
+  delete[] PetriA_;
+  delete[] PetriB_;
+  delete[] PetriC_;
+  
+  PetriA_ = CA_;
+  PetriB_ = CB_;
+  PetriC_ = CC_;
 }  
 
 void Environment::recycle(double Ainit){

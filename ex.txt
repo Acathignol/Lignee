@@ -60,3 +60,10 @@ Metastable
 
 
 Dabord amener systm à l'éq puis faire varier parametre
+
+ofstream f
+f.open("BLABLA", ios::out       ios::app)
+f<<  <<endl;
+f.close()|
+
+remove("");

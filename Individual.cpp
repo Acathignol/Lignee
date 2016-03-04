@@ -96,12 +96,10 @@ void Individual::parent(double Wmin){
   C_ = C_/2.;
 
   this->fitness(Wmin);
-
 }
 
 //IF NOT USES IN MAIN => PROTECTED!!
 void Individual::mutation(double Pmut){
-  //srand(time(NULL));
   
   double mut = (double)rand() / (double)RAND_MAX;
   
@@ -116,27 +114,27 @@ void Individual::mutation(double Pmut){
 }  
 
 void Individual::massacre(double Pdeath){
-  //srand(time(NULL));
+  if (alive_){
+    double death = (double)rand() / (double)RAND_MAX;
   
-  double death = (double)rand() / (double)RAND_MAX;
-  
-  if (death <= Pdeath){
-    if (alive_){
+    if (death <= Pdeath){
       alive_ = false;
-    }
-  }    
+    } 
+  }   
 }  
 
 void Individual::fitness(double Wmin){
-  if (G_ == 1){
-    w_ = B_;
-  }
-  else{
-    w_ = C_;
-  }
+  if (alive_){
+    if (G_ == 1){
+      w_ = B_;
+    }
+    else{
+      w_ = C_;
+    }
   
-  if (w_ < Wmin){
-    w_ = 0;
+    if (w_ < Wmin){
+      w_ = 0;
+    }
   }
 }  
   

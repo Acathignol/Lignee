@@ -57,6 +57,7 @@ class Crowd {
   
   //To print the Petri box
   void printCrowd(std::string str);
+  void writeCrowdABC();
   
   //IF NOT USES IN MAIN => PROTECTED!!
   void muted (double Pmut);

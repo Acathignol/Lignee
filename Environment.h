@@ -30,16 +30,16 @@ class Environment {
   inline double** PetriA(void) const; //unused
   inline double** PetriB(void) const; //unused
   inline double** PetriC(void) const; //unused
-  
-  inline int Length(void) const; //unused
-  inline int Width(void) const; //unused
+  //~ 
+  //~ inline int Length(void) const; //unused
+  //~ inline int Width(void) const; //unused
   // =========================================================================
   //                                  Setters
   // =========================================================================
 
-  inline void set_PetriA(double** intab); //unused
-  inline void set_PetriB(double** intab) ;//unused
-  inline void set_PetriC(double** intab); //unused
+  //~ inline void set_PetriA(double** intab); //unused
+  //~ inline void set_PetriB(double** intab) ;//unused
+  //~ inline void set_PetriC(double** intab); //unused
 
   // =========================================================================
   //                                 Operators
@@ -49,6 +49,7 @@ class Environment {
   //                              Public Methods
   // =========================================================================
   void printEnvABC(std::string str, double Ainit , double** X);
+  void writeEnvABC();
   void diffusion(double D);
   void recycle(double Ainit);
   int sides(int xy, int LW);
@@ -86,27 +87,27 @@ inline double** Environment::PetriB(void) const{
 inline double** Environment::PetriC(void) const{
   return PetriC_;
 }
-
-inline int Environment::Length(void) const{
-  return Length_;
-}
-inline int Environment::Width(void) const{
-  return Width_;
-}
+//~ 
+//~ inline int Environment::Length(void) const{
+  //~ return Length_;
+//~ }
+//~ inline int Environment::Width(void) const{
+  //~ return Width_;
+//~ }
   
 
 // ===========================================================================
 //                            Setters' definitions
 // ===========================================================================
-inline void Environment::set_PetriA(double** intab){
-  PetriA_=intab;
-}
-inline void Environment::set_PetriB(double** intab){
-  PetriB_=intab;
-}
-inline void Environment::set_PetriC(double** intab){
-  PetriC_=intab;
-}
+//~ inline void Environment::set_PetriA(double** intab){
+  //~ PetriA_=intab;
+//~ }
+//~ inline void Environment::set_PetriB(double** intab){
+  //~ PetriB_=intab;
+//~ }
+//~ inline void Environment::set_PetriC(double** intab){
+  //~ PetriC_=intab;
+//~ }
 
 // ===========================================================================
 //                           Operators' definitions
