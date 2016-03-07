@@ -99,14 +99,14 @@ void Life::metaboWeb(){
             double B = ecoli_->Crowdy()[i][j].B();
             double C = ecoli_->Crowdy()[i][j].C();
             double Bout = box_->PetriB()[i][j];
-
+            //~ printf("%f",Bout);
             Bout -= ((Bout*Rbb_)*0.1) ;
             B += ((Bout*Rbb_-B*Rbc_)*0.1) ;
             C += ((B*Rbc_)*0.1) ;
             
             ecoli_->Crowdy()[i][j].set_B(B);
-            ecoli_->Crowdy()[i][j].set_C(C);
-            box_->PetriB()[i][j]=Bout; //C never goes away, just when death????
+            ecoli_->Crowdy()[i][j].set_C(C);//1 OR HERE
+            box_->PetriB()[i][j]=Bout; //PROBLEM HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!=> resolve pb cin et bout  cout
           }
         }
       }
@@ -121,10 +121,10 @@ void Life::combo(){
   std::vector<Individual> vec = ecoli_->listHoles();
   for (int i=0 ; i<int(vec.size()) ; i++){
     if (not vec[i].alive()){
-      cout<<box_->PetriA()[vec[i].x()][vec[i].y()]<<endl;
+      //~ cout<<box_->PetriA()[vec[i].x()][vec[i].y()]<<endl;
       box_->PetriA()[vec[i].x()][vec[i].y()] += vec[i].A();
-      box_->PetriA()[vec[i].x()][vec[i].y()] += vec[i].B();
-      box_->PetriA()[vec[i].x()][vec[i].y()] += vec[i].C();
+      box_->PetriB()[vec[i].x()][vec[i].y()] += vec[i].B();
+      box_->PetriC()[vec[i].x()][vec[i].y()] += vec[i].C();
     }
   }
 }

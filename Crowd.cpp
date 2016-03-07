@@ -291,10 +291,8 @@ void Crowd::duplication(double Wmin){ // mettre list en argument//take random in
       Individual Parent = this->findWmaxi(v[i]);
       if (Parent.w()!=0){
         
+        Parent.parent(Wmin);  //remove WMIN no?!?
 
-        Parent.parent(Wmin);  //remove WMIN !!!
-
-      
         Crowdy_[v[i].x()][v[i].y()].baby(Parent);
       }
     }

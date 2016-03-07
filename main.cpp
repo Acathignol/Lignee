@@ -29,7 +29,7 @@ int main(int argc, char* argv[]) {
   
   printf("Hello world !\n");
   
-  /**
+
   // ===================================================================
   //                               Individual
   // ===================================================================
@@ -38,7 +38,7 @@ int main(int argc, char* argv[]) {
   
   Ecoli1.mutation(1);
   cout<<"After possible mutation, genotype of ecoli1: "<<Ecoli1.G()<<endl;
-  
+  Ecoli1.parent(0.001);
   
   // ===================================================================
   //                               Environment
@@ -55,6 +55,8 @@ int main(int argc, char* argv[]) {
   Pet.recycle(25);
   cout<<"Petri A position x,y: "<<Pet.PetriA()[1][1]<<endl;
   
+  
+  /**
 // TEST IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIITTTTTTTTTTTTTTTTTTTTTTTTTT !!!!!!!!!!!!
   
   // ===================================================================
@@ -105,17 +107,32 @@ int main(int argc, char* argv[]) {
   
   int T = 1000;
   int simul = 500;
-  double ainit = 2.5;
+  double ainit = 50;
   int width = 32;
   int length = 32;
   double d = 0.1;
   double pmut = 0; //seee values PDF !!!
-  double pdeath = 0.05;
+  double pdeath = 0.01;
   double wmin = 0.001;
   double raa = 0.1;
   double rbb = 0.1;
   double rab = 0.1;
   double rbc = 0.1;
+  
+  
+  //~ T = int(*argv[1]);
+  //~ simul = int(*argv[2]);
+  //~ ainit = double(*argv[3]);
+  //~ width = int(*argv[4]);
+  //~ length = int(*argv[5]);
+  //~ d = double(*argv[6]);
+  //~ pmut = double(*argv[7]); //seee values PDF !!!
+  //~ pdeath = double(*argv[8]);
+  //~ wmin = double(*argv[9]);
+  //~ raa = double(*argv[10]);
+  //~ rbb = double(*argv[11]);
+  //~ rab = double(*argv[12]);
+  //~ rbc = double(*argv[13]);
   
   
   Life lilou = Life(T, simul, ainit, width, length, d, pmut, pdeath, wmin, raa, rbb, rab, rbc);
@@ -124,7 +141,7 @@ int main(int argc, char* argv[]) {
   
   //~ cout<<lilou.box().PetriA()[0][2];//.alive();
   //~ for (int i=0; i<6; i++){
-    //~ cout<<lilou.ecoli().Crowdy()[0][i].alive();//<<" "<<lilou.ecoli().Crowdy()[1][i].alive()<<" "<<lilou.ecoli().Crowdy()[2][i].alive()<<" "<<lilou.ecoli().Crowdy()[3][i].alive()<<endl;
+    //~ cout<<double(*argv[i])<<endl;//<<" "<<lilou.ecoli().Crowdy()[1][i].alive()<<" "<<lilou.ecoli().Crowdy()[2][i].alive()<<" "<<lilou.ecoli().Crowdy()[3][i].alive()<<endl;
   //~ }
 
   lilou.hugeCycle(); 
