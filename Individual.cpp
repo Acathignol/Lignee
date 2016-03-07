@@ -103,7 +103,7 @@ void Individual::mutation(double Pmut){
   
   double mut = (double)rand() / (double)RAND_MAX;
   
-  if (mut <= Pmut){
+  if (alive_ and mut <= Pmut){
     if (G_ ==1){
       G_ = 0;
     }
@@ -133,7 +133,7 @@ void Individual::fitness(double Wmin){
     }
   
     if (w_ < Wmin){
-      w_ = 0;
+      w_ = 0.;
     }
   }
 }  

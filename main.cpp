@@ -7,6 +7,7 @@
 #include <cmath>
 #include <cstdlib>
 #include <vector>
+#include <ctime>
 //~ #include "Individual.h"
 //~ #include "Environment.h"
 //~ #include "Crowd.h"
@@ -29,7 +30,7 @@ int main(int argc, char* argv[]) {
   
   printf("Hello world !\n");
   
-
+/**
   // ===================================================================
   //                               Individual
   // ===================================================================
@@ -38,8 +39,13 @@ int main(int argc, char* argv[]) {
   
   Ecoli1.mutation(1);
   cout<<"After possible mutation, genotype of ecoli1: "<<Ecoli1.G()<<endl;
+  Ecoli1.set_A(2.);
+  Ecoli1.set_B(3.);
+  Ecoli1.set_C(4.); 
+  
   Ecoli1.parent(0.001);
   
+  cout<<"After parent : A "<<Ecoli1.A()<<" B "<<Ecoli1.B()<<" C "<<Ecoli1.C()<<endl;
   // ===================================================================
   //                               Environment
   // ===================================================================
@@ -56,7 +62,7 @@ int main(int argc, char* argv[]) {
   cout<<"Petri A position x,y: "<<Pet.PetriA()[1][1]<<endl;
   
   
-  /**
+  
 // TEST IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIITTTTTTTTTTTTTTTTTTTTTTTTTT !!!!!!!!!!!!
   
   // ===================================================================
@@ -105,39 +111,37 @@ int main(int argc, char* argv[]) {
   //                              Life
   // ===================================================================
   
-  int T = 1000;
-  int simul = 500;
-  double ainit = 50;
-  int width = 32;
-  int length = 32;
-  double d = 0.1;
-  double pmut = 0; //seee values PDF !!!
-  double pdeath = 0.01;
-  double wmin = 0.001;
-  double raa = 0.1;
-  double rbb = 0.1;
-  double rab = 0.1;
-  double rbc = 0.1;
+  //~ int T = 1000;
+  //~ int simul = 500;
+  //~ double ainit = 50;
+  //~ int width = 32;
+  //~ int length = 32;
+  //~ double d = 0.1;
+  //~ double pmut = 0; 
+  //~ double pdeath = 0.01;
+  //~ double wmin = 0.001;
+  //~ double raa = 0.1;
+  //~ double rbb = 0.1;
+  //~ double rab = 0.1;
+  //~ double rbc = 0.1;
   
-  
-  //~ T = int(*argv[1]);
-  //~ simul = int(*argv[2]);
-  //~ ainit = double(*argv[3]);
-  //~ width = int(*argv[4]);
-  //~ length = int(*argv[5]);
-  //~ d = double(*argv[6]);
-  //~ pmut = double(*argv[7]); //seee values PDF !!!
-  //~ pdeath = double(*argv[8]);
-  //~ wmin = double(*argv[9]);
-  //~ raa = double(*argv[10]);
-  //~ rbb = double(*argv[11]);
-  //~ rab = double(*argv[12]);
-  //~ rbc = double(*argv[13]);
-  
+  int T = atoi(argv[1]);
+  int simul = atoi(argv[2]);
+  double ainit = atof(argv[3]);
+  int width = atoi(argv[4]);
+  int length = atoi(argv[5]);
+  double d = atof(argv[6]);
+  double pmut = atof(argv[7]); //seee values PDF !!!
+  double pdeath = atof(argv[8]);
+  double wmin = atof(argv[9]);
+  double raa = atof(argv[10]);
+  double rbb = atof(argv[11]);
+  double rab = atof(argv[12]);
+  double rbc = atof(argv[13]);
   
   Life lilou = Life(T, simul, ainit, width, length, d, pmut, pdeath, wmin, raa, rbb, rab, rbc);
   
-  cout<<"BOUH!"<<endl;
+  //~ cout<<"BOUH!"<<endl;
   
   //~ cout<<lilou.box().PetriA()[0][2];//.alive();
   //~ for (int i=0; i<6; i++){

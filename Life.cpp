@@ -78,36 +78,45 @@ void Life::metaboWeb(){
     for (int j=0; j<wid_;j++){
         
       if (ecoli_->Crowdy()[i][j].alive() == 1){ //this->ecoli()
-        for (int z=0 ; z<=9 ; z++){
-          if (ecoli_->Crowdy()[i][j].G() == 1){ //Ga=1 Gb=0
-          
-            double A = ecoli_->Crowdy()[i][j].A();
-            double B = ecoli_->Crowdy()[i][j].B();
-            double Aout = box_->PetriA()[i][j];
+        if (ecoli_->Crowdy()[i][j].G() == 1){ //Ga=1 Gb=0
+          double A = ecoli_->Crowdy()[i][j].A();
+          double B = ecoli_->Crowdy()[i][j].B();
+          double Aout = box_->PetriA()[i][j];
+          for (int z=0 ; z<=9 ; z++){
+            //~ double A = ecoli_->Crowdy()[i][j].A();
+            //~ double B = ecoli_->Crowdy()[i][j].B();
+            //~ double Aout = box_->PetriA()[i][j];
+            //~ printf("%f",B);
             
-            Aout -= ((Aout*Raa_)*0.1) ;
-            A += ((Aout*Raa_-A*Rab_)*0.1) ;
             B += ((A*Rab_)*0.1) ;
+            A += ((Aout*Raa_-A*Rab_)*0.1) ;
+            Aout -= ((Aout*Raa_)*0.1) ;
             //~ A(t+1) =A(t) + (dA/dt)*dt
-            
-            ecoli_->Crowdy()[i][j].set_A(A);
-            ecoli_->Crowdy()[i][j].set_B(B);
-            box_->PetriA()[i][j]=Aout;
           }
-          else if (ecoli_->Crowdy()[i][j].G() == 0){
-            
-            double B = ecoli_->Crowdy()[i][j].B();
-            double C = ecoli_->Crowdy()[i][j].C();
-            double Bout = box_->PetriB()[i][j];
+          ecoli_->Crowdy()[i][j].set_A(A);
+          ecoli_->Crowdy()[i][j].set_B(B);
+          box_->PetriA()[i][j]=Aout;
+          //~ }
+        }
+        else if (ecoli_->Crowdy()[i][j].G() == 0){
+          double B = ecoli_->Crowdy()[i][j].A();
+          double C = ecoli_->Crowdy()[i][j].C();
+          double Bout = box_->PetriB()[i][j];
+          for (int z=0 ; z<=9 ; z++){
+            //~ double B = ecoli_->Crowdy()[i][j].B();
+            //~ double C = ecoli_->Crowdy()[i][j].C();
+            //~ double Bout = box_->PetriB()[i][j];  
             //~ printf("%f",Bout);
-            Bout -= ((Bout*Rbb_)*0.1) ;
-            B += ((Bout*Rbb_-B*Rbc_)*0.1) ;
             C += ((B*Rbc_)*0.1) ;
-            
-            ecoli_->Crowdy()[i][j].set_B(B);
-            ecoli_->Crowdy()[i][j].set_C(C);//1 OR HERE
-            box_->PetriB()[i][j]=Bout; //PROBLEM HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!=> resolve pb cin et bout  cout
+            //~ printf("%f",B);
+            //~ printf("%f",Bout);
+            B += ((Bout*Rbb_-B*Rbc_)*0.1) ;
+            Bout -= ((Bout*Rbb_)*0.1) ;
           }
+          ecoli_->Crowdy()[i][j].set_B(B);
+          ecoli_->Crowdy()[i][j].set_C(C);//1 OR HERE
+          box_->PetriB()[i][j]=Bout; //PROBLEM HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!=> resolve pb cin a voir , cout viendras avec ///   ET AOUT ET B AVANT OU APRES A ????????????????????
+          //~ }
         }
       }
     }
@@ -185,11 +194,12 @@ void Life::hugeCycle(){
     this->nextStep();
     box_->writeEnvABC();
     ecoli_->writeCrowdABC();
+    std::string str1 = std::string("PetriBox_");
     //~ std::string str11a = std::string("Aout_");
     //~ std::string str11b = std::string("Bout_");
     //~ std::string str11c = std::string("Cout_");
-    //~ std::string str2 = std::to_string(i);
-    //~ std::string str = str1 + str2;
+    std::string str2 = std::to_string(i);
+    std::string str = str1 + str2;
     //~ std::string strstra = str11a + str2;
     //~ std::string strstrb = str11b + str2;
     //~ std::string strstrc = str11c + str2;
@@ -198,11 +208,8 @@ void Life::hugeCycle(){
     //~ box_->printEnvABC(strstra, Ainit_ , box_->PetriA());
     //~ box_->printEnvABC(strstrb, Ainit_ , box_->PetriB());
     //~ box_->printEnvABC(strstrc, Ainit_ , box_->PetriC());
-    
-    //~ std::string str1 = std::string("PetriBox_");
-    //~ std::string str2 = std::to_string(i);
-    //~ std::string str = str1 + str2;
-    //~ ecoli_->printCrowd(str);
+    //~ 
+    ecoli_->printCrowd(str);
     cout<<"iteration "<<i<<endl;
     
 	}

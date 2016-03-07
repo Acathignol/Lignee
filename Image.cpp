@@ -105,11 +105,11 @@ Image::Image(int L, int W, int** tab,int color)
     {
       for (int y = 0; y < _h; y++)
       {
-        _data[index]=(unsigned char)(tab[x][y]*255);
+        _data[index]=(unsigned char)tab[x][y];
         index++;
-        _data[index]=(unsigned char)(tab[x][y]*255);
+        _data[index]=(unsigned char)tab[x][y];
         index++;
-        _data[index]=(unsigned char)(tab[x][y]*255);
+        _data[index]=(unsigned char)tab[x][y];
         index++;
       }
     }

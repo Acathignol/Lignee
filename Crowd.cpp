@@ -92,9 +92,9 @@ void Crowd::printCrowd(std::string str){
 
 void Crowd::writeCrowdABC(){	
 	
-  double taba = 0;
-  double tabb = 0;
-  double tabc = 0;
+  double taba = 0.;
+  double tabb = 0.;
+  double tabc = 0.;
   for (int i=0;i<Length_;i++){
     for (int j=0;j<Width_;j++){
       taba+=Crowdy_[i][j].A();
@@ -115,6 +115,7 @@ void Crowd::writeCrowdABC(){
   fb<<tabb/double(Length_*Width_)<<endl;
   fb.close();
 
+  //~ cout<<tabc<<endl;
   fc.open("Cin.txt",ios::out|ios::app);
   fc<<tabc/double(Length_*Width_)<<endl;
   fc.close();
@@ -156,7 +157,7 @@ void Crowd::muted (double Pmut){
 void Crowd::epickill(double Pdeath){
   //srand(time(NULL));
   for (int i=0;i<Length_;i++){
-    for (int j=0;j<Width_;j++){
+    for (int j=0;j<Width_;j++){ // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
       Crowdy_[i][j].massacre(Pdeath);
     }
   };
@@ -171,10 +172,6 @@ void Crowd::fited(double Wmin){
   };
 }  
 
-bool Crowd::aliveTest(Individual ind){
-  return ind.alive();
-}
-
 Individual Crowd::sides(int x, int y){
 
   if (x < 0){x = (Length_-1);}
@@ -183,7 +180,7 @@ Individual Crowd::sides(int x, int y){
   if (y < 0){y = (Width_-1);}
   else if (y >= Width_){y = 0;}
     
-  if (this->aliveTest(Crowdy_[x][y])){
+  if (Crowdy_[x][y].alive()){
     return Crowdy_[x][y];
   }
   
@@ -229,7 +226,7 @@ Individual Crowd::findWmaxi(Individual hole){ // put a individual, hole
   int count = 1;
 
   for (int i = 0; i < int(Sides.size()); i++){
-    if (this->aliveTest(Sides[i])){
+    if (Sides[i].alive()){
       if (Sides[i].w() > max){
         max = Sides[i].w();
         Indmax = Sides[i];
@@ -238,7 +235,7 @@ Individual Crowd::findWmaxi(Individual hole){ // put a individual, hole
   }
  
   for (int i = 0; i < int(Sides.size()); i++){
-    if (this->aliveTest(Sides[i])){
+    if (Sides[i].alive()){
       if (Sides[i].w() == max){
         Indmax = Sides[i];
         VIndmax.push_back(Indmax);
@@ -281,22 +278,31 @@ std::vector<Individual> Crowd::listHoles(){
 }
 
 
-void Crowd::duplication(double Wmin){ // mettre list en argument//take random in list
+void Crowd::duplication(double Wmin){ 
   
-  std::vector<Individual> v = this->listHoles();
-  while (v.size()!=0){
-    int i = rand()%(int(v.size())-0) + 0 ;  
+  std::vector<Individual> v = this->listHoles(); 
+  //obtaining a list of all the holes in the map
+  while (v.size()!=0){ 
+    //while the list is not empty, continuing
+    int i = rand()%(int(v.size())-0) + 0 ;
+    //taking a random "i" which is a place in the list  
     
-    if (not this->aliveTest(v[i])){
+    if (not v[i].alive()){
+      //if the place in the list is really dead (if no one is dead)
       Individual Parent = this->findWmaxi(v[i]);
+      //for the place in the list, finding the individual alive with the 
+      //highest fitness (w) around (Parent)
       if (Parent.w()!=0){
         
         Parent.parent(Wmin);  //remove WMIN no?!?
+        //Dividing the concentration by 2 to have the future concentrations
 
         Crowdy_[v[i].x()][v[i].y()].baby(Parent);
+        //Copying the parent to the dead place => new baby alive
       }
     }
     v.erase(v.begin()+i);
+    //deleting the inividual taken randomly in the list
   }
 }
 

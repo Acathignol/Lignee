@@ -24,9 +24,9 @@ Environment::Environment() {
     PetriB_[i]=new double[Width_];
     PetriC_[i]=new double[Width_];
     for (int j=0;j<Width_;j++){
-      PetriA_[i][j]=0;
-      PetriB_[i][j]=0;
-      PetriC_[i][j]=0;
+      PetriA_[i][j]=0.;
+      PetriB_[i][j]=0.;
+      PetriC_[i][j]=0.;
     }
   };
 }
@@ -66,8 +66,8 @@ Environment::Environment(int l, int w, double Ainit) {
     PetriA_[i]=new double[Width_];
     PetriB_[i]=new double[Width_];
     PetriC_[i]=new double[Width_];
+    
     for (int j=0;j<Width_;j++){
-
       PetriA_[i][j]=Ainit;
       PetriB_[i][j]=0.;
       PetriC_[i][j]=0.;
@@ -109,7 +109,7 @@ void Environment::printEnvABC(std::string str, double Ainit , double** X){
     tab[i]=new int[Width_];
     for (int j=0;j<Width_;j++){
       //~ cout<<X[i][j]<<endl;
-      tab[i][j]=(X[i][j]/Ainit);
+      tab[i][j]=(X[i][j]*255/Ainit);
     }
   };
 
@@ -125,9 +125,9 @@ void Environment::printEnvABC(std::string str, double Ainit , double** X){
 
 void Environment::writeEnvABC(){	
 
-  double taba = 0;
-  double tabb = 0;
-  double tabc = 0;
+  double taba = 0.;
+  double tabb = 0.;
+  double tabc = 0.;
   for (int i=0;i<Length_;i++){
     for (int j=0;j<Width_;j++){
       taba+=PetriA_[i][j];
@@ -153,12 +153,18 @@ void Environment::writeEnvABC(){
   fc.close();
 }
 
-int Environment::sides(int xy, int LW){
+int Environment::sides(int xy, int LW){ 
+  // To do the toric conditions
+  //put an x or an y and the corresponding side (length or width)
 
   if (xy < 0){xy = (LW-1);}
+  // if the x or y is inferior to 0 
+  //=> the x or y = the side -1 (the opposite side of the table)
   else if (xy >= LW){xy = 0;}
-
-  return xy;
+  // if the x or y is superior to the side -1 
+  //=> the x or y = 0 (the opposite side of the table)
+  
+  return xy; //return the x or y newly (or not) calculated
 }
 
 //IF NOT USES IN MAIN => PROTECTED!!
@@ -166,19 +172,17 @@ void Environment::diffusion(double D){
   double** CA_=new double*[Length_];
   double** CB_=new double*[Length_];
   double** CC_=new double*[Length_];
-  for (int i=0;i<Length_;i++){
-    CA_[i]=new double[Width_];
-    CB_[i]=new double[Width_];
-    CC_[i]=new double[Width_];
-    for (int j=0;j<Width_;j++){
-
-      CA_[i][j]=PetriA_[i][j];
-      CB_[i][j]=PetriB_[i][j];
-      CC_[i][j]=PetriC_[i][j];
-    }
-  };
+  
   for (int x=0;x<Length_;x++){
+    CA_[x]=new double[Width_];
+    CB_[x]=new double[Width_];
+    CC_[x]=new double[Width_];
+    
     for (int y=0;y<Width_;y++){
+      CA_[x][y]=PetriA_[x][y];
+      CB_[x][y]=PetriB_[x][y];
+      CC_[x][y]=PetriC_[x][y];
+      
       for (int i=-1 ; i>=2 ; i++){
         for (int j=-1 ; j>=2 ; j++){
           int x2 = x+i;
@@ -186,22 +190,26 @@ void Environment::diffusion(double D){
           
           x2 = this->sides(x2, Length_);
           y2 = this->sides(y2, Width_);
-          
-    		  CA_[i][j] += D*PetriA_[x2][y2];
+          //~ CA_[x][y] += D*CA_[x2][y2]; THAT OR NOT ???????????????????
+          //~ CB_[x][y] += D*CB_[x2][y2];
+          //~ CC_[x][y] += D*CC_[x2][y2];
+    		  CA_[x][y] += D*PetriA_[x2][y2];
           CB_[x][y] += D*PetriB_[x2][y2];
           CC_[x][y] += D*PetriC_[x2][y2];
         }
-      } 		
+      } 	
+      //~ CA_[x][y] -= 9*D*CA_[x][y];
+      //~ CB_[x][y] -= 9*D*CB_[x][y];
+      //~ CC_[x][y] -= 9*D*CC_[x][y];
       CA_[x][y] -= 9*D*PetriA_[x][y];
       CB_[x][y] -= 9*D*PetriB_[x][y];
       CC_[x][y] -= 9*D*PetriC_[x][y];
     }
+    delete[] PetriA_[x];
+    delete[] PetriB_[x];
+    delete[] PetriC_[x];
   }    
-  for (int i=0; i<Length_;i++){
-    delete[] PetriA_[i];
-    delete[] PetriB_[i];
-    delete[] PetriC_[i];
-  }
+  
   delete[] PetriA_;
   delete[] PetriB_;
   delete[] PetriC_;
@@ -215,10 +223,10 @@ void Environment::recycle(double Ainit){
   //delete old and renew  !
   for (int i=0; i<Length_;i++){
     for (int j=0; j<Width_;j++){
-	  PetriA_[i][j]=Ainit;
-	  PetriB_[i][j]=0.;
-	  PetriC_[i][j]=0.;
-	}
+	    PetriA_[i][j]=Ainit;
+	    PetriB_[i][j]=0.;
+	    PetriC_[i][j]=0.;
+	  }
   }
 }
 // ===========================================================================
