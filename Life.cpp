@@ -150,13 +150,19 @@ void Life::nextStep(){
 
 void Life::hugeCycle(){
   
-  remove("Aout.txt");
-  remove("Bout.txt");
-  remove("Cout.txt");
-  remove("Ain.txt");
-  remove("Bin.txt");
-  remove("Cin.txt");
-  box_->writeEnvABC();
+  remove("Aout A.txt");
+  remove("Bout A.txt");
+  remove("Cout A.txt");
+  remove("Ain A.txt");
+  remove("Bin A.txt");
+  remove("Cin A.txt");
+  remove("Aout B.txt");
+  remove("Bout B.txt");
+  remove("Cout B.txt");
+  remove("Ain B.txt");
+  remove("Bin B.txt");
+  remove("Cin B.txt");
+  box_->writeEnvABC(ecoli_->Crowdy());
   ecoli_->writeCrowdABC();
   
   //~ std::string s = "PetriBox_Begin";
@@ -192,7 +198,7 @@ void Life::hugeCycle(){
       
     }
     this->nextStep();
-    box_->writeEnvABC();
+    box_->writeEnvABC(ecoli_->Crowdy());
     ecoli_->writeCrowdABC();
     std::string str1 = std::string("PetriBox_");
     //~ std::string str11a = std::string("Aout_");

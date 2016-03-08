@@ -6,6 +6,13 @@
 #include <cmath>
 #include "Image.h"
 
+
+
+#include "Crowd.h"
+
+
+
+
 // ===========================================================================
 //                                  Includes
 // ===========================================================================
@@ -49,7 +56,7 @@ class Environment {
   //                              Public Methods
   // =========================================================================
   void printEnvABC(std::string str, double Ainit , double** X);
-  void writeEnvABC();
+  void writeEnvABC(Individual** cr);
   void diffusion(double D);
   void recycle(double Ainit);
   int sides(int xy, int LW);

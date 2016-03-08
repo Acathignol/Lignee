@@ -123,34 +123,104 @@ void Environment::printEnvABC(std::string str, double Ainit , double** X){
   tab = nullptr;
 }
 
-void Environment::writeEnvABC(){	
+void Environment::writeEnvABC(Individual** cr){	
 
-  double taba = 0.;
-  double tabb = 0.;
-  double tabc = 0.;
+  //~ double taba = 0.;
+  //~ double tabb = 0.;
+  //~ double tabc = 0.;
+  //~ for (int i=0;i<Length_;i++){
+    //~ for (int j=0;j<Width_;j++){
+      //~ taba+=PetriA_[i][j];
+      //~ tabb+=PetriB_[i][j];
+      //~ tabc+=PetriC_[i][j];
+    //~ }
+  //~ };
+//~ 
+  //~ ofstream fa;
+  //~ ofstream fb;
+  //~ ofstream fc;
+  //~ 
+  //~ fa.open("Aout.txt",ios::out|ios::app);
+  //~ fa<<taba/double(Length_*Width_)<<endl;
+  //~ fa.close();
+  //~ 
+  //~ fb.open("Bout.txt",ios::out|ios::app);
+  //~ fb<<tabb/double(Length_*Width_)<<endl;
+  //~ fb.close();
+//~ 
+  //~ fc.open("Cout.txt",ios::out|ios::app);
+  //~ fc<<tabc/double(Length_*Width_)<<endl;
+  //~ fc.close();
+  
+  double tabaA = 0.;
+  double tabbA = 0.;
+  double tabcA = 0.;
+  double tabaB = 0.;
+  double tabbB = 0.;
+  double tabcB = 0.;
+  
+
+  
   for (int i=0;i<Length_;i++){
     for (int j=0;j<Width_;j++){
-      taba+=PetriA_[i][j];
-      tabb+=PetriB_[i][j];
-      tabc+=PetriC_[i][j];
+      if (cr[i][j].G() == 1){
+        tabaA+=PetriA_[i][j];
+        tabbA+=PetriB_[i][j];
+        tabcA+=PetriC_[i][j];
+      
+      
+        //~ std::string strr = "Bout GA";
+        //~ std::string strb = "Bin GA";
+        //~ box_->writeEnvABC(strr);
+        //~ ecoli_->writeCrowdABC(strr);
+      }
+      if (cr[i][j].G() == 0){
+        tabaB+=PetriA_[i][j];
+        tabbB+=PetriB_[i][j];
+        tabcB+=PetriC_[i][j];
+        
+        //~ std::string strr = "Bout GB";
+        //~ std::string strr = "Bin GB";
+        //~ box_->writeEnvABC(strr);
+        //~ ecoli_->writeCrowdABC(strr);
+    }
     }
   };
 
-  ofstream fa;
-  ofstream fb;
-  ofstream fc;
+  ofstream faA;
+  ofstream fbA;
+  ofstream fcA;
   
-  fa.open("Aout.txt",ios::out|ios::app);
-  fa<<taba/double(Length_*Width_)<<endl;
-  fa.close();
+  faA.open("Aout A.txt",ios::out|ios::app);
+  faA<<tabaA/double(Length_*Width_)<<endl;
+  faA.close();
   
-  fb.open("Bout.txt",ios::out|ios::app);
-  fb<<tabb/double(Length_*Width_)<<endl;
-  fb.close();
+  fbA.open("Bout A.txt",ios::out|ios::app);//"Bin.txt"
+  fbA<<tabbA/double(Length_*Width_)<<endl;
+  fbA.close();
 
-  fc.open("Cout.txt",ios::out|ios::app);
-  fc<<tabc/double(Length_*Width_)<<endl;
-  fc.close();
+  //~ cout<<tabc<<endl;
+  fcA.open("Cout A.txt",ios::out|ios::app);
+  fcA<<tabcA/double(Length_*Width_)<<endl;
+  fcA.close();
+
+  ofstream faB;
+  ofstream fbB;
+  ofstream fcB;
+  
+  faB.open("Aout B.txt",ios::out|ios::app);
+  faB<<tabaB/double(Length_*Width_)<<endl;
+  faB.close();
+  
+  fbB.open("Bout B.txt",ios::out|ios::app);//"Bin.txt"
+  fbB<<tabbB/double(Length_*Width_)<<endl;
+  fbB.close();
+
+  //~ cout<<tabc<<endl;
+  fcB.open("Cout B.txt",ios::out|ios::app);
+  fcB<<tabcB/double(Length_*Width_)<<endl;
+  fcB.close();
+  
 }
 
 int Environment::sides(int xy, int LW){ 
@@ -185,11 +255,9 @@ void Environment::diffusion(double D){
       
       for (int i=-1 ; i>=2 ; i++){
         for (int j=-1 ; j>=2 ; j++){
-          int x2 = x+i;
-          int y2 = y+j;
+          int x2 = this->sides(x+i, Length_);
+          int y2 = this->sides(y+j, Width_);
           
-          x2 = this->sides(x2, Length_);
-          y2 = this->sides(y2, Width_);
           //~ CA_[x][y] += D*CA_[x2][y2]; THAT OR NOT ???????????????????
           //~ CB_[x][y] += D*CB_[x2][y2];
           //~ CC_[x][y] += D*CC_[x2][y2];
