@@ -101,29 +101,29 @@ Environment::~Environment(){
 // ===========================================================================
 //                               Public Methods
 // ===========================================================================
-//Method to print the table
-void Environment::printEnvABC(std::string str, double Ainit , double** X){	
-	
-  int** tab = new int*[Length_];
-  for (int i=0;i<Length_;i++){
-    tab[i]=new int[Width_];
-    for (int j=0;j<Width_;j++){
-      //~ cout<<X[i][j]<<endl;
-      tab[i][j]=(X[i][j]*255/Ainit);
-    }
-  };
+//Method to print the table MARCHE PAS
+//~ void Environment::printEnvABC(std::string str, double Ainit , double** X){	
+	//~ 
+  //~ int** tab = new int*[Length_];
+  //~ for (int i=0;i<Length_;i++){
+    //~ tab[i]=new int[Width_];
+    //~ for (int j=0;j<Width_;j++){
+      //~ //cout<<X[i][j]<<endl;
+      //~ tab[i][j]=(X[i][j]*255/Ainit);
+    //~ }
+  //~ };
+//~ 
+  //~ Image ima(int(Length_),int(Width_) ,tab,1);
+  //~ ima.save(str);
+  //~ 
+  //~ for (int i=0; i<Length_;i++){
+    //~ delete[] tab[i];
+  //~ }
+  //~ delete[] tab;
+  //~ tab = nullptr;
+//~ }
 
-  Image ima(int(Length_),int(Width_) ,tab,1);
-  ima.save(str);
-  
-  for (int i=0; i<Length_;i++){
-    delete[] tab[i];
-  }
-  delete[] tab;
-  tab = nullptr;
-}
-
-void Environment::writeEnvABC(Individual** cr){	
+void Environment::writeEnvABC(std::string str, Individual** cr){	
 
   //~ double taba = 0.;
   //~ double tabb = 0.;
@@ -167,23 +167,12 @@ void Environment::writeEnvABC(Individual** cr){
         tabaA+=PetriA_[i][j];
         tabbA+=PetriB_[i][j];
         tabcA+=PetriC_[i][j];
-      
-      
-        //~ std::string strr = "Bout GA";
-        //~ std::string strb = "Bin GA";
-        //~ box_->writeEnvABC(strr);
-        //~ ecoli_->writeCrowdABC(strr);
       }
       if (cr[i][j].G() == 0){
         tabaB+=PetriA_[i][j];
         tabbB+=PetriB_[i][j];
         tabcB+=PetriC_[i][j];
-        
-        //~ std::string strr = "Bout GB";
-        //~ std::string strr = "Bin GB";
-        //~ box_->writeEnvABC(strr);
-        //~ ecoli_->writeCrowdABC(strr);
-    }
+      }
     }
   };
 
@@ -191,16 +180,22 @@ void Environment::writeEnvABC(Individual** cr){
   ofstream fbA;
   ofstream fcA;
   
-  faA.open("Aout A.txt",ios::out|ios::app);
+  std::string strr=str + "Aout A.txt";
+  
+  faA.open(strr,ios::out|ios::app);
   faA<<tabaA/double(Length_*Width_)<<endl;
   faA.close();
   
-  fbA.open("Bout A.txt",ios::out|ios::app);//"Bin.txt"
+  strr=str + "Bout A.txt";
+  
+  fbA.open(strr,ios::out|ios::app);//"Bin.txt"
   fbA<<tabbA/double(Length_*Width_)<<endl;
   fbA.close();
 
+  strr=str + "Cout A.txt";
+  
   //~ cout<<tabc<<endl;
-  fcA.open("Cout A.txt",ios::out|ios::app);
+  fcA.open(strr,ios::out|ios::app);
   fcA<<tabcA/double(Length_*Width_)<<endl;
   fcA.close();
 
@@ -208,16 +203,24 @@ void Environment::writeEnvABC(Individual** cr){
   ofstream fbB;
   ofstream fcB;
   
-  faB.open("Aout B.txt",ios::out|ios::app);
+  
+  strr=str + "Aout B.txt";
+  
+  faB.open(strr,ios::out|ios::app);
   faB<<tabaB/double(Length_*Width_)<<endl;
   faB.close();
   
-  fbB.open("Bout B.txt",ios::out|ios::app);//"Bin.txt"
+  
+  strr=str + "Bout B.txt";
+  
+  fbB.open(strr,ios::out|ios::app);//"Bin.txt"
   fbB<<tabbB/double(Length_*Width_)<<endl;
   fbB.close();
 
+  strr=str + "Cout B.txt";
+  
   //~ cout<<tabc<<endl;
-  fcB.open("Cout B.txt",ios::out|ios::app);
+  fcB.open(strr,ios::out|ios::app);
   fcB<<tabcB/double(Length_*Width_)<<endl;
   fcB.close();
   

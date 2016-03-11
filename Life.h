@@ -55,7 +55,7 @@ class Life {
   void metaboWeb();
   void combo();
   void nextStep();
-  void hugeCycle();
+  void hugeCycle(std::string STR);
 
 protected :
   // =========================================================================

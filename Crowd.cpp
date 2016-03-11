@@ -90,7 +90,7 @@ void Crowd::printCrowd(std::string str){
   tab = nullptr;
 }
 
-void Crowd::writeCrowdABC(){	
+void Crowd::writeCrowdABC(std::string str){	
 	
   double tabaA = 0.;
   double tabbA = 0.;
@@ -131,16 +131,25 @@ void Crowd::writeCrowdABC(){
   ofstream fbA;
   ofstream fcA;
   
-  faA.open("Ain A.txt",ios::out|ios::app);
+  
+  std::string strr=str + "Ain A.txt";
+  
+  faA.open(strr,ios::out|ios::app);
   faA<<tabaA/double(Length_*Width_)<<endl;
   faA.close();
   
-  fbA.open("Bin A.txt",ios::out|ios::app);//"Bin.txt"
+  
+  strr=str + "Bin A.txt";
+  
+  fbA.open(strr,ios::out|ios::app);//"Bin.txt"
   fbA<<tabbA/double(Length_*Width_)<<endl;
   fbA.close();
 
+
+  strr=str + "Cin A.txt";
+  
   //~ cout<<tabc<<endl;
-  fcA.open("Cin A.txt",ios::out|ios::app);
+  fcA.open(strr,ios::out|ios::app);
   fcA<<tabcA/double(Length_*Width_)<<endl;
   fcA.close();
 
@@ -148,16 +157,22 @@ void Crowd::writeCrowdABC(){
   ofstream fbB;
   ofstream fcB;
   
-  faB.open("Ain B.txt",ios::out|ios::app);
+  strr=str + "Ain B.txt";
+  
+  faB.open(strr,ios::out|ios::app);
   faB<<tabaB/double(Length_*Width_)<<endl;
   faB.close();
+    
+  strr=str + "Bin B.txt";
   
-  fbB.open("Bin B.txt",ios::out|ios::app);//"Bin.txt"
+  fbB.open(strr,ios::out|ios::app);//"Bin.txt"
   fbB<<tabbB/double(Length_*Width_)<<endl;
   fbB.close();
-
+  
+  strr=str + "Cin B.txt";
+  
   //~ cout<<tabc<<endl;
-  fcB.open("Cin B.txt",ios::out|ios::app);
+  fcB.open(strr,ios::out|ios::app);
   fcB<<tabcB/double(Length_*Width_)<<endl;
   fcB.close();
 

@@ -105,12 +105,10 @@ int main(int argc, char* argv[]) {
   for (int i=0; i<6; i++){
     cout<<c1.Crowdy()[0][i].alive()<<" "<<c1.Crowdy()[1][i].alive()<<" "<<c1.Crowdy()[2][i].alive()<<" "<<c1.Crowdy()[3][i].alive()<<endl;
   }
-  */
-  
-  // ===================================================================
-  //                              Life
-  // ===================================================================
-  
+  * 
+  * 
+  * 
+  *
   //~ int T = 1000;
   //~ int simul = 500;
   //~ double ainit = 50;
@@ -124,13 +122,20 @@ int main(int argc, char* argv[]) {
   //~ double rbb = 0.1;
   //~ double rab = 0.1;
   //~ double rbc = 0.1;
+  */
+  
+  // ===================================================================
+  //                              Life
+  // ===================================================================
+  
+
   int T = atoi(argv[1]);
   double ainit = atof(argv[3]);
   int simul = atoi(argv[2]);
   int width = atoi(argv[4]);
   int length = atoi(argv[5]);
   double d = atof(argv[6]);
-  double pmut = atof(argv[7]); //seee values PDF !!!
+  double pmut = atof(argv[7]); 
   double pdeath = atof(argv[8]);
   double wmin = atof(argv[9]);
   double raa = atof(argv[10]);
@@ -139,16 +144,19 @@ int main(int argc, char* argv[]) {
   double rbc = atof(argv[13]);
   
   
-  for (int i = 1; i<=500;i++){
+  for (int i = 1; i<=500;i+=50){
     T = i;
-    for (double j = 0. ; j<=50. ; j++){
+    for (double j = 0. ; j<=50. ; j+=10){
       ainit = j;
       Life lilou = Life(T, simul, ainit, width, length, d, pmut, pdeath, wmin, raa, rbb, rab, rbc);
-      lilou.hugeCycle();
+      std::string str1 = std::to_string(i);
+      std::string str2 = std::to_string(j);
+      std::string str = "T-" + str1 + "_Ainit-" + str2;
+      lilou.hugeCycle(str);
     } 
   } 
   
-  
+  /**
   //~ Life lilou = Life(T, simul, ainit, width, length, d, pmut, pdeath, wmin, raa, rbb, rab, rbc);
   
   //~ cout<<"BOUH!"<<endl;
@@ -162,6 +170,7 @@ int main(int argc, char* argv[]) {
   
   //print concentration environment and cells(do a file and then see on R)
   //PB PQ MES CONCENTRATION DISPARAISSENT TOUTES ??????
+  */
   
   return EXIT_SUCCESS;
 }

@@ -79,7 +79,7 @@ Image::Image(int L, int W, int** tab,int color)
           _data[index]=(unsigned char)0;
           index++;
         }
-        else if (tab[x][y]==1)
+        else if (tab[x][y]==1) //GB est bleu
         {
           _data[index]=(unsigned char)10;
           index++;
@@ -88,7 +88,7 @@ Image::Image(int L, int W, int** tab,int color)
           _data[index]=(unsigned char)130;
           index++;
         }
-        else 
+        else //GA est rouge
         {
           _data[index]=(unsigned char)150;
           index++;

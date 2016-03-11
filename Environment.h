@@ -55,8 +55,8 @@ class Environment {
   // =========================================================================
   //                              Public Methods
   // =========================================================================
-  void printEnvABC(std::string str, double Ainit , double** X);
-  void writeEnvABC(Individual** cr);
+  //~ void printEnvABC(std::string str, double Ainit , double** X);
+  void writeEnvABC(std::string str, Individual** cr);
   void diffusion(double D);
   void recycle(double Ainit);
   int sides(int xy, int LW);
