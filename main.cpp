@@ -124,10 +124,9 @@ int main(int argc, char* argv[]) {
   //~ double rbb = 0.1;
   //~ double rab = 0.1;
   //~ double rbc = 0.1;
-  
   int T = atoi(argv[1]);
-  int simul = atoi(argv[2]);
   double ainit = atof(argv[3]);
+  int simul = atoi(argv[2]);
   int width = atoi(argv[4]);
   int length = atoi(argv[5]);
   double d = atof(argv[6]);
@@ -139,7 +138,18 @@ int main(int argc, char* argv[]) {
   double rab = atof(argv[12]);
   double rbc = atof(argv[13]);
   
-  Life lilou = Life(T, simul, ainit, width, length, d, pmut, pdeath, wmin, raa, rbb, rab, rbc);
+  
+  for (int i = 1; i<=500;i++){
+    T = i;
+    for (double j = 0. ; j<=50. ; j++){
+      ainit = j;
+      Life lilou = Life(T, simul, ainit, width, length, d, pmut, pdeath, wmin, raa, rbb, rab, rbc);
+      lilou.hugeCycle();
+    } 
+  } 
+  
+  
+  //~ Life lilou = Life(T, simul, ainit, width, length, d, pmut, pdeath, wmin, raa, rbb, rab, rbc);
   
   //~ cout<<"BOUH!"<<endl;
   
@@ -148,7 +158,7 @@ int main(int argc, char* argv[]) {
     //~ cout<<double(*argv[i])<<endl;//<<" "<<lilou.ecoli().Crowdy()[1][i].alive()<<" "<<lilou.ecoli().Crowdy()[2][i].alive()<<" "<<lilou.ecoli().Crowdy()[3][i].alive()<<endl;
   //~ }
 
-  lilou.hugeCycle(); 
+  //~ lilou.hugeCycle(); 
   
   //print concentration environment and cells(do a file and then see on R)
   //PB PQ MES CONCENTRATION DISPARAISSENT TOUTES ??????

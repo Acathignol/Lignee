@@ -179,17 +179,17 @@ void Life::hugeCycle(){
   for (int i = 1 ; i<=Simul_ ; i++){
     //~ cout<<"Bip "<<i<<endl;
     if ((i%T_)==0){
-      //~ std::string str1 = std::string("PetriBox_");
+      std::string str1 = std::string("PetriBox_");
       //~ std::string str11a = std::string("Aout_");
       //~ std::string str11b = std::string("Bout_");
       //~ std::string str11c = std::string("Cout_");
-      //~ std::string str2 = std::to_string(i);
-      //~ std::string str = str1 + str2;
+      std::string str2 = std::to_string(i);
+      std::string str = str1 + str2;
       //~ std::string strstra = str11a + str2;
       //~ std::string strstrb = str11b + str2;
       //~ std::string strstrc = str11c + str2;
       //~ 
-      //~ ecoli_->printCrowd(str);
+      ecoli_->printCrowd(str);
       //~ box_->printEnvABC(strstra, Ainit_ , box_->PetriA());
       //~ box_->printEnvABC(strstrb, Ainit_ , box_->PetriB());
       //~ box_->printEnvABC(strstrc, Ainit_ , box_->PetriC());
@@ -200,12 +200,12 @@ void Life::hugeCycle(){
     this->nextStep();
     box_->writeEnvABC(ecoli_->Crowdy());
     ecoli_->writeCrowdABC();
-    std::string str1 = std::string("PetriBox_");
+    //~ std::string str1 = std::string("PetriBox_");
     //~ std::string str11a = std::string("Aout_");
     //~ std::string str11b = std::string("Bout_");
     //~ std::string str11c = std::string("Cout_");
-    std::string str2 = std::to_string(i);
-    std::string str = str1 + str2;
+    //~ std::string str2 = std::to_string(i);
+    //~ std::string str = str1 + str2;
     //~ std::string strstra = str11a + str2;
     //~ std::string strstrb = str11b + str2;
     //~ std::string strstrc = str11c + str2;
@@ -215,7 +215,7 @@ void Life::hugeCycle(){
     //~ box_->printEnvABC(strstrb, Ainit_ , box_->PetriB());
     //~ box_->printEnvABC(strstrc, Ainit_ , box_->PetriC());
     //~ 
-    ecoli_->printCrowd(str);
+    //~ ecoli_->printCrowd(str);
     cout<<"iteration "<<i<<endl;
     
 	}
