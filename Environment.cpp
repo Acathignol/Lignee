@@ -4,13 +4,10 @@
 #include "Environment.h"
 
 // ===========================================================================
-//                       Definition of static attributes
-// ===========================================================================
-  
-// ===========================================================================
 //                                Constructors
 // ===========================================================================
-//Constructeur par défaut
+
+//Default constructor (UNUSED IN MY LIFE CLASS)
 Environment::Environment() {
   Length_ = 0;
   Width_ = 0;
@@ -31,10 +28,10 @@ Environment::Environment() {
   };
 }
 
-//Constructeur par copie 
+//Copy constructor (UNUSED IN MY LIFE CLASS) 
 Environment::Environment(const Environment& Copy) {
   Length_ = Copy.Length_;
-  Width_ = Copy.Width_; //posssible???????????????????????????????????????????? ou getter?
+  Width_ = Copy.Width_; 
   
   PetriA_=new double*[Length_];
   PetriB_=new double*[Length_];
@@ -52,8 +49,7 @@ Environment::Environment(const Environment& Copy) {
   };
 }
 
-
-//constructor with a length and a width , also x and y init
+//Constructor with a length, a width and a initial concentration in A (USED)
 Environment::Environment(int l, int w, double Ainit) {
   Length_ = l;
   Width_ = w;
@@ -77,9 +73,6 @@ Environment::Environment(int l, int w, double Ainit) {
 
 
 
-
-
-
 // ===========================================================================
 //                                 Destructor
 // ===========================================================================
@@ -98,33 +91,40 @@ Environment::~Environment(){
   PetriC_ = nullptr;
   }
   
+  
+  
 // ===========================================================================
 //                               Public Methods
 // ===========================================================================
-//Method to print the table MARCHE PAS
-//~ void Environment::printEnvABC(std::string str, double Ainit , double** X){	
-	//~ 
-  //~ int** tab = new int*[Length_];
-  //~ for (int i=0;i<Length_;i++){
-    //~ tab[i]=new int[Width_];
-    //~ for (int j=0;j<Width_;j++){
-      //~ //cout<<X[i][j]<<endl;
-      //~ tab[i][j]=(X[i][j]*255/Ainit);
-    //~ }
-  //~ };
-//~ 
-  //~ Image ima(int(Length_),int(Width_) ,tab,1);
-  //~ ima.save(str);
-  //~ 
-  //~ for (int i=0; i<Length_;i++){
-    //~ delete[] tab[i];
-  //~ }
-  //~ delete[] tab;
-  //~ tab = nullptr;
-//~ }
+//IF A METHOD IS NOT USED IN MAIN => I HAVE TO PUT IT PROTECTED!!
+
+// DOESN'T WORK BUT UNUSEFULL FOR NOW : 
+/**
+ * //Method to print the table 
+ * void Environment::printEnvABC(std::string str, double Ainit , double** X){	
+ * int** tab = new int*[Length_];
+ * for (int i=0;i<Length_;i++){
+ *  tab[i]=new int[Width_];
+ *  for (int j=0;j<Width_;j++){
+ *    //cout<<X[i][j]<<endl;
+ *    tab[i][j]=(X[i][j]*255/Ainit);
+ *  }
+ * };
+ * 
+ * Image ima(int(Length_),int(Width_) ,tab,1);
+ * ima.save(str);
+ * 
+ * for (int i=0; i<Length_;i++){
+ *  delete[] tab[i];
+ * }
+ * delete[] tab;
+ * tab = nullptr;
+ * }
+ */
 
 void Environment::writeEnvABC(std::string str, Individual** cr){	
-
+  /**
+  //OLD WAY TO DO : UNUSEFULL FOR NOW
   //~ double taba = 0.;
   //~ double tabb = 0.;
   //~ double tabc = 0.;
@@ -151,16 +151,18 @@ void Environment::writeEnvABC(std::string str, Individual** cr){
   //~ fc.open("Cout.txt",ios::out|ios::app);
   //~ fc<<tabc/double(Length_*Width_)<<endl;
   //~ fc.close();
+  */
   
-  double tabaA = 0.;
-  double tabbA = 0.;
+  //NEW WAY TO DO :
+  double tabaA = 0.; //New double of the A concentrations' sum for the blocs where we have cells with the A genotype in the block (A out for the genotype A)
+  double tabbA = 0.; //idem....
   double tabcA = 0.;
   double tabaB = 0.;
   double tabbB = 0.;
   double tabcB = 0.;
   
 
-  
+  //Copying the values 
   for (int i=0;i<Length_;i++){
     for (int j=0;j<Width_;j++){
       if (cr[i][j].G() == 1){
@@ -176,6 +178,8 @@ void Environment::writeEnvABC(std::string str, Individual** cr){
     }
   };
 
+  //Writing the files
+  
   ofstream faA;
   ofstream fbA;
   ofstream fcA;
@@ -228,7 +232,7 @@ void Environment::writeEnvABC(std::string str, Individual** cr){
 
 int Environment::sides(int xy, int LW){ 
   // To do the toric conditions
-  //put an x or an y and the corresponding side (length or width)
+  // Put an x or an y and the corresponding side (length or width)
 
   if (xy < 0){xy = (LW-1);}
   // if the x or y is inferior to 0 
@@ -240,8 +244,8 @@ int Environment::sides(int xy, int LW){
   return xy; //return the x or y newly (or not) calculated
 }
 
-//IF NOT USES IN MAIN => PROTECTED!!
 void Environment::diffusion(double D){
+  //Copying the old table
   double** CA_=new double*[Length_];
   double** CB_=new double*[Length_];
   double** CC_=new double*[Length_];
@@ -251,31 +255,32 @@ void Environment::diffusion(double D){
     CB_[x]=new double[Width_];
     CC_[x]=new double[Width_];
     
+    
     for (int y=0;y<Width_;y++){
       CA_[x][y]=PetriA_[x][y];
       CB_[x][y]=PetriB_[x][y];
       CC_[x][y]=PetriC_[x][y];
       
-      for (int i=-1 ; i>=2 ; i++){
-        for (int j=-1 ; j>=2 ; j++){
+      
+      //Diffusion
+      for (int i=(-1) ; i<=1 ; i++){
+        //~ printf("AAA");
+        for (int j=(-1) ; j<=1 ; j++){
           int x2 = this->sides(x+i, Length_);
           int y2 = this->sides(y+j, Width_);
-          
-          //~ CA_[x][y] += D*CA_[x2][y2]; THAT OR NOT ???????????????????
-          //~ CB_[x][y] += D*CB_[x2][y2];
-          //~ CC_[x][y] += D*CC_[x2][y2];
+          //~ printf("BBB");
     		  CA_[x][y] += D*PetriA_[x2][y2];
           CB_[x][y] += D*PetriB_[x2][y2];
           CC_[x][y] += D*PetriC_[x2][y2];
+          //~ cout<<x2<<endl;
+          
         }
       } 	
-      //~ CA_[x][y] -= 9*D*CA_[x][y];
-      //~ CB_[x][y] -= 9*D*CB_[x][y];
-      //~ CC_[x][y] -= 9*D*CC_[x][y];
       CA_[x][y] -= 9*D*PetriA_[x][y];
       CB_[x][y] -= 9*D*PetriB_[x][y];
       CC_[x][y] -= 9*D*PetriC_[x][y];
     }
+    //Deleting the old table
     delete[] PetriA_[x];
     delete[] PetriB_[x];
     delete[] PetriC_[x];
@@ -285,13 +290,15 @@ void Environment::diffusion(double D){
   delete[] PetriB_;
   delete[] PetriC_;
   
+  //Pointing to the new ones
   PetriA_ = CA_;
   PetriB_ = CB_;
   PetriC_ = CC_;
 }  
 
 void Environment::recycle(double Ainit){
-  //delete old and renew  !
+  //Deleting the old concentrations out of the celles and renewing them!
+  //It's like a renewal of the environment concentrations
   for (int i=0; i<Length_;i++){
     for (int j=0; j<Width_;j++){
 	    PetriA_[i][j]=Ainit;
@@ -300,7 +307,4 @@ void Environment::recycle(double Ainit){
 	  }
   }
 }
-// ===========================================================================
-//                              Protected Methods
-// ===========================================================================
 

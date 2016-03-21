@@ -4,13 +4,10 @@
 #include "Life.h"
 
 // ===========================================================================
-//                       Definition of static attributes
-// ===========================================================================
-  
-// ===========================================================================
 //                                Constructors
 // ===========================================================================
-//Constructeur par défaut
+
+//Default constructor (UNUSED)
 Life::Life() {
   T_=0;
   Simul_=0;
@@ -30,6 +27,7 @@ Life::Life() {
   ecoli_ = new Crowd();
 }
 
+//Good constructor (USED in main.cpp)
 Life::Life(int T, int simul, double ainit, int width, int length, double d,
 double pmut, double pdeath, double wmin, double raa, double rbb,
 double rab, double rbc) {
@@ -110,30 +108,45 @@ void Life::metaboWeb(){
       }
     }
   }
+  
+  //new fitnesses
   ecoli_->fited(Wmin_);
 }
 
-
+//Methode to kill and relocate the concentrations of the newly dead individual to the environment
 void Life::combo(){
   ecoli_->epickill(Pdeath_);
-  std::vector<Individual> vec = ecoli_->listHoles();
+  std::vector<Individual> vec = ecoli_->listDeads();
   for (int i=0 ; i<int(vec.size()) ; i++){
     if (not vec[i].alive()){
       //~ cout<<box_->PetriA()[vec[i].x()][vec[i].y()]<<endl;
       box_->PetriA()[vec[i].x()][vec[i].y()] += vec[i].A();
       box_->PetriB()[vec[i].x()][vec[i].y()] += vec[i].B();
       box_->PetriC()[vec[i].x()][vec[i].y()] += vec[i].C();
+      //~ box_->set_PetriA(vec[i].x(),vec[i].y(), vec[i].A());
+      //~ box_->set_PetriB(vec[i].x(),vec[i].y(), vec[i].B());
+      //~ box_->set_PetriC(vec[i].x(),vec[i].y(), vec[i].C());
+    }
+  }
+}
+
+void Life::killThemAll(){
+  std::vector<Individual> vec = ecoli_->listDeads();
+  for (int i=0 ; i<int(vec.size()) ; i++){
+    if (not vec[i].alive()){
+      ecoli_->Crowdy()[vec[i].x()][vec[i].y()] = Individual(vec[i].x(),vec[i].y(),69);
     }
   }
 }
 
 //Method which shows what happens at each generation :
 void Life::nextStep(){
+  this->killThemAll();
   
   box_->diffusion(D_); //Concentrations diffuse
   this->combo(); //Cells die
-  ecoli_->muted(Pmut_); //Cells mutate
-  ecoli_->duplication(Wmin_); //Cells duplicate
+  //~ ecoli_->muted(Pmut_); //Cells mutate
+  ecoli_->duplication(Wmin_, Pmut_); //Cells duplicate and mutate or not
   this->metaboWeb(); //Cells metabolism (Concentrations in increase for 
   //A and B (Ga) or B and C (Gb); Concentrations out decrease for A (Ga) or B (Gb);
 }
@@ -141,47 +154,47 @@ void Life::nextStep(){
 
 void Life::hugeCycle(std::string STR){
   
-  //~ remove("Aout A.txt");
-  //~ remove("Bout A.txt");
-  //~ remove("Cout A.txt");
-  //~ remove("Ain A.txt");
-  //~ remove("Bin A.txt");
-  //~ remove("Cin A.txt");
-  //~ remove("Aout B.txt");
-  //~ remove("Bout B.txt");
-  //~ remove("Cout B.txt");
-  //~ remove("Ain B.txt");
-  //~ remove("Bin B.txt");
-  //~ remove("Cin B.txt");
-  box_->writeEnvABC(STR, ecoli_->Crowdy());
-  ecoli_->writeCrowdABC(STR);
+  // OLD TO KEEP
+  remove("TestAout A.txt");
+  remove("TestBout A.txt");
+  remove("TestCout A.txt");
+  remove("TestAin A.txt");
+  remove("TestBin A.txt");
+  remove("TestCin A.txt");
+  remove("TestAout B.txt");
+  remove("TestBout B.txt");
+  remove("TestCout B.txt");
+  remove("TestAin B.txt");
+  remove("TestBin B.txt");
+  remove("TestCin B.txt");
+  
+  
+  //~ box_->writeEnvABC(STR, ecoli_->Crowdy());
+  //~ ecoli_->writeCrowdABC(STR);
 
   //First: in order to have positive fitnesses (non null), metabolism; 
   this->metaboWeb(); 
   
   for (int i = 1 ; i<=Simul_ ; i++){
     if ((i%T_)==0){
-      box_->recycle(Ainit_); //Renewing the environment
+      box_->recycle(Ainit_); //Renewing the environment 
       
     }
-    if ((i%500)==0){cout<<"iteration "<<i<<endl;
-      box_->writeEnvABC(STR, ecoli_->Crowdy());
-      ecoli_->writeCrowdABC(STR);}
-    this->nextStep(); //Cells metabolism (Concentrations in increase for 
+    if ((i%5000)==0){cout<<"iteration "<<i<<endl;}
+    //~ if ((i%1)==0){
+      //~ cout<<"iteration "<<i<<endl;
+      //~ box_->writeEnvABC(STR, ecoli_->Crowdy());
+      //~ ecoli_->writeCrowdABC(STR);}
+    this->nextStep(); //Cells metabolism (Concentrations "in" the cells increase for 
   //A and B (Ga) or B and C (Gb); Concentrations out decrease for A (Ga) or B (Gb);
     
     //~ box_->writeEnvABC(STR, ecoli_->Crowdy());
     //~ ecoli_->writeCrowdABC(STR);
 	}
   
-  std::string str= STR + "PetriBox_End_10000";
-  ecoli_->printCrowd(str);
+  //~ std::string str= STR + "PetriBox_End_10000";
+  ecoli_->writeResult("results.txt", Ainit_ , T_);
+  //~ ecoli_->printCrowd(str);
   
   cout<<"Finit ! ;) "<<endl;
 }
-
-// ===========================================================================
-//                              Protected Methods
-// ===========================================================================
-
-

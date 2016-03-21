@@ -38,17 +38,9 @@ class Crowd {
   // =========================================================================
   //                                  Getters
   // =========================================================================
-  inline Individual** Crowdy(void) const; //unused
-  inline int Length(void) const; //unused
-  inline int Width(void) const; //unused
-
-  // =========================================================================
-  //                                  Setters
-  // =========================================================================
-  
-  // =========================================================================
-  //                                 Operators
-  // =========================================================================
+  inline Individual** Crowdy(void) const; //used
+  inline int Length(void) const; //used
+  inline int Width(void) const; //used
 
   // =========================================================================
   //                              Public Methods
@@ -60,7 +52,7 @@ class Crowd {
   void writeCrowdABC(std::string str);
   
   //IF NOT USES IN MAIN => PROTECTED!!
-  void muted (double Pmut);
+  //~ void muted (double Pmut);
   void epickill(double Pdeath);
   void fited(double Wmin);
   
@@ -70,17 +62,12 @@ class Crowd {
   Individual sides(int x, int y);
   Individual findWmaxi(Individual hole);
   std::vector<Individual> listHoles();
-  void duplication(double Wmin);
-
-
+  std::vector<Individual> listDeads();
+  void duplication(double Wmin, double Pmut);
+  
+  void writeResult(std::string str, double ainit, int T);
 
 protected :
-  // =========================================================================
-  //                             Protected Methods
-  // =========================================================================
-  
-
-
   // =========================================================================
   //                                Attributes
   // =========================================================================
@@ -90,7 +77,6 @@ protected :
   
   //concentration A B C
   Individual** Crowdy_;
-
 
 };
 
@@ -108,16 +94,5 @@ inline int Crowd::Length(void) const{
 inline int Crowd::Width(void) const{
   return Width_;
 }
-// ===========================================================================
-//                            Setters' definitions
-// ===========================================================================
-
-// ===========================================================================
-//                           Operators' definitions
-// ===========================================================================
-
-// ===========================================================================
-//                        Inline functions' definition
-// ===========================================================================
 
 #endif // CROWD_H__

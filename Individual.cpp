@@ -10,9 +10,9 @@
 // ===========================================================================
 //                                Constructors
 // ===========================================================================
-//Constructeur par défaut
+
+//Default constructor (UNUSED IN MY LIFE CLASS) (srand(time(NULL)) put in main.cpp)
 Individual::Individual() {
-  //srand(time(NULL)); // PUT HERE  !!!!!!!!!!!!!?????
     
   G_ = rand()%(2-0) +0 ;
     
@@ -27,6 +27,23 @@ Individual::Individual() {
   y_ = 0;
   
   alive_ = true;
+}
+
+Individual::Individual(int X, int Y,int a) {// individual SUPER DEAD
+    
+  G_ = a ;
+    
+  // defining the A,B,C AND DOING ONE TURN OF DIFFERENTIAL EQUATION SO W NOT BAD!!!
+  A_ = 0.;
+  B_ = 0.;
+  C_ = 0.;
+  
+  w_ = 0.;
+  
+  x_ = X;
+  y_ = Y;
+  
+  alive_ = false;
 }
 
 //Constructor copy + x and y
@@ -46,9 +63,8 @@ Individual::Individual(const Individual& ind, int a, int b) {
   alive_ = ind.alive_;
 }
 
-//Constructor with x and y
+//Constructor with x and y (srand(time(NULL)) put in main.cpp)
 Individual::Individual(int a, int b) {
-  //srand(time(NULL));
     
   G_ = rand()%(2-0) +0 ;
     
@@ -66,7 +82,6 @@ Individual::Individual(int a, int b) {
 }
 
 
-
 // ===========================================================================
 //                                 Destructor
 // ===========================================================================
@@ -78,6 +93,16 @@ Individual::~Individual(){
 //                               Public Methods
 // ===========================================================================
 
+//New concentrations (and fitness)
+void Individual::parent(double Wmin){
+  A_ = A_/2.;
+  B_ = B_/2.;
+  C_ = C_/2.;
+
+  this->fitness(Wmin);
+}
+
+//New baby :D !
 void Individual::baby(Individual Parent){
   G_ = Parent.G_;
   
@@ -90,15 +115,7 @@ void Individual::baby(Individual Parent){
   alive_= Parent.alive_;
 }
 
-void Individual::parent(double Wmin){
-  A_ = A_/2.;
-  B_ = B_/2.;
-  C_ = C_/2.;
-
-  this->fitness(Wmin);
-}
-
-//IF NOT USES IN MAIN => PROTECTED!!
+//One cell randomly realizes a mutation or not (srand(time(NULL)) put in main.cpp)
 void Individual::mutation(double Pmut){
   
   double mut = (double)rand() / (double)RAND_MAX;
@@ -113,6 +130,7 @@ void Individual::mutation(double Pmut){
   }    
 }  
 
+//One cell randomly dies not (srand(time(NULL)) put in main.cpp)
 void Individual::massacre(double Pdeath){
   if (alive_){
     double death = (double)rand() / (double)RAND_MAX;
@@ -123,6 +141,7 @@ void Individual::massacre(double Pdeath){
   }   
 }  
 
+//One cell establishes her fitness of the moment 
 void Individual::fitness(double Wmin){
   if (alive_){
     if (G_ == 1){

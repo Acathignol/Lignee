@@ -34,9 +34,9 @@ class Environment {
   // =========================================================================
   //                                  Getters
   // =========================================================================
-  inline double** PetriA(void) const; //unused
-  inline double** PetriB(void) const; //unused
-  inline double** PetriC(void) const; //unused
+  inline double** PetriA(void) const; //used
+  inline double** PetriB(void) const; //used
+  inline double** PetriC(void) const; //used
   //~ 
   //~ inline int Length(void) const; //unused
   //~ inline int Width(void) const; //unused
@@ -44,13 +44,9 @@ class Environment {
   //                                  Setters
   // =========================================================================
 
-  //~ inline void set_PetriA(double** intab); //unused
-  //~ inline void set_PetriB(double** intab) ;//unused
-  //~ inline void set_PetriC(double** intab); //unused
-
-  // =========================================================================
-  //                                 Operators
-  // =========================================================================
+  inline void set_PetriA(int X, int Y, double intab);
+  inline void set_PetriB(int X, int Y, double intab);
+  inline void set_PetriC(int X, int Y, double intab);
 
   // =========================================================================
   //                              Public Methods
@@ -62,9 +58,6 @@ class Environment {
   int sides(int xy, int LW);
 
 protected :
-  // =========================================================================
-  //                             Protected Methods
-  // =========================================================================
 
   // =========================================================================
   //                                Attributes
@@ -102,28 +95,17 @@ inline double** Environment::PetriC(void) const{
   //~ return Width_;
 //~ }
   
-
 // ===========================================================================
 //                            Setters' definitions
 // ===========================================================================
-//~ inline void Environment::set_PetriA(double** intab){
-  //~ PetriA_=intab;
-//~ }
-//~ inline void Environment::set_PetriB(double** intab){
-  //~ PetriB_=intab;
-//~ }
-//~ inline void Environment::set_PetriC(double** intab){
-  //~ PetriC_=intab;
-//~ }
-
-// ===========================================================================
-//                           Operators' definitions
-// ===========================================================================
-
-// ===========================================================================
-//                        Inline functions' definition
-// ===========================================================================
-
-
+inline void Environment::set_PetriA(int X, int Y, double intab){
+  PetriA_[X][Y]=intab;
+}
+inline void Environment::set_PetriB(int X, int Y, double intab){
+  PetriB_[X][Y]=intab;
+}
+inline void Environment::set_PetriC(int X, int Y, double intab){
+  PetriC_[X][Y]=intab;
+}
 
 #endif // ENVIRONMENT_H__

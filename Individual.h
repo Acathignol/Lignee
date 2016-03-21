@@ -18,6 +18,7 @@ class Individual {
   //                               Constructors
   // =========================================================================
   Individual();
+  Individual(int X, int Y,int a); 
   Individual(const Individual& ind,int a, int b);
   Individual(int a, int b);
   
@@ -25,10 +26,11 @@ class Individual {
   //                                Destructor
   // =========================================================================
   ~Individual();
+  
   // =========================================================================
   //                                  Getters
   // =========================================================================
-  inline bool G(void) const; //unused
+  inline int G(void) const; //unused
   
   inline double A(void) const; //unused
   inline double B(void) const; //unused
@@ -44,7 +46,7 @@ class Individual {
   // =========================================================================
   //                                  Setters
   // =========================================================================
-  //~ inline void set_G(bool i) const; //unused
+  inline void set_G(int i) ; //unused
 
   inline void set_A(double i) ; //unused
   inline void set_B(double i) ; //unused
@@ -58,10 +60,6 @@ class Individual {
   //~ inline void set_alive(bool i) ; //unused
   
   // =========================================================================
-  //                                 Operators
-  // =========================================================================
-
-  // =========================================================================
   //                              Public Methods
   // =========================================================================
   //IF NOT USES IN MAIN => PROTECTED!!
@@ -74,16 +72,10 @@ class Individual {
 
 protected :
   // =========================================================================
-  //                             Protected Methods
-  // =========================================================================
-  
-
-
-  // =========================================================================
   //                                Attributes
   // =========================================================================
   //genotype
-  bool G_; //1 = "you eat gluc"=GA  0 = "you eat acetate"=GB
+  int G_; //1 = "you eat gluc"=GA  0 = "you eat acetate"=GB
   
   //concentration A B C
   double A_;
@@ -106,7 +98,7 @@ protected :
 // ===========================================================================
 //                            Getters' definitions
 // ===========================================================================
-inline bool Individual::G(void) const{
+inline int Individual::G(void) const{
   return G_;
 }
 
@@ -138,10 +130,10 @@ inline bool Individual::alive(void) const{
 // ===========================================================================
 //                            Setters' definitions
 // ===========================================================================
-//~ inline void Individual::set_G(bool i) const{
-  //~ G_ = i;
-//~ }
-//~ 
+inline void Individual::set_G(int i) {
+  G_ = i;
+}
+
 inline void Individual::set_A(double i) {
   A_ = i;
 }
@@ -166,14 +158,5 @@ inline void Individual::set_C(double i) {
 //~ inline void Individual::set_alive(bool i) {
   //~ alive_ = i;
 //~ }
-// ===========================================================================
-//                           Operators' definitions
-// ===========================================================================
-
-// ===========================================================================
-//                        Inline functions' definition
-// ===========================================================================
-
-
 
 #endif // INDIVIDUAL_H__

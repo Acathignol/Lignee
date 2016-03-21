@@ -5,13 +5,10 @@
 #include "Crowd.h"
 
 // ===========================================================================
-//                       Definition of static attributes
-// ===========================================================================
-  
-// ===========================================================================
 //                                Constructors
 // ===========================================================================
-//Constructeur par défaut
+
+//Default constructor (UNUSED IN MY LIFE CLASS)
 Crowd::Crowd() {
   Length_ = 0;
   Width_ = 0;
@@ -19,7 +16,7 @@ Crowd::Crowd() {
   Crowdy_=nullptr;
 }
 
-//Constructeur par copie 
+//Copy constructor (UNUSED IN MY LIFE CLASS) 
 Crowd::Crowd(const Crowd& Copy) {
   Length_ = Copy.Length_;
   Width_ = Copy.Width_;
@@ -34,11 +31,13 @@ Crowd::Crowd(const Crowd& Copy) {
   };
 }
 
-
-//constructor with a length and a width , also x and y init
+//Constructor with a length and a width , and an individual(at a position x and y given) (USED)
 Crowd::Crowd(int l, int w) {
   Length_ = l;
   Width_ = w;
+  
+  int countA=(l*w)/2;
+  int countB=(l*w)/2;
   
   Crowdy_=new Individual*[Length_];
   
@@ -46,10 +45,22 @@ Crowd::Crowd(int l, int w) {
     Crowdy_[i]=new Individual[Width_];
     for (int j=0;j<Width_;j++){
       Crowdy_[i][j]=Individual(i,j);
+      if (countA>>0 and countB>>0){
+        if (Crowdy_[i][j].G()==0){countB-=1;}
+        else {countA-=1;}
+      }
+      else if (countA==0 and countB>>0){
+        Crowdy_[i][j].set_G(0);
+        countB-=1;
+      }
+      else if (countA>>0 and countB==0){
+        Crowdy_[i][j].set_G(1);
+        countA-=1;
+      }
+        
     }
   };
 }
-
 
 // ===========================================================================
 //                                 Destructor
@@ -69,6 +80,7 @@ Crowd::~Crowd(){
 //Method to print the table
 void Crowd::printCrowd(std::string str){	
 	
+  //New table containing the genotype if alive (A=2 => red, B=1 => blue/green and dead=0 => black)
   int** tab = new int*[Length_];
   for (int i=0;i<Length_;i++){
     tab[i]=new int[Width_];
@@ -79,10 +91,12 @@ void Crowd::printCrowd(std::string str){
       else {tab[i][j]=0;}
     }
   };
-
+  
+  //Creating an Image of the table and saving it
   Image ima(int(Length_),int(Width_) ,tab,0);
   ima.save(str);
   
+  //Deleting the table
   for (int i=0; i<Length_;i++){
     delete[] tab[i];
   }
@@ -92,15 +106,14 @@ void Crowd::printCrowd(std::string str){
 
 void Crowd::writeCrowdABC(std::string str){	
 	
-  double tabaA = 0.;
-  double tabbA = 0.;
+  double tabaA = 0.; //New double of the A concentrations' sum for the blocs where we have cells with the A genotype in the block (A out for the genotype A)
+  double tabbA = 0.; //idem....
   double tabcA = 0.;
   double tabaB = 0.;
   double tabbB = 0.;
   double tabcB = 0.;
   
-
-  
+  //Copying the values 
   for (int i=0;i<Length_;i++){
     for (int j=0;j<Width_;j++){
       if (Crowdy_[i][j].G() == 1){
@@ -108,7 +121,7 @@ void Crowd::writeCrowdABC(std::string str){
         tabbA+=Crowdy_[i][j].B();
         tabcA+=Crowdy_[i][j].C();
       
-      
+        //Old stuff not important (but I keep it in case)
         //~ std::string strr = "Bout GA";
         //~ std::string strb = "Bin GA";
         //~ box_->writeEnvABC(strr);
@@ -119,6 +132,7 @@ void Crowd::writeCrowdABC(std::string str){
         tabbB+=Crowdy_[i][j].B();
         tabcB+=Crowdy_[i][j].C();
         
+        //Old stuff not important (but I keep it in case)
         //~ std::string strr = "Bout GB";
         //~ std::string strr = "Bin GB";
         //~ box_->writeEnvABC(strr);
@@ -127,6 +141,8 @@ void Crowd::writeCrowdABC(std::string str){
     }
   };
 
+  //Writing the files
+  
   ofstream faA;
   ofstream fbA;
   ofstream fcA;
@@ -177,7 +193,39 @@ void Crowd::writeCrowdABC(std::string str){
   fcB.close();
 
 }
-//Method to print the table
+
+
+void Crowd::writeResult(std::string str, double ainit, int T){	
+
+  //Writing the files
+  int countA=0;
+  int countB=0;  
+  for (int i=0;i<Length_;i++){
+    for (int j=0;j<Width_;j++){
+      if (Crowdy_[i][j].alive()){
+        if (Crowdy_[i][j].G() == 0){
+          countB++;}
+        else if (Crowdy_[i][j].G() == 1){
+          countA++;}
+      }
+    }
+  }
+      
+  ofstream f;
+    
+  f.open(str,ios::out|ios::app);
+  f<<ainit<<" "<<T<<" ";
+  if (countA>>0 and countB>>0){f<<"2"<<endl;}
+  else if (countA>>0 and countB==0){f<<"1"<<endl;}
+  else {f<<"0"<<endl;}
+  f.close();
+
+
+}
+
+// DOESN'T WORK BUT UNUSEFULL FOR NOW : 
+/**
+//Method to print the table of the concentrations
 //~ void Crowd::printCrowdA(std::string str, double Ainit){	
 	//~ 
   //~ int** tab = new int*[Length_];
@@ -200,19 +248,19 @@ void Crowd::writeCrowdABC(std::string str){
   //~ delete[] tab;
   //~ tab = nullptr;
 //~ }
+ */
 
+//~ //Each cell randomly realizes a mutation or not (srand(time(NULL)) put in main.cpp)
+//~ void Crowd::muted (double Pmut){
+  //~ for (int i=0;i<Length_;i++){
+    //~ for (int j=0;j<Width_;j++){
+      //~ Crowdy_[i][j].mutation(Pmut);
+    //~ }
+  //~ };
+//~ }  
 
-void Crowd::muted (double Pmut){
-  //srand(time(NULL));
-  for (int i=0;i<Length_;i++){
-    for (int j=0;j<Width_;j++){
-      Crowdy_[i][j].mutation(Pmut);
-    }
-  };
-}  
-
+//Each cell randomly dies or not (srand(time(NULL)) put in main.cpp)
 void Crowd::epickill(double Pdeath){
-  //srand(time(NULL));
   for (int i=0;i<Length_;i++){
     for (int j=0;j<Width_;j++){ // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
       Crowdy_[i][j].massacre(Pdeath);
@@ -220,8 +268,8 @@ void Crowd::epickill(double Pdeath){
   };
 }  
 
+//Each cell establishes her fitness of the moment 
 void Crowd::fited(double Wmin){
-  //srand(time(NULL));
   for (int i=0;i<Length_;i++){
     for (int j=0;j<Width_;j++){
       Crowdy_[i][j].fitness(Wmin);
@@ -230,7 +278,7 @@ void Crowd::fited(double Wmin){
 }  
 
 Individual Crowd::sides(int x, int y){
-
+  //Checking the sides (Thoric conditions) and returning the appropriate individual
   if (x < 0){x = (Length_-1);}
   else if (x >= Length_){x = 0;}
   
@@ -248,7 +296,9 @@ Individual Crowd::sides(int x, int y){
 }
 
 std::vector<Individual> Crowd::checkSides(Individual hole){
-  // DO WE TAKE THE DIAGONALS TOO ???????????????????????????????????????????????????
+  //Returns a vector containing each individual around the newly dead one ("hole")
+  
+  // WE TAKE THE DIAGONALS TOO !
   std::vector<Individual> vSides;
   
   //NORTH
@@ -271,17 +321,17 @@ std::vector<Individual> Crowd::checkSides(Individual hole){
   return vSides;
 }
 
-Individual Crowd::findWmaxi(Individual hole){ // put a individual, hole
-  // take sides !!! add a if for the ones that are on boards
-  // return random
-  // add SOMTHING SPECIAL IF NO NEIGHBOUR
-
+Individual Crowd::findWmaxi(Individual hole){ // put a dead individual, hole, as an argument
+  // takes sides !!! add a if for the ones that are on boards
+  // returns random
+  // adds SOMTHING SPECIAL IF NO NEIGHBOURS
+  
   std::vector<Individual> Sides = this->checkSides(hole);
   double max = Sides[0].w();
   Individual Indmax = Sides[0];
   std::vector<Individual> VIndmax;
-  int count = 1;
-
+  
+  //Searching the maximum fitness of all 
   for (int i = 0; i < int(Sides.size()); i++){
     if (Sides[i].alive()){
       if (Sides[i].w() > max){
@@ -290,17 +340,18 @@ Individual Crowd::findWmaxi(Individual hole){ // put a individual, hole
       }
     }
   }
- 
+  
+  //If there is multiple cells around the dead which have the same max. fitness:
+  // First we put them all, them we choose randomly one
   for (int i = 0; i < int(Sides.size()); i++){
     if (Sides[i].alive()){
       if (Sides[i].w() == max){
         Indmax = Sides[i];
         VIndmax.push_back(Indmax);
-        count++;
       }
     }
   }
-    
+  
   if (int(VIndmax.size())==1){
     return VIndmax[0];
   }
@@ -311,8 +362,8 @@ Individual Crowd::findWmaxi(Individual hole){ // put a individual, hole
   else {return hole;}
 }
 
-std::vector<Individual> Crowd::listHoles(){
-  //srand(time(NULL)); 
+std::vector<Individual> Crowd::listDeads(){
+  //(srand(time(NULL)) put in main.cpp) 
   //parcourir list
   //put a list of all the holes
   
@@ -329,14 +380,37 @@ std::vector<Individual> Crowd::listHoles(){
   };
 
   if (Count==0){
-    v.push_back(Individual());//FIND ANOTHER WAY !!!!!!!!!!!!!
+    v.push_back(Individual());//FIND ANOTHER WAY !!!!!!!!!!!!!? But it works! So why should I bother ?
   }
   return v;
 }
 
-
-void Crowd::duplication(double Wmin){ 
+std::vector<Individual> Crowd::listHoles(){
+  //(srand(time(NULL)) put in main.cpp) 
+  //parcourir list
+  //put a list of all the holes
   
+  int Count = 0;
+  std::vector<Individual> v;  
+    
+  for (int i=0;i<Length_;i++){
+    for (int j=0;j<Width_;j++){
+	    if (Crowdy_[i][j].G()==69){
+	      Count++;
+        v.push_back(Crowdy_[i][j]);
+      }
+    }
+  };
+
+  if (Count==0){
+    v.push_back(Individual());//FIND ANOTHER WAY !!!!!!!!!!!!!? But it works! So why should I bother ?
+  }
+  return v;
+}
+
+//Duplication
+void Crowd::duplication(double Wmin, double Pmut){ 
+  Individual Parent;
   std::vector<Individual> v = this->listHoles(); 
   //obtaining a list of all the holes in the map
   while (v.size()!=0){ 
@@ -346,26 +420,25 @@ void Crowd::duplication(double Wmin){
     
     if (not v[i].alive()){
       //if the place in the list is really dead (if no one is dead)
-      Individual Parent = this->findWmaxi(v[i]);
+      Parent = this->findWmaxi(v[i]);
       //for the place in the list, finding the individual alive with the 
       //highest fitness (w) around (Parent)
-      if (Parent.w()!=0){
+      if (Parent.w()!=0 and Parent.alive()){
         
-        Parent.parent(Wmin);  //remove WMIN no?!?
+        //~ Parent.parent(Wmin);  //remove WMIN no?!?
+        Crowdy_[Parent.x()][Parent.y()].parent(Wmin);
         //Dividing the concentration by 2 to have the future concentrations
 
-        Crowdy_[v[i].x()][v[i].y()].baby(Parent);
+        Crowdy_[v[i].x()][v[i].y()].baby(Crowdy_[Parent.x()][Parent.y()]);
+        Crowdy_[v[i].x()][v[i].y()].mutation(Pmut);
+        Crowdy_[Parent.x()][Parent.y()].mutation(Pmut);
+        
         //Copying the parent to the dead place => new baby alive
       }
     }
     v.erase(v.begin()+i);
-    //deleting the inividual taken randomly in the list
+    //deleting the individual taken randomly in the list
   }
 }
-
-
-// ===========================================================================
-//                              Protected Methods
-// ===========================================================================
 
 

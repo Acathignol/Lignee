@@ -70,7 +70,7 @@ Image::Image(int L, int W, int** tab,int color)
     {
       for (int y = 0; y < _h; y++)
       {
-        if (tab[x][y]==0)
+        if (tab[x][y]==0) //Le mort est noir
         {
           _data[index]=(unsigned char)0;
           index++;
@@ -79,7 +79,7 @@ Image::Image(int L, int W, int** tab,int color)
           _data[index]=(unsigned char)0;
           index++;
         }
-        else if (tab[x][y]==1) //GB est bleu
+        else if (tab[x][y]==1) //GB est bleu/vert
         {
           _data[index]=(unsigned char)10;
           index++;
@@ -100,7 +100,7 @@ Image::Image(int L, int W, int** tab,int color)
       }
     }
   }
-  else if (color==1){
+  else if (color==1){//NOTHING TO UNDERSTAND, UNUSED FOR NOW.. Maybe later... Who knows?!
     for (int x = 0; x < _w; x++)
     {
       for (int y = 0; y < _h; y++)
