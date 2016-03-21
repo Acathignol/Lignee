@@ -263,7 +263,9 @@ void Crowd::writeResult(std::string str, double ainit, int T){
 void Crowd::epickill(double Pdeath){
   for (int i=0;i<Length_;i++){
     for (int j=0;j<Width_;j++){ // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-      Crowdy_[i][j].massacre(Pdeath);
+      if (Crowdy_[i][j].alive()){
+        Crowdy_[i][j].massacre(Pdeath);
+      }
     }
   };
 }  
