@@ -86,7 +86,9 @@ void Crowd::printCrowd(std::string str){
     tab[i]=new int[Width_];
     for (int j=0;j<Width_;j++){
       if (Crowdy_[i][j].alive()){
-        tab[i][j]=Crowdy_[i][j].G()+1;
+        if (Crowdy_[i][j].G()==1 or Crowdy_[i][j].G()==0){
+          tab[i][j]=Crowdy_[i][j].G()+1;
+        }
       }
       else {tab[i][j]=0;}
     }
@@ -104,94 +106,50 @@ void Crowd::printCrowd(std::string str){
   tab = nullptr;
 }
 
-void Crowd::writeCrowdABC(std::string str){	
-	
+void Crowd::writeCrowdABC(double ainit,int Tt){	
+  
+
+  ofstream f;
+  std::string strr="ConcentrationsIN.txt";//str + "Ain A.txt";
+  
   double tabaA = 0.; //New double of the A concentrations' sum for the blocs where we have cells with the A genotype in the block (A out for the genotype A)
   double tabbA = 0.; //idem....
   double tabcA = 0.;
+  int countA =0;
   double tabaB = 0.;
   double tabbB = 0.;
   double tabcB = 0.;
+  int countB =0;
+  int countDead=0;
+  
+  f.open(strr,ios::out|ios::app);
   
   //Copying the values 
   for (int i=0;i<Length_;i++){
     for (int j=0;j<Width_;j++){
-      if (Crowdy_[i][j].G() == 1){
+      if (Crowdy_[i][j].alive() and Crowdy_[i][j].G() == 1){
         tabaA+=Crowdy_[i][j].A();
         tabbA+=Crowdy_[i][j].B();
         tabcA+=Crowdy_[i][j].C();
-      
-        //Old stuff not important (but I keep it in case)
-        //~ std::string strr = "Bout GA";
-        //~ std::string strb = "Bin GA";
-        //~ box_->writeEnvABC(strr);
-        //~ ecoli_->writeCrowdABC(strr);
+        countA ++;
       }
-      if (Crowdy_[i][j].G() == 0){
+      else if (Crowdy_[i][j].alive() and Crowdy_[i][j].G() == 0){
         tabaB+=Crowdy_[i][j].A();
         tabbB+=Crowdy_[i][j].B();
         tabcB+=Crowdy_[i][j].C();
-        
-        //Old stuff not important (but I keep it in case)
-        //~ std::string strr = "Bout GB";
-        //~ std::string strr = "Bin GB";
-        //~ box_->writeEnvABC(strr);
-        //~ ecoli_->writeCrowdABC(strr);
-    }
+        countB ++;
+      }
+      else {
+        countDead ++;
+        }
     }
   };
-
   //Writing the files
-  
-  ofstream faA;
-  ofstream fbA;
-  ofstream fcA;
-  
-  
-  std::string strr=str + "Ain A.txt";
-  
-  faA.open(strr,ios::out|ios::app);
-  faA<<tabaA/double(Length_*Width_)<<endl;
-  faA.close();
-  
-  
-  strr=str + "Bin A.txt";
-  
-  fbA.open(strr,ios::out|ios::app);//"Bin.txt"
-  fbA<<tabbA/double(Length_*Width_)<<endl;
-  fbA.close();
-
-
-  strr=str + "Cin A.txt";
-  
-  //~ cout<<tabc<<endl;
-  fcA.open(strr,ios::out|ios::app);
-  fcA<<tabcA/double(Length_*Width_)<<endl;
-  fcA.close();
-
-  ofstream faB;
-  ofstream fbB;
-  ofstream fcB;
-  
-  strr=str + "Ain B.txt";
-  
-  faB.open(strr,ios::out|ios::app);
-  faB<<tabaB/double(Length_*Width_)<<endl;
-  faB.close();
-    
-  strr=str + "Bin B.txt";
-  
-  fbB.open(strr,ios::out|ios::app);//"Bin.txt"
-  fbB<<tabbB/double(Length_*Width_)<<endl;
-  fbB.close();
-  
-  strr=str + "Cin B.txt";
-  
-  //~ cout<<tabc<<endl;
-  fcB.open(strr,ios::out|ios::app);
-  fcB<<tabcB/double(Length_*Width_)<<endl;
-  fcB.close();
-
+  f<<ainit<<" "<<Tt<<" "<<countA<<" "<<tabaA/double(Length_*Width_)<<" "
+  <<tabbA/double(Length_*Width_)<<" "<<tabcA/double(Length_*Width_)<<" "
+  <<countB<<" "<<tabaB/double(Length_*Width_)<<" "<<tabbB/double(Length_*Width_)
+  <<" "<<tabcB/double(Length_*Width_)<<" "<<countDead<<endl;
+  f.close();
 }
 
 
@@ -223,46 +181,10 @@ void Crowd::writeResult(std::string str, double ainit, int T){
 
 }
 
-// DOESN'T WORK BUT UNUSEFULL FOR NOW : 
-/**
-//Method to print the table of the concentrations
-//~ void Crowd::printCrowdA(std::string str, double Ainit){	
-	//~ 
-  //~ int** tab = new int*[Length_];
-  //~ for (int i=0;i<Length_;i++){
-    //~ tab[i]=new int[Width_];
-    //~ for (int j=0;j<Width_;j++){
-      //~ if (Crowdy_[i][j].alive()){
-        //~ tab[i][j]=Crowdy_[i][j].A()+1;
-      //~ }
-      //~ else {tab[i][j]=0;}
-    //~ }
-  //~ };
-//~ 
-  //~ Image ima(int(Length_),int(Width_) ,tab,1);
-  //~ ima.save(str);
-  //~ 
-  //~ for (int i=0; i<Length_;i++){
-    //~ delete[] tab[i];
-  //~ }
-  //~ delete[] tab;
-  //~ tab = nullptr;
-//~ }
- */
-
-//~ //Each cell randomly realizes a mutation or not (srand(time(NULL)) put in main.cpp)
-//~ void Crowd::muted (double Pmut){
-  //~ for (int i=0;i<Length_;i++){
-    //~ for (int j=0;j<Width_;j++){
-      //~ Crowdy_[i][j].mutation(Pmut);
-    //~ }
-  //~ };
-//~ }  
-
 //Each cell randomly dies or not (srand(time(NULL)) put in main.cpp)
 void Crowd::epickill(double Pdeath){
   for (int i=0;i<Length_;i++){
-    for (int j=0;j<Width_;j++){ // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    for (int j=0;j<Width_;j++){ 
       if (Crowdy_[i][j].alive()){
         Crowdy_[i][j].massacre(Pdeath);
       }
@@ -274,7 +196,9 @@ void Crowd::epickill(double Pdeath){
 void Crowd::fited(double Wmin){
   for (int i=0;i<Length_;i++){
     for (int j=0;j<Width_;j++){
-      Crowdy_[i][j].fitness(Wmin);
+      if (Crowdy_[i][j].alive()){
+        Crowdy_[i][j].fitness(Wmin);
+      }
     }
   };
 }  
@@ -294,7 +218,7 @@ Individual Crowd::sides(int x, int y){
   else{
     Individual dead = Individual();
     dead.massacre(1.);
-    return dead;}// FIND ANOTHER WAY !!!!!!!!!!!!!
+    return dead;}
 }
 
 std::vector<Individual> Crowd::checkSides(Individual hole){
@@ -323,12 +247,20 @@ std::vector<Individual> Crowd::checkSides(Individual hole){
   return vSides;
 }
 
-Individual Crowd::findWmaxi(Individual hole){ // put a dead individual, hole, as an argument
+Individual Crowd::findWmaxi(Individual hole,std::vector<Individual> v1){ // put a dead individual, hole, as an argument
   // takes sides !!! add a if for the ones that are on boards
   // returns random
   // adds SOMTHING SPECIAL IF NO NEIGHBOURS
   
   std::vector<Individual> Sides = this->checkSides(hole);
+  for (int i = 0; i < int(Sides.size()); i++){
+    for (int j = 0; j < int(v1.size()); j++){
+      if (Sides[i].alive() and Sides[i].x()==v1[j].x() and Sides[i].y()==v1[j].y()){
+        Sides.erase(Sides.begin()+i);
+      }
+    }
+  }
+  
   double max = Sides[0].w();
   Individual Indmax = Sides[0];
   std::vector<Individual> VIndmax;
@@ -338,7 +270,6 @@ Individual Crowd::findWmaxi(Individual hole){ // put a dead individual, hole, as
     if (Sides[i].alive()){
       if (Sides[i].w() > max){
         max = Sides[i].w();
-        Indmax = Sides[i];
       }
     }
   }
@@ -374,7 +305,7 @@ std::vector<Individual> Crowd::listDeads(){
     
   for (int i=0;i<Length_;i++){
     for (int j=0;j<Width_;j++){
-	    if (Crowdy_[i][j].alive()==0){
+	    if (Crowdy_[i][j].alive()==0 and Crowdy_[i][j].G()!=69){
 	      Count++;
         v.push_back(Crowdy_[i][j]);
       }
@@ -382,7 +313,7 @@ std::vector<Individual> Crowd::listDeads(){
   };
 
   if (Count==0){
-    v.push_back(Individual());//FIND ANOTHER WAY !!!!!!!!!!!!!? But it works! So why should I bother ?
+    v.push_back(Individual());
   }
   return v;
 }
@@ -405,7 +336,7 @@ std::vector<Individual> Crowd::listHoles(){
   };
 
   if (Count==0){
-    v.push_back(Individual());//FIND ANOTHER WAY !!!!!!!!!!!!!? But it works! So why should I bother ?
+    v.push_back(Individual());
   }
   return v;
 }
@@ -414,6 +345,8 @@ std::vector<Individual> Crowd::listHoles(){
 void Crowd::duplication(double Wmin, double Pmut){ 
   Individual Parent;
   std::vector<Individual> v = this->listHoles(); 
+  std::vector<Individual> v1; 
+  
   //obtaining a list of all the holes in the map
   while (v.size()!=0){ 
     //while the list is not empty, continuing
@@ -422,12 +355,10 @@ void Crowd::duplication(double Wmin, double Pmut){
     
     if (not v[i].alive()){
       //if the place in the list is really dead (if no one is dead)
-      Parent = this->findWmaxi(v[i]);
-      //for the place in the list, finding the individual alive with the 
-      //highest fitness (w) around (Parent)
+      Parent = this->findWmaxi(v[i], v1);
+      //for the place in the list, finding the individual alive with the highest fitness (w) around (Parent)
       if (Parent.w()!=0 and Parent.alive()){
         
-        //~ Parent.parent(Wmin);  //remove WMIN no?!?
         Crowdy_[Parent.x()][Parent.y()].parent(Wmin);
         //Dividing the concentration by 2 to have the future concentrations
 
@@ -435,12 +366,16 @@ void Crowd::duplication(double Wmin, double Pmut){
         Crowdy_[v[i].x()][v[i].y()].mutation(Pmut);
         Crowdy_[Parent.x()][Parent.y()].mutation(Pmut);
         
+        v1.push_back(Crowdy_[Parent.x()][Parent.y()]);
+        v1.push_back(Crowdy_[v[i].x()][v[i].y()]);
+        
         //Copying the parent to the dead place => new baby alive
       }
     }
     v.erase(v.begin()+i);
     //deleting the individual taken randomly in the list
   }
+  
 }
-
+// RAJOUTER => PARENT PEUVENT PLUS SE DIVISER ET LES NOUVEAUX NES NON PLUS
 

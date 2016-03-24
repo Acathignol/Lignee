@@ -37,9 +37,7 @@ class Environment {
   inline double** PetriA(void) const; //used
   inline double** PetriB(void) const; //used
   inline double** PetriC(void) const; //used
-  //~ 
-  //~ inline int Length(void) const; //unused
-  //~ inline int Width(void) const; //unused
+  
   // =========================================================================
   //                                  Setters
   // =========================================================================
@@ -51,8 +49,7 @@ class Environment {
   // =========================================================================
   //                              Public Methods
   // =========================================================================
-  //~ void printEnvABC(std::string str, double Ainit , double** X);
-  void writeEnvABC(std::string str, Individual** cr);
+  void writeEnvABC(double ainit,int Tt, Individual** cr);
   void diffusion(double D);
   void recycle(double Ainit);
   int sides(int xy, int LW);
@@ -87,13 +84,6 @@ inline double** Environment::PetriB(void) const{
 inline double** Environment::PetriC(void) const{
   return PetriC_;
 }
-//~ 
-//~ inline int Environment::Length(void) const{
-  //~ return Length_;
-//~ }
-//~ inline int Environment::Width(void) const{
-  //~ return Width_;
-//~ }
   
 // ===========================================================================
 //                            Setters' definitions

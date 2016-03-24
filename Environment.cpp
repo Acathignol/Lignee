@@ -98,136 +98,56 @@ Environment::~Environment(){
 // ===========================================================================
 //IF A METHOD IS NOT USED IN MAIN => I HAVE TO PUT IT PROTECTED!!
 
-// DOESN'T WORK BUT UNUSEFULL FOR NOW : 
-/**
- * //Method to print the table 
- * void Environment::printEnvABC(std::string str, double Ainit , double** X){	
- * int** tab = new int*[Length_];
- * for (int i=0;i<Length_;i++){
- *  tab[i]=new int[Width_];
- *  for (int j=0;j<Width_;j++){
- *    //cout<<X[i][j]<<endl;
- *    tab[i][j]=(X[i][j]*255/Ainit);
- *  }
- * };
- * 
- * Image ima(int(Length_),int(Width_) ,tab,1);
- * ima.save(str);
- * 
- * for (int i=0; i<Length_;i++){
- *  delete[] tab[i];
- * }
- * delete[] tab;
- * tab = nullptr;
- * }
- */
-
-void Environment::writeEnvABC(std::string str, Individual** cr){	
-  /**
-  //OLD WAY TO DO : UNUSEFULL FOR NOW
-  //~ double taba = 0.;
-  //~ double tabb = 0.;
-  //~ double tabc = 0.;
-  //~ for (int i=0;i<Length_;i++){
-    //~ for (int j=0;j<Width_;j++){
-      //~ taba+=PetriA_[i][j];
-      //~ tabb+=PetriB_[i][j];
-      //~ tabc+=PetriC_[i][j];
-    //~ }
-  //~ };
-//~ 
-  //~ ofstream fa;
-  //~ ofstream fb;
-  //~ ofstream fc;
-  //~ 
-  //~ fa.open("Aout.txt",ios::out|ios::app);
-  //~ fa<<taba/double(Length_*Width_)<<endl;
-  //~ fa.close();
-  //~ 
-  //~ fb.open("Bout.txt",ios::out|ios::app);
-  //~ fb<<tabb/double(Length_*Width_)<<endl;
-  //~ fb.close();
-//~ 
-  //~ fc.open("Cout.txt",ios::out|ios::app);
-  //~ fc<<tabc/double(Length_*Width_)<<endl;
-  //~ fc.close();
-  */
+void Environment::writeEnvABC(double ainit,int Tt, Individual** cr){	
   
-  //NEW WAY TO DO :
+  ofstream f;
+  std::string strr="ConcentrationsOUT.txt";
+  
   double tabaA = 0.; //New double of the A concentrations' sum for the blocs where we have cells with the A genotype in the block (A out for the genotype A)
   double tabbA = 0.; //idem....
   double tabcA = 0.;
+  int countA =0;
   double tabaB = 0.;
   double tabbB = 0.;
   double tabcB = 0.;
+  int countB =0;
+  double tabaDead = 0.;
+  double tabbDead = 0.;
+  double tabcDead = 0.;
+  int countDead=0;
   
-
+  f.open(strr,ios::out|ios::app);
+  
   //Copying the values 
   for (int i=0;i<Length_;i++){
     for (int j=0;j<Width_;j++){
-      if (cr[i][j].G() == 1){
+      if (cr[i][j].alive() and cr[i][j].G() == 1){
         tabaA+=PetriA_[i][j];
         tabbA+=PetriB_[i][j];
         tabcA+=PetriC_[i][j];
+        countA ++;
       }
-      if (cr[i][j].G() == 0){
+      else if (cr[i][j].alive() and cr[i][j].G() == 0){
         tabaB+=PetriA_[i][j];
         tabbB+=PetriB_[i][j];
         tabcB+=PetriC_[i][j];
+        countB ++;
       }
+      else {
+        tabaDead+=PetriA_[i][j];
+        tabbDead+=PetriB_[i][j];
+        tabcDead+=PetriC_[i][j];
+        countDead ++;
+        }
     }
   };
-
   //Writing the files
-  
-  ofstream faA;
-  ofstream fbA;
-  ofstream fcA;
-  
-  std::string strr=str + "Aout A.txt";
-  
-  faA.open(strr,ios::out|ios::app);
-  faA<<tabaA/double(Length_*Width_)<<endl;
-  faA.close();
-  
-  strr=str + "Bout A.txt";
-  
-  fbA.open(strr,ios::out|ios::app);//"Bin.txt"
-  fbA<<tabbA/double(Length_*Width_)<<endl;
-  fbA.close();
-
-  strr=str + "Cout A.txt";
-  
-  //~ cout<<tabc<<endl;
-  fcA.open(strr,ios::out|ios::app);
-  fcA<<tabcA/double(Length_*Width_)<<endl;
-  fcA.close();
-
-  ofstream faB;
-  ofstream fbB;
-  ofstream fcB;
-  
-  
-  strr=str + "Aout B.txt";
-  
-  faB.open(strr,ios::out|ios::app);
-  faB<<tabaB/double(Length_*Width_)<<endl;
-  faB.close();
-  
-  
-  strr=str + "Bout B.txt";
-  
-  fbB.open(strr,ios::out|ios::app);//"Bin.txt"
-  fbB<<tabbB/double(Length_*Width_)<<endl;
-  fbB.close();
-
-  strr=str + "Cout B.txt";
-  
-  //~ cout<<tabc<<endl;
-  fcB.open(strr,ios::out|ios::app);
-  fcB<<tabcB/double(Length_*Width_)<<endl;
-  fcB.close();
-  
+  f<<ainit<<" "<<Tt<<" "<<countA<<" "<<tabaA/double(Length_*Width_)<<" "
+  <<tabbA/double(Length_*Width_)<<" "<<tabcA/double(Length_*Width_)<<" "
+  <<countB<<" "<<tabaB/double(Length_*Width_)<<" "<<tabbB/double(Length_*Width_)<<" "
+  <<tabcB/double(Length_*Width_)<<" "<<countDead<<" "<<tabaDead/double(Length_*Width_)<<" "
+  <<tabbDead/double(Length_*Width_)<<" "<<tabcDead/double(Length_*Width_)<<" "<<endl;
+  f.close();
 }
 
 int Environment::sides(int xy, int LW){ 
@@ -235,11 +155,9 @@ int Environment::sides(int xy, int LW){
   // Put an x or an y and the corresponding side (length or width)
 
   if (xy < 0){xy = (LW-1);}
+  else if (xy >= LW){xy = 0;}
   // if the x or y is inferior to 0 
   //=> the x or y = the side -1 (the opposite side of the table)
-  else if (xy >= LW){xy = 0;}
-  // if the x or y is superior to the side -1 
-  //=> the x or y = 0 (the opposite side of the table)
   
   return xy; //return the x or y newly (or not) calculated
 }
@@ -264,15 +182,12 @@ void Environment::diffusion(double D){
       
       //Diffusion
       for (int i=(-1) ; i<=1 ; i++){
-        //~ printf("AAA");
         for (int j=(-1) ; j<=1 ; j++){
           int x2 = this->sides(x+i, Length_);
           int y2 = this->sides(y+j, Width_);
-          //~ printf("BBB");
     		  CA_[x][y] += D*PetriA_[x2][y2];
           CB_[x][y] += D*PetriB_[x2][y2];
           CC_[x][y] += D*PetriC_[x2][y2];
-          //~ cout<<x2<<endl;
           
         }
       } 	

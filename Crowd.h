@@ -49,18 +49,16 @@ class Crowd {
   
   //To print the Petri box
   void printCrowd(std::string str);
-  void writeCrowdABC(std::string str);
+  void writeCrowdABC(double ainit,int Tt);
   
-  //IF NOT USES IN MAIN => PROTECTED!!
-  //~ void muted (double Pmut);
+  
   void epickill(double Pdeath);
   void fited(double Wmin);
   
   //To duplicate !
   std::vector<Individual> checkSides(Individual hole);
-  bool aliveTest(Individual ind);
   Individual sides(int x, int y);
-  Individual findWmaxi(Individual hole);
+  Individual findWmaxi(Individual hole,std::vector<Individual> v1);
   std::vector<Individual> listHoles();
   std::vector<Individual> listDeads();
   void duplication(double Wmin, double Pmut);

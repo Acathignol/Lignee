@@ -44,7 +44,9 @@ class Life {
   void killThemAll();
   void combo();
   void nextStep();
-  void hugeCycle(std::string STR);
+  void hugeCycle();
+  
+  bool zombie();
 
 protected :
 
@@ -71,8 +73,8 @@ protected :
   double Rab_;
   double Rbc_; 
   
-  Environment* box_; //Environment box_;
-  Crowd* ecoli_; //Crowd ecoli_;
+  Environment* box_; 
+  Crowd* ecoli_; 
 
 };
 

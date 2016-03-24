@@ -51,13 +51,6 @@ class Individual {
   inline void set_A(double i) ; //unused
   inline void set_B(double i) ; //unused
   inline void set_C(double i) ; //unused
-
-  //~ inline void set_w(double i) ; //unused
- //~ 
-  //~ inline void set_x(int i) const; //unused
-  //~ inline void set_y(int i) const; //unused
-  //~ 
-  //~ inline void set_alive(bool i) ; //unused
   
   // =========================================================================
   //                              Public Methods
@@ -143,20 +136,5 @@ inline void Individual::set_B(double i) {
 inline void Individual::set_C(double i) {
   C_ = i;
 }
-
-//~ inline void Individual::set_w(double i) {
-  //~ w_ = i;
-//~ }
- 
-//~ inline void Individual::set_x(int i) const{
-  //~ x_ = i;
-//~ }
-//~ inline void Individual::set_y(int i) const{
-  //~ y_ = i;
-//~ }
-  //~ 
-//~ inline void Individual::set_alive(bool i) {
-  //~ alive_ = i;
-//~ }
 
 #endif // INDIVIDUAL_H__
