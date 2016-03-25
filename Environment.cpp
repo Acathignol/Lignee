@@ -57,6 +57,8 @@ Environment::Environment(int l, int w, double Ainit) {
   PetriA_=new double*[Length_];
   PetriB_=new double*[Length_];
   PetriC_=new double*[Length_];
+  //double a=0.;
+  //double b=0.;
   
   for (int i=0;i<Length_;i++){
     PetriA_[i]=new double[Width_];
@@ -67,8 +69,11 @@ Environment::Environment(int l, int w, double Ainit) {
       PetriA_[i][j]=Ainit;
       PetriB_[i][j]=0.;
       PetriC_[i][j]=0.;
+      //a+=PetriA_[i][j];
+      //b+=Ainit;
     }
   };
+  //cout<<a<<" "<<b<<endl;
 }
 
 
@@ -97,8 +102,22 @@ Environment::~Environment(){
 //                               Public Methods
 // ===========================================================================
 //IF A METHOD IS NOT USED IN MAIN => I HAVE TO PUT IT PROTECTED!!
+void Environment::writeA(double ainit){
+  double a=0.;
+  double b=0.;
+  
+  for (int i=0;i<Length_;i++){    
+    for (int j=0;j<Width_;j++){
+      a+=PetriA_[i][j];
+      b+=ainit;
+    }
+  };
+  cout<<a<<" "<<b<<endl;
+}	
 
-void Environment::writeEnvABC(double ainit,int Tt, Individual** cr){	
+
+
+void Environment::writeEnvABC(double& ainit,int& Tt, Individual** cr){	
   
   ofstream f;
   std::string strr="ConcentrationsOUT.txt";
@@ -122,31 +141,34 @@ void Environment::writeEnvABC(double ainit,int Tt, Individual** cr){
   for (int i=0;i<Length_;i++){
     for (int j=0;j<Width_;j++){
       if (cr[i][j].alive() and cr[i][j].G() == 1){
-        tabaA+=PetriA_[i][j];
-        tabbA+=PetriB_[i][j];
-        tabcA+=PetriC_[i][j];
+        //~ tabaA+=PetriA_[i][j];
+        //~ tabbA+=PetriB_[i][j];
+        //~ tabcA+=PetriC_[i][j];
         countA ++;
       }
       else if (cr[i][j].alive() and cr[i][j].G() == 0){
-        tabaB+=PetriA_[i][j];
-        tabbB+=PetriB_[i][j];
-        tabcB+=PetriC_[i][j];
+        //~ tabaB+=PetriA_[i][j];
+        //~ tabbB+=PetriB_[i][j];
+        //~ tabcB+=PetriC_[i][j];
         countB ++;
       }
       else {
-        tabaDead+=PetriA_[i][j];
-        tabbDead+=PetriB_[i][j];
-        tabcDead+=PetriC_[i][j];
+        //~ tabaDead+=PetriA_[i][j];
+        //~ tabbDead+=PetriB_[i][j];
+        //~ tabcDead+=PetriC_[i][j];
         countDead ++;
-        }
+      }
+      tabaA+=PetriA_[i][j];
+      tabbA+=PetriB_[i][j];
+      tabcA+=PetriC_[i][j];
     }
   };
   //Writing the files
-  f<<ainit<<" "<<Tt<<" "<<countA<<" "<<tabaA/double(Length_*Width_)<<" "
-  <<tabbA/double(Length_*Width_)<<" "<<tabcA/double(Length_*Width_)<<" "
-  <<countB<<" "<<tabaB/double(Length_*Width_)<<" "<<tabbB/double(Length_*Width_)<<" "
-  <<tabcB/double(Length_*Width_)<<" "<<countDead<<" "<<tabaDead/double(Length_*Width_)<<" "
-  <<tabbDead/double(Length_*Width_)<<" "<<tabcDead/double(Length_*Width_)<<" "<<endl;
+  f<<ainit<<" "<<Tt<<" "<<countA<<" "<<tabaA<<" "
+  <<tabbA<<" "<<tabcA<<" "
+  <<countB<<" "<<tabaB<<" "<<tabbB<<" "
+  <<tabcB<<" "<<countDead<<" "<<tabaDead<<" "
+  <<tabbDead<<" "<<tabcDead<<" "<<endl;
   f.close();
 }
 
@@ -196,11 +218,13 @@ void Environment::diffusion(double D){
       CC_[x][y] -= 9*D*PetriC_[x][y];
     }
     //Deleting the old table
+  }    
+  
+  for (int x=0;x<Length_;x++){
     delete[] PetriA_[x];
     delete[] PetriB_[x];
     delete[] PetriC_[x];
-  }    
-  
+  }
   delete[] PetriA_;
   delete[] PetriB_;
   delete[] PetriC_;
@@ -212,7 +236,7 @@ void Environment::diffusion(double D){
 }  
 
 void Environment::recycle(double Ainit){
-  //Deleting the old concentrations out of the celles and renewing them!
+  //Deleting thea old concentrations out of the celles and renewing them!
   //It's like a renewal of the environment concentrations
   for (int i=0; i<Length_;i++){
     for (int j=0; j<Width_;j++){

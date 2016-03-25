@@ -46,8 +46,8 @@ double rab, double rbc) {
   Rab_=rab;
   Rbc_=rbc; 
   
-  box_ = new Environment(length,width,ainit);
-  ecoli_ = new Crowd(length,width);
+  box_ = new Environment(len_,wid_,Ainit_);
+  ecoli_ = new Crowd(len_,wid_);
 }
 
 // ===========================================================================
@@ -86,7 +86,7 @@ void Life::metaboWeb(){
           box_->set_PetriA(i,j, Aout);//PetriA()[i][j]=Aout;
         }
         else if (ecoli_->Crowdy()[i][j].G() == 0){
-          double B = ecoli_->Crowdy()[i][j].A();
+          double B = ecoli_->Crowdy()[i][j].B();
           double C = ecoli_->Crowdy()[i][j].C();
           double Bout = box_->PetriB()[i][j];
           
@@ -98,7 +98,7 @@ void Life::metaboWeb(){
           
           ecoli_->Crowdy()[i][j].set_B(B);
           ecoli_->Crowdy()[i][j].set_C(C);//1 OR HERE
-          box_->set_PetriB(i,j, Bout);//PetriA()[i][j]=Aout;
+          box_->set_PetriB(i,j, Bout);//PetriB()[i][j]=Bout;
         }
       }
     }
@@ -126,7 +126,7 @@ void Life::killThemAll(){
   
   for (int i=0 ; i<int(vec.size()) ; i++){
     if (not vec[i].alive()){
-      ecoli_->Crowdy()[vec[i].x()][vec[i].y()] = Individual(vec[i].x(),vec[i].y(),69);
+      ecoli_->Crowdy()[vec[i].x()][vec[i].y()].set_G(69);//Individual(vec[i].x(),vec[i].y(),69);
     }
   }
 }
@@ -141,19 +141,39 @@ bool Life::zombie(){
 //Method which shows what happens at each generation :
 void Life::nextStep(){
   
+  //~ ecoli_->writeCrowdABC(Ainit_,T_);  
+  //~ box_->writeEnvABC(Ainit_,T_, ecoli_->Crowdy());
   box_->diffusion(D_); //Concentrations diffuse
+  
+  //~ ecoli_->writeCrowdABC(Ainit_,T_);  
+  //~ box_->writeEnvABC(Ainit_,T_, ecoli_->Crowdy());
   this->combo(); //Cells die
+  
+  //~ ecoli_->writeCrowdABC(Ainit_,T_);  
+  //~ box_->writeEnvABC(Ainit_,T_, ecoli_->Crowdy());
   ecoli_->duplication(Wmin_, Pmut_); //Cells duplicate and mutate or not
+  //~ 
+  //~ ecoli_->writeCrowdABC(Ainit_,T_);  
+  //~ box_->writeEnvABC(Ainit_,T_, ecoli_->Crowdy());
   this->metaboWeb(); //Cells metabolism (Concentrations in increase for 
   //A and B (Ga) or B and C (Gb); Concentrations out decrease for A (Ga) or B (Gb);
+  
+  //~ ecoli_->writeCrowdABC(Ainit_,T_);  
+  //~ box_->writeEnvABC(Ainit_,T_, ecoli_->Crowdy());
 }
 
 
 void Life::hugeCycle(){//std::string STR){
-  
+  //~ box_->writeA(Ainit_);
+  //~ ecoli_->writeCrowdABC(Ainit_,T_);  
+  //~ box_->writeEnvABC(Ainit_,T_, ecoli_->Crowdy());
   //First: in order to have positive fitnesses (non null), metabolism; 
-  this->metaboWeb(); 
+  this->metaboWeb();
+  //~ box_->writeA(Ainit_);
+  //~ ecoli_->writeCrowdABC(Ainit_,T_);  
   
+  //~ box_->writeEnvABC(Ainit_,T_, ecoli_->Crowdy());
+  //~ 
   for (int i = 1 ; i<=Simul_ ; i++){
     if ((i%T_)==0){
       box_->recycle(Ainit_); //Renewing the environment 
@@ -167,7 +187,8 @@ void Life::hugeCycle(){//std::string STR){
     }
     else {this->nextStep();} //Cells metabolism (Concentrations "in" the cells increase for 
   //A and B (Ga) or B and C (Gb); Concentrations out decrease for A (Ga) or B (Gb);
-
+    //~ box_->writeEnvABC(Ainit_,T_, ecoli_->Crowdy());
+    //~ ecoli_->writeCrowdABC(Ainit_,T_);  
 	}
   
   ecoli_->writeResult("results.txt", Ainit_ , T_);

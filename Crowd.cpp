@@ -128,27 +128,32 @@ void Crowd::writeCrowdABC(double ainit,int Tt){
   for (int i=0;i<Length_;i++){
     for (int j=0;j<Width_;j++){
       if (Crowdy_[i][j].alive() and Crowdy_[i][j].G() == 1){
-        tabaA+=Crowdy_[i][j].A();
-        tabbA+=Crowdy_[i][j].B();
-        tabcA+=Crowdy_[i][j].C();
+        //~ tabaA+=Crowdy_[i][j].A();
+        //~ tabbA+=Crowdy_[i][j].B();
+        //~ tabcA+=Crowdy_[i][j].C();
         countA ++;
       }
       else if (Crowdy_[i][j].alive() and Crowdy_[i][j].G() == 0){
-        tabaB+=Crowdy_[i][j].A();
-        tabbB+=Crowdy_[i][j].B();
-        tabcB+=Crowdy_[i][j].C();
+        //~ tabaB+=Crowdy_[i][j].A();
+        //~ tabbB+=Crowdy_[i][j].B();
+        //~ tabcB+=Crowdy_[i][j].C();
         countB ++;
       }
       else {
         countDead ++;
         }
+      if (Crowdy_[i][j].alive()){
+        tabaB+=Crowdy_[i][j].A();
+        tabbB+=Crowdy_[i][j].B();
+        tabcB+=Crowdy_[i][j].C();
+      }
     }
   };
   //Writing the files
-  f<<ainit<<" "<<Tt<<" "<<countA<<" "<<tabaA/double(Length_*Width_)<<" "
-  <<tabbA/double(Length_*Width_)<<" "<<tabcA/double(Length_*Width_)<<" "
-  <<countB<<" "<<tabaB/double(Length_*Width_)<<" "<<tabbB/double(Length_*Width_)
-  <<" "<<tabcB/double(Length_*Width_)<<" "<<countDead<<endl;
+  f<<ainit<<" "<<Tt<<" "<<countA<<" "<<tabaA<<" "
+  <<tabbA<<" "<<tabcA<<" "
+  <<countB<<" "<<tabaB<<" "<<tabbB
+  <<" "<<tabcB<<" "<<countDead<<endl;
   f.close();
 }
 
@@ -253,9 +258,9 @@ Individual Crowd::findWmaxi(Individual hole,std::vector<Individual> v1){ // put 
   // adds SOMTHING SPECIAL IF NO NEIGHBOURS
   
   std::vector<Individual> Sides = this->checkSides(hole);
-  for (int i = 0; i < int(Sides.size()); i++){
-    for (int j = 0; j < int(v1.size()); j++){
-      if (Sides[i].alive() and Sides[i].x()==v1[j].x() and Sides[i].y()==v1[j].y()){
+  for (int j = 0; j < int(v1.size()); j++){
+    for (int i = 0; i < int(Sides.size()); i++){
+      if (Sides[i].alive() and Sides[i].x()==v1[j].x() and Sides[i].y()==v1[j].y()){// faire un vecteur copy de sides et comparer à lui! !!!!!!!!!!!!!!!!!!!!!!!!!
         Sides.erase(Sides.begin()+i);
       }
     }
@@ -280,7 +285,7 @@ Individual Crowd::findWmaxi(Individual hole,std::vector<Individual> v1){ // put 
     if (Sides[i].alive()){
       if (Sides[i].w() == max){
         Indmax = Sides[i];
-        VIndmax.push_back(Indmax);
+        VIndmax.push_back(Indmax);// Faire un new indiv. et l'ajouter dans le vect!
       }
     }
   }

@@ -49,7 +49,8 @@ class Environment {
   // =========================================================================
   //                              Public Methods
   // =========================================================================
-  void writeEnvABC(double ainit,int Tt, Individual** cr);
+  void writeA(double ainit);
+  void writeEnvABC(double& ainit,int& Tt, Individual** cr);
   void diffusion(double D);
   void recycle(double Ainit);
   int sides(int xy, int LW);
